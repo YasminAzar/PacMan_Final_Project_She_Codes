@@ -1,7 +1,10 @@
 package Main_Package;
 
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 
+import Game_Actions_Package.Game_Actions;
 import Menu_Package.Menu;
 
 public class Main {
@@ -9,7 +12,12 @@ public class Main {
 	public static void main(String[] args) {
 		//Board frame = new Board();
 		JFrame frame = new JFrame();
-		
+		int height = 600;
+		int width = 800;
+		// set the frame height and width
+		frame.setPreferredSize(new Dimension(width, height));
+		frame.setBounds(0, 0, width, height);
+
 		/*JButton newGame = new JButton(new ImageIcon("button_new_game.png"));
 		JButton loadGame = new JButton("Load Game");
 		JButton leaderBoard = new JButton("Leader Board");*/
@@ -20,10 +28,12 @@ public class Main {
 		//frame.add(newGame);
 		//frame.add(loadGame);
 
-		frame.setBounds(0, 0, 1000, 800);
-		frame.setSize(1000, 800);
-		frame.setSize(800, 1000);
+		frame.setTitle("Pac Man Game");
+		frame.setResizable(true);
 		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Game_Actions gameActions = new Game_Actions();
+		frame.add(gameActions);
 		//frame.init();
 		frame.paint(frame.getGraphics());
 		
@@ -42,13 +52,11 @@ public class Main {
 		       
 		       //frame.add(panel);
 		Menu menu = new Menu(frame);
+		
 		//menu.creatPanel();
 		//frame.add(Menu.creatPanel());
 		frame.pack();
-		frame.setVisible(true);
 		
-		
-
 		//JPanel p = Menu.creatPanel().panel;
 	
 		
