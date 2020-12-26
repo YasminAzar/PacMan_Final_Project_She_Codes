@@ -11,6 +11,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		//Board frame = new Board();
+		
 		JFrame frame = new JFrame();
 		int height = 600;
 		int width = 800;

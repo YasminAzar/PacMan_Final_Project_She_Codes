@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 
 public class Board extends JFrame {
 	static JFrame _frame;
-	Graphics2D g;
+	//Graphics2D g;
 	private static final long serialVersionUID = 1L;
 	public BufferedImage title;
 	File pac_man_title = new File("pac_man_title2.png");
@@ -50,6 +50,7 @@ public class Board extends JFrame {
 	public int cubeWidth;
 	public int cubeHeight;
 
+	//Constructor
 	public 	Board(JFrame frame) {
 		_frame = frame;
 		cubeWidth = 20;
@@ -57,6 +58,8 @@ public class Board extends JFrame {
 		//draw(g);
 
 	}
+	
+	//This function paints the walls (not working yet)
 	public void draw(Graphics2D g) {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
@@ -78,6 +81,8 @@ public class Board extends JFrame {
 	//init();
 
 	}*/
+	
+	//This function displays the background image (not working yet)
 	public void init() {
 
 		f.setSize(800,600); 
@@ -100,7 +105,8 @@ public class Board extends JFrame {
 			e.printStackTrace();
 		}
 	}*/
-
+	
+	//This function paints the background image (not working yet)
 	public void paint(Graphics g) {
 		g.drawImage(title,0 ,0, this.getWidth(), this.getHeight(), this);
 

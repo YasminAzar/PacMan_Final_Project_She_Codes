@@ -21,16 +21,15 @@ public class Menu implements  ActionListener  {
 	static Board _board;
 //	private Graphics g;
 
-	
+	//Constructor
 	public Menu(JFrame frame) {
 		_frame = frame;
 		creatPanel();
-		//this.paint(g); //ניסיתי לעשות רקע- אבל זה לא מצליח
-		
-		
+		//this.paint(g); //ניסיתי לעשות רקע- אבל זה לא מצליח	
 	}
+	
+	//This function display the panel with the main butons
 	public JPanel creatPanel()  {
-
 		JButton newGame = new JButton(new ImageIcon("button_new_game.png"));
 		JButton loadGame = new JButton(new ImageIcon("button_load_game.png"));
 		JButton leaderBoard = new JButton(new ImageIcon("button_leader_board.png"));
@@ -48,7 +47,6 @@ public class Menu implements  ActionListener  {
 		loadGame.addActionListener(this);
 		leaderBoard.addActionListener(this);
 
-
 		panel.setLayout(bl);
 		panel.add(newGame);
 		panel.add(Box.createRigidArea(new Dimension(300, 20)));
@@ -65,6 +63,7 @@ public class Menu implements  ActionListener  {
 		return panel;
 	}
 	
+	//Another function that tries to draw a background (not working yet)
 	public void paint(Graphics g) {
 		//background
 		g.setColor(Color.black);
@@ -73,6 +72,8 @@ public class Menu implements  ActionListener  {
 		g.setFont(new Font("serif", Font.BOLD, 50));
 		g.drawString("PAC MAN", 300, 100);
 	}
+	
+	//This function describes the actions that will happen if you press the main buttons
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if("newGame".equals(arg0.getActionCommand())) {
