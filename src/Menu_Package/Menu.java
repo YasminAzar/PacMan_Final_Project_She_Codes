@@ -1,8 +1,9 @@
 package Menu_Package;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Panel;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,13 +14,20 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import Main_Package.Main;
+import Board_Package.Board;
 
 public class Menu implements  ActionListener  {
 	static JFrame _frame;
+	static Board _board;
+//	private Graphics g;
+
+	
 	public Menu(JFrame frame) {
 		_frame = frame;
 		creatPanel();
+		//this.paint(g); //ניסיתי לעשות רקע- אבל זה לא מצליח
+		
+		
 	}
 	public JPanel creatPanel()  {
 
@@ -43,11 +51,11 @@ public class Menu implements  ActionListener  {
 
 		panel.setLayout(bl);
 		panel.add(newGame);
-		panel.add(Box.createRigidArea(new Dimension(_frame.getWidth()/3, 80)));
+		panel.add(Box.createRigidArea(new Dimension(300, 20)));
 		panel.add(loadGame);
-		panel.add(Box.createRigidArea(new Dimension(_frame.getWidth()/3, 80)));
+		panel.add(Box.createRigidArea(new Dimension(300, 20)));
 		panel.add(leaderBoard);
-		panel.add(Box.createRigidArea(new Dimension(_frame.getWidth()/3, 80)));
+		panel.add(Box.createRigidArea(new Dimension(300, 20)));
 		panel.setSize(new Dimension(200, 200));
 		//panel.setLocation(400, 500);
 
@@ -56,15 +64,36 @@ public class Menu implements  ActionListener  {
 		_frame.setVisible(true);
 		return panel;
 	}
+	
+	public void paint(Graphics g) {
+		//background
+		g.setColor(Color.black);
+		g.fillRect(0, 0, 600, 800);
+		g.setColor(Color.yellow);
+		g.setFont(new Font("serif", Font.BOLD, 50));
+		g.drawString("PAC MAN", 300, 100);
+	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		if("newGame".equals(arg0.getActionCommand()))
+		if("newGame".equals(arg0.getActionCommand())) {
 			System.out.println("New Game is pressed");
+		}
 		if("loadGame".equals(arg0.getActionCommand()))
 			System.out.println("Load Game is pressed");
-		if("leaderBoard".equals(arg0.getActionCommand()))
+		
+		//if we press the "leaderBoard" button, a new window 
+		//will open with the score table
+		if("leaderBoard".equals(arg0.getActionCommand())) {
 			System.out.println("Leader Board is pressed");
+			JFrame leaderBoardFrame = new JFrame();
+			leaderBoardFrame.setPreferredSize(new Dimension(200, 400));
+			leaderBoardFrame.setBounds(800, 0, 400, 600);
+			leaderBoardFrame.setTitle("Leader Score Board");
+			leaderBoardFrame.setResizable(true);
+			leaderBoardFrame.setVisible(true);
+			//leaderBoardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		}
+			
 
 	}
 }
