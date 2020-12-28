@@ -4,18 +4,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import Board_Package.Board;
-//import Main;
 
 public class Menu extends JPanel /*implements  ActionListener*/  {
 	static Board _board;
@@ -30,7 +26,7 @@ public class Menu extends JPanel /*implements  ActionListener*/  {
 		//this.paint(g); //ניסיתי לעשות רקע- אבל זה לא מצליח	
 	}
 
-	//This function display the panel with the main butons
+	//This function display the panel with the main buttons
 	public void creatPanel()  {
 		newGame = new JButton(new ImageIcon("src/Images/button_new_game.png"));
 		loadGame = new JButton(new ImageIcon("src/Images/button_load_game.png"));
@@ -74,7 +70,5 @@ public class Menu extends JPanel /*implements  ActionListener*/  {
 		g.setColor(Color.yellow);
 		g.setFont(new Font("serif", Font.BOLD, 50));
 		g.drawString("PAC MAN1", 300, 100);
-	}
-
-	
+	}	
 }

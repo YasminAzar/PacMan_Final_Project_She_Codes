@@ -1,32 +1,26 @@
 
-
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import java.io.File;  // Import the File class
-import java.io.FileWriter;   // Import the FileWriter class
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-import Game_Actions_Package.Game_Actions;
-import Log_Package.Log;
+import Log_Package.PacmanLog;
 import Menu_Package.Menu;
 
 public class Main implements ActionListener {
 	//static String logFileName = "src\\log_files\\log_messages.txt";
-	public JFrame frame;
-	public Log logMessages = new Log();
-	
+	//public JFrame frame;
+	//public PacmanLog logMessages = new PacmanLog();
+
 	public static void main(String[] args) {
 		//Board frame = new Board();
-		initFrame();
+		Main instance = new Main();
+		initFrame(instance);
 	}
-	private static void initFrame() {
-		
+	
+	//This function defines and initializes the frame
+	private static void initFrame(Main instance) {
 		JFrame frame = new JFrame();
 		int height = 600;
 		int width = 800;
@@ -48,12 +42,12 @@ public class Main implements ActionListener {
 		frame.setResizable(true);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		//Game_Actions gameActions = new Game_Actions();
 		//frame.add(gameActions);
 		//frame.init();
 		frame.paint(frame.getGraphics());
-		
+
 		/*JPanel panel = new JPanel();
 		BoxLayout bl = new BoxLayout(panel, BoxLayout.Y_AXIS);
 		panel.add(Box.createVerticalGlue());    // expandable vertical space.
@@ -66,21 +60,25 @@ public class Main implements ActionListener {
 		       panel.add(Box.createRigidArea(new Dimension(10, 20)));
 		       panel.add(leaderBoard);
 		       panel.add(Box.createRigidArea(new Dimension(10, 20)));*/
-		       
-		       //frame.add(panel);
-		
-		
-		//menu.creatPanel();
-		//frame.add(Menu.creatPanel());
-		
-		
-		initGame(frame);
+
+		//frame.add(panel);
+
+		initMenu(instance,frame);
+		//createLogFile();
+		PacmanLog.log("main", "1");
+		PacmanLog.log("main", "2");
+		PacmanLog.log("main", "3");
+
 		//JPanel p = Menu.creatPanel().panel;
 	}
-	private static void initGame(JFrame frame) {
+	private static void initMenu(Main instannce, JFrame frame) {
 		Menu menu = new Menu();
 		frame.add(menu);
-		menu.newGame.addActionListener(new ActionListener() {
+		frame.pack();
+		menu.newGame.addActionListener(instannce);
+		menu.loadGame.addActionListener(instannce);
+		menu.leaderBoard.addActionListener(instannce);
+		/*menu.newGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Your Event on click of Button
 				System.out.println("New Game is pressed");
@@ -97,29 +95,30 @@ public class Main implements ActionListener {
 				//Your Event on click of Button
 				System.out.println("Leader Board is pressed");
 			}});
-		frame.pack();
-			}
-		
+		frame.pack();*/
+	}
+
+	
 	//This function describes the actions that will happen if you press the main buttons
-		// EB remove override
+	// EB remove override
 	public void actionPerformed(ActionEvent arg0) {
 		//if("newGame".equals(arg0.getActionCommand()) || 
-				//"loadGame".equals(arg0.getActionCommand()) ) {
-			if("newGame".equals(arg0.getActionCommand())) {
-				System.out.println("New Game is pressed");
-				//Main.log("actionPerformed: ", "New Game is pressed");
-				/*JFrame newGameFrame = new JFrame();
+		//"loadGame".equals(arg0.getActionCommand()) ) {
+		if("newGame".equals(arg0.getActionCommand())) {
+			System.out.println("New Game is pressed");
+			//Main.log("actionPerformed: ", "New Game is pressed");
+			/*JFrame newGameFrame = new JFrame();
 				newGameFrame.setPreferredSize(new Dimension(800, 600));
 				newGameFrame.setBounds(0, 0, 800, 600);
 				newGameFrame.setTitle("Pac Man New Game");
 				newGameFrame.setResizable(true);
 				newGameFrame.setVisible(true);
 				newGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-*/
-			}
-			if("loadGame".equals(arg0.getActionCommand())) {
-				System.out.println("Load Game is pressed");
-				/*Main.log("actionPerformed: ", "Load Game is pressed");
+			 */
+		}
+		if("loadGame".equals(arg0.getActionCommand())) {
+			System.out.println("Load Game is pressed");
+			/*Main.log("actionPerformed: ", "Load Game is pressed");
 				JFrame frameLoadGame = new JFrame();
 				frameLoadGame.setPreferredSize(new Dimension(800, 600));
 				frameLoadGame.setBounds(0, 0, 800, 600);
@@ -153,7 +152,7 @@ public class Main implements ActionListener {
 				frameLoadGame.pack();
 				frameLoadGame.setVisible(true);
 				//return panelLoadGame;
-				
+
 				if("Game_1".equals(arg0.getActionCommand()) ||
 						"Game_2".equals(arg0.getActionCommand()) ||
 						"Game_3".equals(arg0.getActionCommand())) {
@@ -173,8 +172,7 @@ public class Main implements ActionListener {
 
 			//_frame.dispose();
 			 * */
-			 
-			
+
 		}
 		//if we press the "leaderBoard" button, a new window 
 		//will open with the score table
@@ -187,36 +185,7 @@ public class Main implements ActionListener {
 			leaderBoardFrame.setResizable(true);
 			leaderBoardFrame.setVisible(true);*/
 		}
+		
 	}
-		/*private static void createLogFile() {
-			try {
-			     File myObj = new File(logFileName);
-			     if (myObj.createNewFile()) {
-			       System.out.println("File created: " + myObj.getName());
-			     } else {
-			       System.out.println("File already exists.");
-			     }
-			   } catch (IOException e) {
-			     System.out.println("An error occurred "+e.getMessage());
-			     e.printStackTrace();
-			   }
-			}
-
-			public static void log(String functionName, String msg) {
-			try {
-			     FileWriter myWriter = new FileWriter(logFileName);
-			     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-			     LocalDateTime now = LocalDateTime.now();
-			     System.out.println(dtf.format(now));
-			     myWriter.write(dtf.format(now) + ":" + functionName + ' ' + msg);
-			     myWriter.close();
-			     System.out.println("Successfully wrote to the file.");
-			   } catch (IOException e) {
-			     System.out.println("An error occurred.");
-			     e.printStackTrace();
-			   }
-			}*/
-			
-
 	
 }

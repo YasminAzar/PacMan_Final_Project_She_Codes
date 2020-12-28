@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Log {
+public class PacmanLog {
 	
-	private static void createLogFile() {
+	/*private static void createLogFile() {
 		// EB move here
 		String logFileName = "src\\log_files\\log_messages.txt";
 		try {
@@ -21,17 +21,18 @@ public class Log {
 		     System.out.println("An error occurred "+e.getMessage());
 		     e.printStackTrace();
 		   }
-		}
+		}*/
 
 		public static void log(String functionName, String msg) {
 			// EB move here too and also move to a log package
 			String logFileName = "src\\log_files\\log_messages.txt";
 		try {
-		     FileWriter myWriter = new FileWriter(logFileName);
+		     FileWriter myWriter = new FileWriter(logFileName, true);
 		     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 		     LocalDateTime now = LocalDateTime.now();
 		     System.out.println(dtf.format(now));
 		     myWriter.write(dtf.format(now) + ":" + functionName + ' ' + msg);
+		     myWriter.write("\n");
 		     myWriter.close();
 		     System.out.println("Successfully wrote to the file.");
 		   } catch (IOException e) {
