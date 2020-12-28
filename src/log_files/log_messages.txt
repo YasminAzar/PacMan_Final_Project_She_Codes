@@ -1,1 +1,1 @@
-2020/12/27 17:28:06:actionPerformed:  Load Game is pressed
+2020/12/28 12:52:41: initGame  New Game is pressed
