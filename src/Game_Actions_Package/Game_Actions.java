@@ -29,7 +29,7 @@ public class Game_Actions extends JPanel implements KeyListener, ActionListener 
 	
 	//Constructor
 	public Game_Actions() {
-		board = new Board(_frame);
+		//board = new Board(_frame);
 		addKeyListener(this);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);

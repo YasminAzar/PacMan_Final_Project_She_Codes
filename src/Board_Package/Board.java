@@ -8,16 +8,18 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 
 
-public class Board extends JFrame {
-	static JFrame _frame;
+public class Board extends JPanel {
+	//static JFrame _frame;
 	//Graphics2D g;
-	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = 1L;
+	
 	public BufferedImage title;
 	File pac_man_title = new File("pac_man_title2.png");
-	JFrame f;
+	//JFrame f;
 	public int map[][] = {
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 			{1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -49,16 +51,21 @@ public class Board extends JFrame {
 
 	public int cubeWidth;
 	public int cubeHeight;
+	//private Graphics g;
 
 	//Constructor
-	public 	Board(JFrame frame) {
-		_frame = frame;
+	public 	Board() {
+		//_frame = frame;
 		cubeWidth = 20;
 		cubeWidth = 20;
+		//paint(this.getGraphics());
 		//draw(g);
+		//paint(g);
+		this.repaint();
 
 	}
 	
+	/*
 	//This function paints the walls (not working yet)
 	public void draw(Graphics2D g) {
 		for (int i = 0; i < map.length; i++) {
@@ -71,7 +78,7 @@ public class Board extends JFrame {
 			}
 			
 		}
-	}
+	}*/
 
 
 
@@ -83,7 +90,7 @@ public class Board extends JFrame {
 	}*/
 	
 	//This function displays the background image (not working yet)
-	public void init() {
+	/*public void init() {
 
 		f.setSize(800,600); 
 		f.setLayout(null); 
@@ -95,7 +102,7 @@ public class Board extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	/*public void init() {
 		try {
@@ -108,7 +115,20 @@ public class Board extends JFrame {
 	
 	//This function paints the background image (not working yet)
 	public void paint(Graphics g) {
-		g.drawImage(title,0 ,0, this.getWidth(), this.getHeight(), this);
+		//super.paint(g);
+		Graphics2D g2d = (Graphics2D) g;
+		//g.drawImage(title,0 ,0, this.getWidth(), this.getHeight(), this);
+		
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				if(map[i][j] > 0) {
+					g2d.setColor(Color.blue);
+					g2d.fillRect(j*cubeWidth, i*cubeHeight, cubeWidth, cubeHeight);
+				}
+				
+			}
+			
+		}
 
 	}
 }

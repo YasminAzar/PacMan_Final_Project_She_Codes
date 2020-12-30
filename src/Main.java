@@ -1,21 +1,25 @@
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
+import Board_Package.Board;
 import Log_Package.PacmanLog;
 import Menu_Package.Menu;
 
 public class Main implements ActionListener {
-	//static String logFileName = "src\\log_files\\log_messages.txt";
+	 //static String logFileName = "src\\log_files\\log_messages.txt";
 	//public JFrame frame;
 	//public PacmanLog logMessages = new PacmanLog();
-
+	//Board board = new Board();
+	Board board = new Board();
 	public static void main(String[] args) {
 		//Board frame = new Board();
 		Main instance = new Main();
+		
 		initFrame(instance);
 	}
 	
@@ -71,6 +75,7 @@ public class Main implements ActionListener {
 
 		//JPanel p = Menu.creatPanel().panel;
 	}
+	
 	private static void initMenu(Main instannce, JFrame frame) {
 		Menu menu = new Menu();
 		frame.add(menu);
@@ -106,6 +111,8 @@ public class Main implements ActionListener {
 		//"loadGame".equals(arg0.getActionCommand()) ) {
 		if("newGame".equals(arg0.getActionCommand())) {
 			System.out.println("New Game is pressed");
+			//new Board();
+			//add(board);
 			//Main.log("actionPerformed: ", "New Game is pressed");
 			/*JFrame newGameFrame = new JFrame();
 				newGameFrame.setPreferredSize(new Dimension(800, 600));
