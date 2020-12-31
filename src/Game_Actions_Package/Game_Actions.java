@@ -26,10 +26,11 @@ public class Game_Actions extends JPanel implements KeyListener, ActionListener 
 	private Board board;
 	private Menu menu;
 	private boolean board_1 = false;
-	
+
 	//Constructor
 	public Game_Actions() {
-		//board = new Board(_frame);
+		//EB
+		board = new Board();
 		addKeyListener(this);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
@@ -44,36 +45,36 @@ public class Game_Actions extends JPanel implements KeyListener, ActionListener 
 		g.setColor(Color.yellow);
 		g.setFont(new Font("serif", Font.BOLD, 50));
 		g.drawString("PAC MAN", 300, 100);*/
-		
+
 		/*if(board_1) {
 			board.draw(g);
 		}*/
-		
-		
+
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
-			
+
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

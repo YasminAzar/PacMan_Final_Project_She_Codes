@@ -1,36 +1,36 @@
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
 import Board_Package.Board;
-import Log_Package.PacmanLog;
 import Menu_Package.Menu;
 
-public class Main implements ActionListener {
+public class Main extends JFrame implements ActionListener {
 	 //static String logFileName = "src\\log_files\\log_messages.txt";
 	//public JFrame frame;
 	//public PacmanLog logMessages = new PacmanLog();
-	//Board board = new Board();
-	Board board = new Board();
+	private static Main game_main;
+	private Menu menu;
+	
 	public static void main(String[] args) {
 		//Board frame = new Board();
-		Main instance = new Main();
+		Main game_main = new Main();
 		
-		initFrame(instance);
+		game_main.initFrame(args);
 	}
 	
 	//This function defines and initializes the frame
-	private static void initFrame(Main instance) {
-		JFrame frame = new JFrame();
+	private void initFrame(String[] args) {
+		//JFrame frame = new JFrame();
 		int height = 600;
 		int width = 800;
 		// set the frame height and width
-		frame.setPreferredSize(new Dimension(width, height));
-		frame.setBounds(0, 0, width, height);
+		this.setPreferredSize(new Dimension(width, height));
+		this.setBounds(0, 0, width, height);
 
 		/*JButton newGame = new JButton(new ImageIcon("button_new_game.png"));
 		JButton loadGame = new JButton("Load Game");
@@ -42,15 +42,15 @@ public class Main implements ActionListener {
 		//frame.add(newGame);
 		//frame.add(loadGame);
 
-		frame.setTitle("Pac Man Game");
-		frame.setResizable(true);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("Pac Man Game");
+		this.setResizable(true);
+		this.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//Game_Actions gameActions = new Game_Actions();
 		//frame.add(gameActions);
 		//frame.init();
-		frame.paint(frame.getGraphics());
+		this.paint(this.getGraphics());
 
 		/*JPanel panel = new JPanel();
 		BoxLayout bl = new BoxLayout(panel, BoxLayout.Y_AXIS);
@@ -67,22 +67,23 @@ public class Main implements ActionListener {
 
 		//frame.add(panel);
 
-		initMenu(instance,frame);
+		initMenu();
 		//createLogFile();
-		PacmanLog.log("main", "1");
+		/*PacmanLog.log("main", "1");
 		PacmanLog.log("main", "2");
-		PacmanLog.log("main", "3");
+		PacmanLog.log("main", "3");*/
 
 		//JPanel p = Menu.creatPanel().panel;
 	}
 	
-	private static void initMenu(Main instannce, JFrame frame) {
-		Menu menu = new Menu();
-		frame.add(menu);
-		frame.pack();
-		menu.newGame.addActionListener(instannce);
-		menu.loadGame.addActionListener(instannce);
-		menu.leaderBoard.addActionListener(instannce);
+	private void initMenu() {
+		menu = new Menu();
+		
+		menu.newGame.addActionListener(this);
+		menu.loadGame.addActionListener(this);
+		menu.leaderBoard.addActionListener(this);
+		this.add(menu);
+		this.pack();
 		/*menu.newGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Your Event on click of Button
@@ -109,10 +110,19 @@ public class Main implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		//if("newGame".equals(arg0.getActionCommand()) || 
 		//"loadGame".equals(arg0.getActionCommand()) ) {
+		int height = 600;
+		int width = 800;
 		if("newGame".equals(arg0.getActionCommand())) {
+			this.menu.setVisible(false);
+			this.remove(menu);
 			System.out.println("New Game is pressed");
-			//new Board();
-			//add(board);
+			Board gameBoard = new Board();
+			gameBoard.setPreferredSize(new Dimension(width,height));
+			this.add(gameBoard, BorderLayout.CENTER);
+			this.revalidate();
+		    this.repaint();
+		    this.pack();
+		    
 			//Main.log("actionPerformed: ", "New Game is pressed");
 			/*JFrame newGameFrame = new JFrame();
 				newGameFrame.setPreferredSize(new Dimension(800, 600));
@@ -123,7 +133,7 @@ public class Main implements ActionListener {
 				newGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			 */
 		}
-		if("loadGame".equals(arg0.getActionCommand())) {
+		else if("loadGame".equals(arg0.getActionCommand())) {
 			System.out.println("Load Game is pressed");
 			/*Main.log("actionPerformed: ", "Load Game is pressed");
 				JFrame frameLoadGame = new JFrame();

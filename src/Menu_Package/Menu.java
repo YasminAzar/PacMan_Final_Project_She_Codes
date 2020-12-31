@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,7 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 import Board_Package.Board;
 
-public class Menu extends JPanel /*implements  ActionListener*/  {
+public class Menu extends JPanel implements  ActionListener  {
 	static Board _board;
 	//	private Graphics g;
 	// EB declare jbutton here so we can reference from main
@@ -30,7 +32,7 @@ public class Menu extends JPanel /*implements  ActionListener*/  {
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		creatPanel(gbc);
-		
+
 	}
 
 	//This function display the panel with the main buttons
@@ -57,7 +59,8 @@ public class Menu extends JPanel /*implements  ActionListener*/  {
 		//this.add(Box.createRigidArea(new Dimension(300, 20)));
 		//this.setSize(new Dimension(200, 200));
 		//panel.setLocation(400, 500);
-
+		this.revalidate();
+		this.repaint();
 		//_frame.add(panel);
 		//_frame.pack();
 		//_frame.setVisible(true);
@@ -71,4 +74,11 @@ public class Menu extends JPanel /*implements  ActionListener*/  {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, w, h);
 	}	
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		//this.dispatchEvent (e);
+	}
+
 }
