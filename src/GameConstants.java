@@ -20,7 +20,7 @@ public class GameConstants {
 	
 	public static final int SCREEN_WIDTH = 800;
 	public static final int SCREEN_HEIGHT = 600;
-
+	
 	//The amount of squares in the board grid is 15X15
 	public static final int BOARD_OPTION_1 [][] = {
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
