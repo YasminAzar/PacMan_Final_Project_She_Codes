@@ -15,19 +15,14 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Log_Package.PacmanLog;
+import Game_Constants_Package.*;
 
 public class Board extends JPanel implements ActionListener{
 
 
 	public BufferedImage title;
-	
-	//GameConstants gameConstants = new GameConstants();
-	 int [][]map = new int[15][15];
-	//for(int i = 0; i < 15; i++) {
-	//	for(int j = 0; j <  15; j++) {
-	//		map[i][j] = GameConstants.BOARD_OPTION_1 [i][j];
-	//	}
-//	}
+
+	int [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_1 ;
 
 	public int cubeWidth;
 	public int cubeHeight;

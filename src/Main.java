@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 
 import Board_Package.Board;
+import Game_Constants_Package.GameConstants;
 import Menu_Package.Menu;
 
 public class Main extends JFrame implements ActionListener {

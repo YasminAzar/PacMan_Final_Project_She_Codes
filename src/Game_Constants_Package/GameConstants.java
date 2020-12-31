@@ -1,6 +1,7 @@
+package Game_Constants_Package;
 
-public class GameConstants {
-	/*private */GameConstants() {
+public final class GameConstants {
+	private GameConstants() {
 		// restrict instantiation
 	}
 
