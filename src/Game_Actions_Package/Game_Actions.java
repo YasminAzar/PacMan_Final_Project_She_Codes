@@ -37,25 +37,13 @@ public class Game_Actions extends JPanel implements KeyListener, ActionListener 
 		timer = new Timer(delay, this);
 		timer.start();
 	}
-	//ניסיתי ליצור רקע, אבל זה לא עובד
+
 	public void paint(Graphics g) {
-		/*//background
-		g.setColor(Color.black);
-		g.fillRect(0, 0, 600, 800);
-		g.setColor(Color.yellow);
-		g.setFont(new Font("serif", Font.BOLD, 50));
-		g.drawString("PAC MAN", 300, 100);*/
-
-		/*if(board_1) {
-			board.draw(g);
-		}*/
-
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-
 
 	}
 
@@ -76,5 +64,4 @@ public class Game_Actions extends JPanel implements KeyListener, ActionListener 
 		// TODO Auto-generated method stub
 
 	}
-
 }

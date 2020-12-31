@@ -1,11 +1,9 @@
 package Log_Package;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.IsoFields;
 
 public class PacmanLog {
 

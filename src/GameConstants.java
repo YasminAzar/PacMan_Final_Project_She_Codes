@@ -1,12 +1,12 @@
 
 public class GameConstants {
-	private GameConstants() {
+	/*private */GameConstants() {
 		// restrict instantiation
 	}
 
 	public static final int PACMAN_SPEED = 6; 
 	public static final int GHOST_SPEED = 12;
-	public static final int  GHOST_SLOW_SPEED_FOR_15_SEC = 3;
+	public static final int GHOST_SLOW_SPEED_FOR_15_SEC = 3;
 
 	public static final int EATING_A_REGULAR_BALL = 10;
 	public static final int EATING_A_POWER_BALL = 50;
@@ -17,8 +17,11 @@ public class GameConstants {
 	public static final int POINTS_FOR_FOURTH_GHOST = 400;
 
 	public static final int BLOCK_SIZE = 20; //Block size = step size
+	
+	public static final int SCREEN_WIDTH = 800;
+	public static final int SCREEN_HEIGHT = 600;
 
-	//The amount of squares in the board grid is 25X25
+	//The amount of squares in the board grid is 15X15
 	public static final int BOARD_OPTION_1 [][] = {
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 			{1,0,0,0,0,0,1,1,0,0,0,0,0,0,1},

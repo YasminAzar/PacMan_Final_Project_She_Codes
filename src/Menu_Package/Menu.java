@@ -16,11 +16,11 @@ import Board_Package.Board;
 
 public class Menu extends JPanel implements  ActionListener  {
 	static Board _board;
-	//	private Graphics g;
 	// EB declare jbutton here so we can reference from main
 	public JButton newGame;
 	public JButton loadGame;
 	public JButton leaderBoard;
+
 	//Constructor
 	public Menu() {
 		setBorder(new EmptyBorder(10,10,10,10));
@@ -32,7 +32,6 @@ public class Menu extends JPanel implements  ActionListener  {
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		creatPanel(gbc);
-
 	}
 
 	//This function display the panel with the main buttons
@@ -52,19 +51,10 @@ public class Menu extends JPanel implements  ActionListener  {
 		//leaderBoard.addActionListener(this);
 
 		this.add(newGame, gbc);
-		//this.add(Box.createRigidArea(new Dimension(300, 20)));
 		this.add(loadGame, gbc);
-		//this.add(Box.createRigidArea(new Dimension(300, 20)));
 		this.add(leaderBoard, gbc);
-		//this.add(Box.createRigidArea(new Dimension(300, 20)));
-		//this.setSize(new Dimension(200, 200));
-		//panel.setLocation(400, 500);
 		this.revalidate();
 		this.repaint();
-		//_frame.add(panel);
-		//_frame.pack();
-		//_frame.setVisible(true);
-		//return panel;
 	}
 
 	//This function defines a black background
@@ -80,5 +70,4 @@ public class Menu extends JPanel implements  ActionListener  {
 		// TODO Auto-generated method stub
 		//this.dispatchEvent (e);
 	}
-
 }
