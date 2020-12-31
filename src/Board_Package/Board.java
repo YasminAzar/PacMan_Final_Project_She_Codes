@@ -65,7 +65,7 @@ public class Board extends JPanel implements ActionListener{
 	public 	Board() {
 		//_frame = frame;
 		cubeWidth = 20;
-		cubeWidth = 20;
+		cubeHeight = 20;
 		this.setLayout(new GridLayout(15,15));
 		setBorder(new EmptyBorder(10, 10, 600, 600));
 		setLayout(new GridBagLayout());
