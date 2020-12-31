@@ -1,6 +1,6 @@
 package Game_Constants_Package;
 
-public final class GameConstants {
+public final class GameConstants implements Cloneable{
 	private GameConstants() {
 		// restrict instantiation
 	}
@@ -94,6 +94,9 @@ public final class GameConstants {
 				  0111101100000000011011110,
 				  1111101111111111111011111]*/
 				  
-
+	@Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
 }
