@@ -21,7 +21,6 @@ public class Board extends JPanel implements ActionListener{
 
 	public BufferedImage title;
 	int [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_1.clone() ;
-
 	public int blockWidth;
 	public int blockHeight;
 

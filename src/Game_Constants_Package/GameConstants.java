@@ -1,6 +1,7 @@
 package Game_Constants_Package;
 
 public final class GameConstants implements Cloneable{
+	
 	private GameConstants() {
 		// restrict instantiation
 	}
