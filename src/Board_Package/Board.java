@@ -99,7 +99,9 @@ public class Board extends JPanel implements ActionListener{
 		return cubeSize;	
 	}
 	
-	public void init() {}
+	public void init() {
+		
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
