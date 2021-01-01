@@ -19,7 +19,6 @@ import Game_Constants_Package.*;
 
 public class Board extends JPanel implements ActionListener{
 
-
 	public BufferedImage title;
 	int [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_1.clone() ;
 
@@ -72,7 +71,7 @@ public class Board extends JPanel implements ActionListener{
 				PacmanLog.log("creatBoard","i "+i+" j "+j + " index " + index);
 				index+=1;
 				if(map[i][j] > 0) {
-					//Draws and paints the cube
+					//Draws and paints the block
 					g2d.setColor(Color.BLUE);
 					g2d.fillRect(j*blockWidth+90, i*blockHeight, blockWidth, blockHeight);
 					g2d.setStroke(new BasicStroke(8f));
@@ -98,9 +97,9 @@ public class Board extends JPanel implements ActionListener{
 		blockWidth = boardWidth/arraySize;
 		blockHeight = boardHeight/arraySize;
 		int [] cubeSize = {blockWidth, blockHeight};
-		return cubeSize;
-		
+		return cubeSize;	
 	}
+	
 	public void init() {
 
 	}

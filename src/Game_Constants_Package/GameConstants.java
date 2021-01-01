@@ -17,7 +17,7 @@ public final class GameConstants implements Cloneable{
 	public static final int POINTS_FOR_THIRD_GHOST = 200;
 	public static final int POINTS_FOR_FOURTH_GHOST = 400;
 
-	public static final int BLOCK_SIZE = 20; //Block size = step size
+	//public static final int BLOCK_SIZE = 20; //Block size = step size
 	
 	public static final int SCREEN_WIDTH = 700;
 	public static final int SCREEN_HEIGHT = 600;
