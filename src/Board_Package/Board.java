@@ -23,7 +23,7 @@ public class Board extends JPanel implements ActionListener{
 	int [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_1.clone() ;
 	public int blockWidth;
 	public int blockHeight;
-
+	
 	//Constructor
 	public 	Board() {
 		blockWidth = calcBlockSize(map.length, Game_Constants_Package.GameConstants.BOARD_WIDTH,

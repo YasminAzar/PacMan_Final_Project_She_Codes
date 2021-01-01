@@ -5,7 +5,7 @@ public final class GameConstants implements Cloneable{
 	private GameConstants() {
 		// restrict instantiation
 	}
-
+	
 	public static final int PACMAN_SPEED = 6; 
 	public static final int GHOST_SPEED = 12;
 	public static final int GHOST_SLOW_SPEED_FOR_15_SEC = 3;
