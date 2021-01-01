@@ -90,7 +90,7 @@ public class Board extends JPanel implements ActionListener{
 		// this is the transform I was using when I found the bug.
 		creatBoard(g2);
 	}
-
+	
 	//This function calculates the size of the blocks that make up the walls
 	public int[] calcBlockSize(int arraySize, int boardWidth, int boardHeight) {
 		blockWidth = boardWidth/arraySize;
