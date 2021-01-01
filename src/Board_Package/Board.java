@@ -103,7 +103,7 @@ public class Board extends JPanel implements ActionListener{
 	public void init() {
 
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub

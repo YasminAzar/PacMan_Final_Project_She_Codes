@@ -43,7 +43,6 @@ public final class GameConstants implements Cloneable{
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 
-				  
 	/*public static final int BOARD_OPTION_2 = [1111111111111111111111111,
 				  1000001000000000001000001,
 				  1011101010110110101011101,
