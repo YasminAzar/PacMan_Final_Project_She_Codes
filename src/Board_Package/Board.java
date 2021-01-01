@@ -21,16 +21,19 @@ public class Board extends JPanel implements ActionListener{
 
 
 	public BufferedImage title;
-	
 	int [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_1.clone() ;
 
-	public int cubeWidth;
-	public int cubeHeight;
+	public int blockWidth;
+	public int blockHeight;
 
 	//Constructor
 	public 	Board() {
-		cubeWidth = 20;
-		cubeHeight = 20;
+		blockWidth = calcBlockSize(map.length, Game_Constants_Package.GameConstants.BOARD_WIDTH,
+				Game_Constants_Package.GameConstants.BOARD_HEIGHT)[0];
+		System.out.println("block width: " + blockWidth);
+		blockHeight = calcBlockSize(map.length, Game_Constants_Package.GameConstants.BOARD_WIDTH,
+				Game_Constants_Package.GameConstants.BOARD_HEIGHT)[1];
+		System.out.println("block height: " + blockHeight);
 		this.setLayout(new GridLayout(15,15));
 		setBorder(new EmptyBorder(10, 10, 600, 600));
 		setLayout(new GridBagLayout());
@@ -52,10 +55,11 @@ public class Board extends JPanel implements ActionListener{
 		int w = getSize().width;
 		int h = getSize().height;
 		// EB check for null
+		// YP I delete it because it draws a blue square from the top left
+		/*g2d.setColor(Color.BLUE);
+		g2d.drawRect(10,10,blockWidth,blockHeight);
 		g2d.setColor(Color.BLUE);
-		g2d.drawRect(10,10,cubeWidth,cubeHeight);
-		g2d.setColor(Color.BLUE);
-		g2d.fillRect(10,10,cubeWidth,cubeHeight);
+		g2d.fillRect(10,10,blockWidth,blockHeight);*/
 		this.repaint();
 
 		PacmanLog.log("creatBoard","map.length "+map.length+" map[0].length "+map[0].length);
@@ -70,7 +74,7 @@ public class Board extends JPanel implements ActionListener{
 				if(map[i][j] > 0) {
 					//Draws and paints the cube
 					g2d.setColor(Color.BLUE);
-					g2d.fillRect(j*cubeWidth, i*cubeHeight, cubeWidth, cubeHeight);
+					g2d.fillRect(j*blockWidth+90, i*blockHeight, blockWidth, blockHeight);
 					g2d.setStroke(new BasicStroke(8f));
 					this.repaint();
 					PacmanLog.log("creatBoard","DRAW");
@@ -89,6 +93,14 @@ public class Board extends JPanel implements ActionListener{
 		creatBoard(g2);
 	}
 
+	//This function calculates the size of the blocks that make up the walls
+	public int[] calcBlockSize(int arraySize, int boardWidth, int boardHeight) {
+		blockWidth = boardWidth/arraySize;
+		blockHeight = boardHeight/arraySize;
+		int [] cubeSize = {blockWidth, blockHeight};
+		return cubeSize;
+		
+	}
 	public void init() {
 
 	}
