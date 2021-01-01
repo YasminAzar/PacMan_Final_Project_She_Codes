@@ -1,11 +1,11 @@
 package Game_Constants_Package;
 
 public final class GameConstants implements Cloneable{
-	
+
 	private GameConstants() {
 		// restrict instantiation
 	}
-	
+
 	public static final int PACMAN_SPEED = 6; 
 	public static final int GHOST_SPEED = 12;
 	public static final int GHOST_SLOW_SPEED_FOR_15_SEC = 3;
@@ -19,10 +19,10 @@ public final class GameConstants implements Cloneable{
 	public static final int POINTS_FOR_FOURTH_GHOST = 400;
 
 	//public static final int BLOCK_SIZE = 20; //Block size = step size
-	
+
 	public static final int SCREEN_WIDTH = 700;
 	public static final int SCREEN_HEIGHT = 600;
-	
+
 	public static final int BOARD_WIDTH = 500;
 	public static final int BOARD_HEIGHT = 500;
 	//The amount of squares in the board grid is 15X15
@@ -69,7 +69,7 @@ public final class GameConstants implements Cloneable{
 				  1011011010110110101101101,
 				  1000011000000000001100001,
 				  1111111111111111111111111];
-				  
+
 	public static final int BOARD_OPTION_3 = [0000100001001001000010000,
 				  0101111011101011101111010,
 				  1100000000000000000000011,
@@ -95,10 +95,10 @@ public final class GameConstants implements Cloneable{
 				  0011101101101011011011100,
 				  0111101100000000011011110,
 				  1111101111111111111011111]*/
-				  
+
 	@Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-        }
-	
+	protected Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+
 }
