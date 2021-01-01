@@ -100,5 +100,5 @@ public final class GameConstants implements Cloneable{
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-
+	
 }
