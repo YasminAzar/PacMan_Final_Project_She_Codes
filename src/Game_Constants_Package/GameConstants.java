@@ -25,6 +25,7 @@ public final class GameConstants implements Cloneable{
 
 	public static final int BOARD_WIDTH = 500;
 	public static final int BOARD_HEIGHT = 500;
+	
 	//The amount of squares in the board grid is 15X15
 	public static final int BOARD_OPTION_1 [][] = {
 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
