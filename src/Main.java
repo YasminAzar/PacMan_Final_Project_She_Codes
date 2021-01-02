@@ -14,7 +14,7 @@ public class Main extends JFrame implements ActionListener {
 
 	private static Main game_main;
 	private Menu menu;
-
+	
 	public static void main(String[] args) {
 		Main game_main = new Main();
 		game_main.initFrame(args);
