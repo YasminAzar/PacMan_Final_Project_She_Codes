@@ -10,6 +10,9 @@ public final class GameConstants implements Cloneable{
 	public static final int GHOST_SPEED = 12;
 	public static final int GHOST_SLOW_SPEED_FOR_15_SEC = 3;
 
+	public static final int NUMBER_OF_GHOSTS = 4;
+	public static final int NUMBER_OF_POWER_BALLS = 4;
+	
 	public static final int EATING_A_REGULAR_BALL = 10;
 	public static final int EATING_A_POWER_BALL = 50;
 
@@ -17,6 +20,11 @@ public final class GameConstants implements Cloneable{
 	public static final int POINTS_FOR_SECOND_GHOST = 400;
 	public static final int POINTS_FOR_THIRD_GHOST = 200;
 	public static final int POINTS_FOR_FOURTH_GHOST = 400;
+
+	public static final String GHOST_1_STRING = "gh1";
+	public static final String GHOST_2_STRING = "gh2";
+	public static final String GHOST_3_STRING = "gh3";
+	public static final String GHOST_4_STRING = "gh4";
 
 	//public static final int BLOCK_SIZE = 20; //Block size = step size
 
@@ -26,22 +34,22 @@ public final class GameConstants implements Cloneable{
 	public static final int BOARD_WIDTH = 500;
 	public static final int BOARD_HEIGHT = 500;
 	//The amount of squares in the board grid is 15X15
-	public static final int BOARD_OPTION_1 [][] = {
-			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-			{1,0,0,0,0,0,1,1,1,0,0,0,0,0,1},
-			{1,0,1,1,0,1,0,0,0,1,0,1,1,0,1},
-			{1,0,0,0,0,1,1,0,1,1,0,0,0,0,1},
-			{1,1,1,1,0,0,0,0,0,0,0,1,1,1,1},
-			{0,0,0,0,0,1,1,0,1,1,0,0,0,0,0},
-			{0,1,1,0,1,1,1,0,1,1,1,0,1,1,0},
-			{0,1,1,0,1,1,1,0,1,1,1,0,1,1,0},
-			{0,1,1,1,1,1,1,0,1,1,1,1,1,1,0},
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-			{1,1,1,0,1,0,1,1,1,0,1,0,1,1,1},
-			{1,0,0,0,1,0,1,1,1,0,1,0,0,0,1},
-			{1,0,1,0,1,0,1,1,1,0,1,0,1,0,1},
-			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+	public static final String BOARD_OPTION_1 [][] = {
+			{"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"},
+			{"1","0","0","0","0","0","1","1","1","0","0","0","0","0","1"},
+			{"1","0","1","1","0","1","0","0","0","1","0","1","1","0","1"},
+			{"1","0","0","0","0","1","1","0","1","1","0","0","0","0","1"},
+			{"1","1","1","1","0","0","0","0","0","0","0","1","1","1","1"},
+			{"0","0","0","0","0","1","1","0","1","1","0","0","0","0","0"},
+			{"0","1","1","0","1","1","1","0","1","1","1","0","1","1","0"},
+			{"0","1","1","0","1","1","1","0","1","1","1","0","1","1","0"},
+			{"0","1","1","1","1","1","1","0","1","1","1","1","1","1","0"},
+			{"0","0","0","0","0","0","0","0","0","0","0","0","0","0","0"},
+			{"1","1","1","0","1","0","1","1","1","0","1","0","1","1","1"},
+			{"1","0","0","0","1","0","1","1","1","0","1","0","0","0","1"},
+			{"1","0","1","0","1","0","1","1","1","0","1","0","1","0","1"},
+			{"1","0","0","0","0","0","0","0","0","0","0","0","0","0","1"},
+			{"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"}
 	};
 
 	/*public static final int BOARD_OPTION_2 = [1111111111111111111111111,
