@@ -89,7 +89,7 @@ public class Board extends JPanel implements ActionListener{
 		//pbIndex4 = pbLocation[3];
 		//pbIndex5 = pbLocation[4];
 		//pbIndex6 = pbLocation[5];
-		System.out.println("pbIndex1 = " + pbIndex1 + " ,  pbIndex2 = " + pbIndex2 + ", pbIndex3 = " + pbIndex3 + " , pbIndex4 = " + pbIndex4 + " , pbIndex5 = " + pbIndex5 + " , pbIndex6 = " + pbIndex6);
+		//System.out.println("pbIndex1 = " + pbIndex1 + " ,  pbIndex2 = " + pbIndex2 + ", pbIndex3 = " + pbIndex3 + " , pbIndex4 = " + pbIndex4 + " , pbIndex5 = " + pbIndex5 + " , pbIndex6 = " + pbIndex6);
 	}
 
 	//EB change to screen size
@@ -118,13 +118,15 @@ public class Board extends JPanel implements ActionListener{
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		int w = getSize().width;
 		int h = getSize().height;
+		g2d.setColor(Color.BLACK);
+		g2d.fillRect(0, 0, w, h);
 		// EB check for null
 		// YP I delete it because it draws a blue square from the top left
 		/*g2d.setColor(Color.BLUE);
 		g2d.drawRect(10,10,blockWidth,blockHeight);
 		g2d.setColor(Color.BLUE);
 		g2d.fillRect(10,10,blockWidth,blockHeight);*/
-		this.repaint();
+		//this.repaint();
 
 		PacmanLog.log("creatBoard","map.length "+map.length+" map[0].length "+map[0].length);
 		int index = 0;
@@ -140,7 +142,7 @@ public class Board extends JPanel implements ActionListener{
 					g2d.setColor(Color.BLUE);
 					g2d.fillRect(j*blockWidth+boardOffset, i*blockHeight, blockWidth, blockHeight);
 					g2d.setStroke(new BasicStroke(8f));
-					this.repaint();
+					//this.repaint();
 					PacmanLog.log("creatBoard","DRAW");
 					g2d.setStroke(new BasicStroke(5));
 					g2d.setColor(Color.BLUE);
@@ -151,7 +153,7 @@ public class Board extends JPanel implements ActionListener{
 					//Addition and subtraction to place the balls in the middle of the block
 					g2d.fillOval(j*blockWidth+boardOffset+(int)(blockWidth*0.4), i*blockHeight+(int)(blockWidth*0.4), (int)(blockWidth*0.25), (int)(blockHeight*0.25));
 					g2d.setStroke(new BasicStroke(8f));
-					this.repaint();
+					//this.repaint();
 					PacmanLog.log("creatBoard","DRAW");
 					g2d.setStroke(new BasicStroke(5));
 					g2d.setColor(Color.WHITE);
@@ -164,16 +166,15 @@ public class Board extends JPanel implements ActionListener{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		//Black background
-		int w = getSize().width;
-		int h = getSize().height;
+		//int w = getSize().width;
+		//int h = getSize().height;
 		double offsetGhostPacman_w = 1.05;
 		double offsetGhostPacman_h = 1.015;
-		double offsetPowerBall_w_h = 0.3;
-		double offsetDiameterPowerBall = 0.5;
+		//double offsetPowerBall_w_h = 0.3;
+		//double offsetDiameterPowerBall = 0.5;
 		//int position_x = blockWidth/2 - ghost_width/2;
 
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, w, h);
+
 		Graphics2D g2 = (Graphics2D) g;
 		// this is the transform I was using when I found the bug.
 		createBoard(g2);
@@ -314,10 +315,12 @@ public class Board extends JPanel implements ActionListener{
 		}
 		return indexPB;
 	}
-	
-	//This function creates the ghosts
+
+
 	public void callGhosts() {
 		GridBagConstraints gbc = new GridBagConstraints();
+		double offsetGhostPacman_w = 1.05;
+		
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.anchor = GridBagConstraints.NORTH;
 		gbc.anchor = GridBagConstraints.CENTER;
@@ -326,27 +329,45 @@ public class Board extends JPanel implements ActionListener{
 		blueGhost = new Ghosts(null);
 		pinkGhost = new Ghosts(null);
 		orangeGhost = new Ghosts(null);
+		
 		Image redGhostImage = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
 		Image blueGhostImage = new ImageIcon("src/Images/blueGhostGIF.gif").getImage();
 		Image pinkGhostImage = new ImageIcon("src/Images/pinkGhostGIF.gif").getImage();
 		Image orangeGhostImage = new ImageIcon("src/Images/orangeGhostGIF.gif").getImage();
+		double ghost_offset = blockWidth/2 - redGhostImage.getHeight(null)/2;
 		redGhost.setGameCharacterImage(redGhostImage);
-		redGhost.setGrid_x(firstIndexInEmptyRow);
-		redGhost.setGrid_y(randEmptyRow);
+		redGhost.setGrid_x(randEmptyRow);
+		redGhost.setGrid_y(firstIndexInEmptyRow);
+		redGhost.setLocation_x(redGhost.getGrid_x()*blockHeight + (int)ghost_offset);
+		redGhost.setLocation_y((int) (redGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth*1+ghost_offset));
+		System.out.println("redGhost grid_x: " + redGhost.getGrid_x() + " y "+redGhost.getGrid_y());
+		System.out.println("redGhost location_x: " + redGhost.getLocation_x() + " y "+redGhost.getLocation_y());
 		blueGhost.setGameCharacterImage(blueGhostImage);
-		blueGhost.setGrid_x(firstIndexInEmptyRow+1);
-		blueGhost.setGrid_y(randEmptyRow);
+		blueGhost.setGrid_x(randEmptyRow);
+		blueGhost.setGrid_y(firstIndexInEmptyRow+1);
+		blueGhost.setLocation_x(blueGhost.getGrid_x()*blockHeight);
+		blueGhost.setLocation_y((int) (blueGhost.getGrid_y()*blockWidth*offsetGhostPacman_w)+blockWidth*2+boardOffset);
+		System.out.println("blueGhost grid_x: " + blueGhost.getGrid_x() + " y "+blueGhost.getGrid_y());
+		System.out.println("blueGhost location_x: " + blueGhost.getLocation_x() + " y "+blueGhost.getLocation_y());
 		pinkGhost.setGameCharacterImage(pinkGhostImage);
-		pinkGhost.setGrid_x(firstIndexInEmptyRow+2);
-		pinkGhost.setGrid_y(randEmptyRow);
+		pinkGhost.setGrid_x(randEmptyRow);
+		pinkGhost.setGrid_y(firstIndexInEmptyRow+2);
+		pinkGhost.setLocation_x(pinkGhost.getGrid_x()*blockHeight);
+		pinkGhost.setLocation_y((int) (pinkGhost.getGrid_y()*blockWidth*offsetGhostPacman_w)+blockWidth*3+boardOffset);
+		System.out.println("pinkGhost grid_x: " + pinkGhost.getGrid_x() + " y "+pinkGhost.getGrid_y());
+		System.out.println("pinkGhost location_x: " + pinkGhost.getLocation_x() + " y "+pinkGhost.getLocation_y());
 		orangeGhost.setGameCharacterImage(orangeGhostImage);
-		orangeGhost.setGrid_x(firstIndexInEmptyRow+3);
-		orangeGhost.setGrid_y(randEmptyRow);
-
+		orangeGhost.setGrid_x(randEmptyRow);
+		orangeGhost.setGrid_y(firstIndexInEmptyRow+3);
+		System.out.println("orangeGhost grid_x: " + orangeGhost.getGrid_x() + " y "+orangeGhost.getGrid_y());
+		orangeGhost.setLocation_x(orangeGhost.getGrid_x()*blockHeight);
+		orangeGhost.setLocation_y((int) (orangeGhost.getGrid_y()*blockWidth*offsetGhostPacman_w)+blockWidth*4+boardOffset);
+		System.out.println("orangeGhost location_x: " + orangeGhost.getLocation_x() + " y "+orangeGhost.getLocation_y());
 		//ImageIcon blueGhostImage = new ImageIcon("src/Images/ghostGIF.gif");
 		//ImageIcon pinkGhostImage = new ImageIcon("src/Images/ghostGIF.gif");
 		//ImageIcon orangeGhostImage = new ImageIcon("src/Images/ghostGIF.gif");
 	}
+
 
 	//This function creates the pacman
 	public void callPacman() {
@@ -361,7 +382,7 @@ public class Board extends JPanel implements ActionListener{
 		g2d.setColor(Color.WHITE);
 		g2d.fillOval(x, y, width,height);
 		g2d.setStroke(new BasicStroke(8f));
-		this.repaint();
+		//this.repaint();
 		//PacmanLog.log("creatBoard","DRAW");
 		g2d.setStroke(new BasicStroke(5));
 		g2d.setColor(Color.WHITE);
@@ -400,7 +421,7 @@ public class Board extends JPanel implements ActionListener{
 	}
 
 
-	private void imagePanel() {
+	/*private void imagePanel() {
 		try {                
 			redGhostBI = ImageIO.read(new File("src/Images/ghost.png"));
 			blueGhostBI = ImageIO.read(new File("src/Images/ghostGIF.gif"));
@@ -409,7 +430,7 @@ public class Board extends JPanel implements ActionListener{
 		} catch (IOException ex) {
 			// handle exception...
 		}
-	}
+	}*/
 
 	/* @Override
 	    protected void paintComponent(Graphics g) {
@@ -417,20 +438,24 @@ public class Board extends JPanel implements ActionListener{
 	        g.drawImage(image, 0, 0, this); // see javadoc for more info on the parameters            
 	    }*/
 
+	/**
+	 * @param g2d
+	 * @param ghost
+	 */
 	private void drawGhost(Graphics2D g2d, Ghosts ghost) {
-		
-		double offsetGhostPacman_w = 1.05;
+
+		/*double offsetGhostPacman_w = 1.05;
 		double offsetGhostPacman_h = 1.015;
 		//ghost.setGrid_x(firstIndexInEmptyRow);
 		//ghost.setGrid_y(randEmptyRow);
 		int xIndex = ghost.getGrid_x();
 		ghost.setLocation_x((int)(xIndex*blockWidth*offsetGhostPacman_w)+boardOffset);
 		ghost.setLocation_y((int)(randEmptyRow*blockHeight*offsetGhostPacman_h));
-		//(int)(firstIndexInEmptyRow*blockWidth*offsetGhostPacman_w)+boardOffset, (int)(randEmptyRow*blockHeight*offsetGhostPacman_h)
-		g2d.drawImage(ghost.getGameCharacterImage(), ghost.getLocation_x(), ghost.getLocation_y(), this);
-		
+		//(int)(firstIndexInEmptyRow*blockWidth*offsetGhostPacman_w)+boardOffset, (int)(randEmptyRow*blockHeight*offsetGhostPacman_h)*/
+		g2d.drawImage(ghost.getGameCharacterImage(), ghost.getLocation_y(), ghost.getLocation_x(), this);
+
 	}
-	
+
 
 
 	private void drawPacman(Graphics2D g2d, Pacman player, int x, int y) {
