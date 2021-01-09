@@ -11,20 +11,17 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.stream.IntStream;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Log_Package.PacmanLog;
-import Game_Constants_Package.*;
+import Game_Constants_Package.GameConstants;
 import Game_Objects.Ghosts;
 import Game_Objects.Pacman;
 import Game_Objects.Power_Ball;
+import Log_Package.PacmanLog;
 
 public class Board extends JPanel implements ActionListener{
 
@@ -53,8 +50,9 @@ public class Board extends JPanel implements ActionListener{
 	//int ghost_h = redGhost.getGameCharacterImage().getHeight(null);
 	Power_Ball powerBall_1, powerBall_2, powerBall_3, powerBall_4;
 
-
-	//Constructor
+	/**
+	 * Constructor
+	 */
 	public 	Board() {
 		blockWidth = calcBlockSize(map.length, Game_Constants_Package.GameConstants.BOARD_WIDTH,
 				Game_Constants_Package.GameConstants.BOARD_HEIGHT)[0];
@@ -92,13 +90,17 @@ public class Board extends JPanel implements ActionListener{
 		//System.out.println("pbIndex1 = " + pbIndex1 + " ,  pbIndex2 = " + pbIndex2 + ", pbIndex3 = " + pbIndex3 + " , pbIndex4 = " + pbIndex4 + " , pbIndex5 = " + pbIndex5 + " , pbIndex6 = " + pbIndex6);
 	}
 
-	//EB change to screen size
+	//Need this function?
+	/*//EB change to screen size
 	@Override
 	public Dimension getPreferredSize()
 	{
 		return new Dimension(600, 600);
-	}
+	}*/
 
+	/**
+	 * This function places the power balls on the map
+	 */
 	private void createPowerBalls() {
 		pbLocation = findPBlocation(map);
 		pbIndex1 = pbLocation[0]; 
@@ -110,6 +112,10 @@ public class Board extends JPanel implements ActionListener{
 		System.out.println("pbIndex1 = " + pbIndex1 + " ,  pbIndex2 = " + pbIndex2 + ", pbIndex3 = " + pbIndex3 + " , pbIndex4 = " + pbIndex4 + " , pbIndex5 = " + pbIndex5 + " , pbIndex6 = " + pbIndex6);
 	}
 
+	/**
+	 * This function creates the selected game board
+	 * @param g2d
+	 */
 	private void createBoard(Graphics2D g2d) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -120,14 +126,6 @@ public class Board extends JPanel implements ActionListener{
 		int h = getSize().height;
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(0, 0, w, h);
-		// EB check for null
-		// YP I delete it because it draws a blue square from the top left
-		/*g2d.setColor(Color.BLUE);
-		g2d.drawRect(10,10,blockWidth,blockHeight);
-		g2d.setColor(Color.BLUE);
-		g2d.fillRect(10,10,blockWidth,blockHeight);*/
-		//this.repaint();
-
 		PacmanLog.log("creatBoard","map.length "+map.length+" map[0].length "+map[0].length);
 		int index = 0;
 
@@ -142,7 +140,6 @@ public class Board extends JPanel implements ActionListener{
 					g2d.setColor(Color.BLUE);
 					g2d.fillRect(j*blockWidth+boardOffset, i*blockHeight, blockWidth, blockHeight);
 					g2d.setStroke(new BasicStroke(8f));
-					//this.repaint();
 					PacmanLog.log("creatBoard","DRAW");
 					g2d.setStroke(new BasicStroke(5));
 					g2d.setColor(Color.BLUE);
@@ -153,7 +150,6 @@ public class Board extends JPanel implements ActionListener{
 					//Addition and subtraction to place the balls in the middle of the block
 					g2d.fillOval(j*blockWidth+boardOffset+(int)(blockWidth*0.4), i*blockHeight+(int)(blockWidth*0.4), (int)(blockWidth*0.25), (int)(blockHeight*0.25));
 					g2d.setStroke(new BasicStroke(8f));
-					//this.repaint();
 					PacmanLog.log("creatBoard","DRAW");
 					g2d.setStroke(new BasicStroke(5));
 					g2d.setColor(Color.WHITE);
@@ -161,19 +157,16 @@ public class Board extends JPanel implements ActionListener{
 			}
 		}
 	}
-
+	/**
+	 * This function draws rhe new status on the screen in each new frame
+	 * @param g
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		//Black background
-		//int w = getSize().width;
-		//int h = getSize().height;
-		double offsetGhostPacman_w = 1.05;
-		double offsetGhostPacman_h = 1.015;
-		//double offsetPowerBall_w_h = 0.3;
-		//double offsetDiameterPowerBall = 0.5;
+		double offset_ghost_pacman_w = 1.05;
+		double offset_ghost_pacman_h = 1.015;
 		//int position_x = blockWidth/2 - ghost_width/2;
-
 
 		Graphics2D g2 = (Graphics2D) g;
 		// this is the transform I was using when I found the bug.
@@ -185,7 +178,7 @@ public class Board extends JPanel implements ActionListener{
 		drawGhost(g2, blueGhost);
 		drawGhost(g2, pinkGhost);
 		drawGhost(g2, orangeGhost);
-		drawPacman(g2, pacman, (int)(firstIndexInEmptyRow*blockWidth*offsetGhostPacman_w)+blockWidth*5+boardOffset, (int)(randEmptyRow*blockHeight*offsetGhostPacman_h));
+		drawPacman(g2, pacman, (int)(firstIndexInEmptyRow*blockWidth*offset_ghost_pacman_w)+blockWidth*5+boardOffset, (int)(randEmptyRow*blockHeight*offset_ghost_pacman_h));
 		drawPowerBall(g2, powerBall_1);
 		drawPowerBall(g2, powerBall_2);
 		drawPowerBall(g2, powerBall_3);
@@ -193,7 +186,13 @@ public class Board extends JPanel implements ActionListener{
 		//addCharacter();
 	}
 
-	//This function calculates the size of the blocks that make up the walls
+	/**
+	 * This function calculates the size of the blocks that make up the walls
+	 * @param arraySize
+	 * @param boardWidth
+	 * @param boardHeight
+	 * @return cubeSize - an array of block size in pixels
+	 */
 	public int[] calcBlockSize(int arraySize, int boardWidth, int boardHeight) {
 		blockWidth = boardWidth/arraySize;
 		blockHeight = boardHeight/arraySize;
@@ -202,7 +201,11 @@ public class Board extends JPanel implements ActionListener{
 		return cubeSize;	
 	}
 
-	//This function calculates the location of the balls
+	/**
+	 * This function calculates the location of the balls
+	 * @param blockSize
+	 * @return ballsLocation - an array of location of the ball in pixels
+	 */
 	public int[] calcLocationBall(int blockSize) {
 		//loationBallX = (int) (boardOffset+boardOffset*0.13+blockWidth);
 		locationBallX = blockWidth+boardOffset+(int)(blockWidth*0.4);
@@ -213,19 +216,23 @@ public class Board extends JPanel implements ActionListener{
 		return ballsLocation;	
 	}
 
+	//Need this function?
 	public void addCharacter() {
 		//findEmptyRow(map);
 	}
 
-	//This function finds where there are rows with at least 8 balls in a row,
-	//and returns such a row randomly
+	/**
+	 * his function finds where there are rows with at least 8 balls in a row, and returns such a row randomly
+	 * @param gameBoard
+	 * @return rand_val - the random line as an integer
+	 */
 	public int findEmptyRow(String[][] gameBoard) {
-		boolean[] rowIsEmpty = new boolean[gameBoard.length]; //boolean array 
-		int [] rowIsEmpty0_1 = new int[gameBoard.length]; //help array
+		boolean[] row_is_empty = new boolean[gameBoard.length]; //boolean array 
+		int [] row_is_empty0_1 = new int[gameBoard.length]; //help array
 		int count = 0;
 		for (int i = 0; i < gameBoard.length; i++) {
-			rowIsEmpty[i] = false;
-			rowIsEmpty0_1[i] = i;
+			row_is_empty[i] = false;
+			row_is_empty0_1[i] = i;
 			for (int j = 0; j < gameBoard.length; j++) {
 				if(gameBoard[i][j] != "0") {
 					count = 0;
@@ -234,23 +241,27 @@ public class Board extends JPanel implements ActionListener{
 				{
 					count++;
 					if(count == 8) {
-						rowIsEmpty[i] = true;
-						rowIsEmpty0_1[i] = i;
+						row_is_empty[i] = true;
+						row_is_empty0_1[i] = i;
 						break;
 					}	
 				}	
 			}
-			//System.out.println("rowIsEmpty["+i+"] = " +rowIsEmpty[i]);
 			count = 0;	
 		}
-		int[] choices = IntStream.range(0, rowIsEmpty.length).filter(i->rowIsEmpty[i]  == true).map(i->rowIsEmpty0_1[i]).toArray();
-		int randVal = choices[(int)(Math.random()*choices.length)];
-		System.out.println("The empty row is: " + randVal);
-		return randVal;
+		int[] choices = IntStream.range(0, row_is_empty.length).filter(i->row_is_empty[i]  == true).map(i->row_is_empty0_1[i]).toArray();
+		int rand_val = choices[(int)(Math.random()*choices.length)];
+		System.out.println("The empty row is: " + rand_val);
+		return rand_val;
 	}
-	//This function finds an initial index for the ghosts on the selected empty row
+	
+	/**
+	 * This function finds an initial index for the ghosts on the selected empty row
+	 * @param randVal
+	 * @return firstColIndex - index of the first column, from which the ghosts begin
+	 */
 	public int findFirstIndex(int randVal) {
-		int firstColIndex = 0;
+		int first_col_index = 0;
 		int count2 = 0;
 		for (int i = 0; i < map.length; i++) {
 			for (int k = 0; k < map.length; k++) {
@@ -258,69 +269,73 @@ public class Board extends JPanel implements ActionListener{
 					if(map[i][k] == "0") {
 						count2++;
 						if(count2 == 8) 
-							firstColIndex = k - 3;
+							first_col_index = k - 3;
 					}
 				}
 			}
 		}
-		return firstColIndex;
+		return first_col_index;
 	}
 
-	//This function find the power balls indexes
+	/**
+	 * This function find the power balls indexes
+	 * @param gameBoard
+	 * @return indexPB - index of the power ball on the game board
+	 */
 	public int[] findPBlocation(String[][] gameBoard) {
 		int min_i = gameBoard.length-1;
 		int max_i = 0;
-		int min_j_firstRow = gameBoard.length-1;
-		int max_j_firstRow = 0;
-		int min_j_lastRow = gameBoard.length-1;
-		int max_j_lastRow = 0;
-		int [] indexPB = new int[6];
+		int min_j_first_row = gameBoard.length-1;
+		int max_j_first_row = 0;
+		int min_j_last_row = gameBoard.length-1;
+		int max_j_last_row = 0;
+		int [] index_pb = new int[6];
 		for (int i = 0; i < gameBoard.length; i++) {
 			for (int j = 0; j < gameBoard.length; j++) {
 				if(gameBoard[i][j] == "0") {
 					//Saves the indexes to the top balls
 					if(i < min_i) {
 						min_i = i;
-						indexPB[0] = i;
-						if(j < min_j_firstRow) {
-							indexPB[1] = j;
-							max_j_firstRow = j;
+						index_pb[0] = i;
+						if(j < min_j_first_row) {
+							index_pb[1] = j;
+							max_j_first_row = j;
 						}
 					}
 					else if(i == min_i){
-						if(j > max_j_firstRow) {
-							indexPB[2] = j;
-							max_j_firstRow = j;
+						if(j > max_j_first_row) {
+							index_pb[2] = j;
+							max_j_first_row = j;
 						}
 					}
 					//Saves the indexes to the bottom balls
 					if(i > max_i) {
 						max_i = i;
-						indexPB[3] = i;
-						min_j_lastRow = gameBoard.length-1;
-						if(j < min_j_lastRow) {
-							indexPB[4] = j;
-							min_j_lastRow = j;
+						index_pb[3] = i;
+						min_j_last_row = gameBoard.length-1;
+						if(j < min_j_last_row) {
+							index_pb[4] = j;
+							min_j_last_row = j;
 						}
 					}
 					if(i >= max_i) {
-						max_j_lastRow = 0;
-						if(j > max_j_lastRow) {
-							indexPB[5] = j;
-							max_j_lastRow = j;
+						max_j_last_row = 0;
+						if(j > max_j_last_row) {
+							index_pb[5] = j;
+							max_j_last_row = j;
 						}
 					}
 				}
 			}
 		}
-		return indexPB;
+		return index_pb;
 	}
 
-
+	/**
+	 * This function calls the ghosts to enter the game
+	 */
 	public void callGhosts() {
 		GridBagConstraints gbc = new GridBagConstraints();
-		double offsetGhostPacman_w = 1.05;
-		
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.anchor = GridBagConstraints.NORTH;
 		gbc.anchor = GridBagConstraints.CENTER;
@@ -329,65 +344,55 @@ public class Board extends JPanel implements ActionListener{
 		blueGhost = new Ghosts(null);
 		pinkGhost = new Ghosts(null);
 		orangeGhost = new Ghosts(null);
-		
-		Image redGhostImage = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
-		Image blueGhostImage = new ImageIcon("src/Images/blueGhostGIF.gif").getImage();
-		Image pinkGhostImage = new ImageIcon("src/Images/pinkGhostGIF.gif").getImage();
-		Image orangeGhostImage = new ImageIcon("src/Images/orangeGhostGIF.gif").getImage();
-		double ghost_offset = blockWidth/2 - redGhostImage.getHeight(null)/2;
-		redGhost.setGameCharacterImage(redGhostImage);
+		Image red_ghost_image = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
+		Image blue_ghost_image = new ImageIcon("src/Images/blueGhostGIF.gif").getImage();
+		Image pink_ghost_image = new ImageIcon("src/Images/pinkGhostGIF.gif").getImage();
+		Image orange_ghost_image = new ImageIcon("src/Images/orangeGhostGIF.gif").getImage();
+		double ghost_offset = blockWidth/2 - red_ghost_image.getHeight(null)/2;
+		redGhost.setGameCharacterImage(red_ghost_image);
 		redGhost.setGrid_x(randEmptyRow);
 		redGhost.setGrid_y(firstIndexInEmptyRow);
 		redGhost.setLocation_x(redGhost.getGrid_x()*blockHeight + (int)ghost_offset);
 		redGhost.setLocation_y((int) (redGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
 		System.out.println("redGhost grid_x: " + redGhost.getGrid_x() + " y "+redGhost.getGrid_y());
 		System.out.println("redGhost location_x: " + redGhost.getLocation_x() + " y "+redGhost.getLocation_y());
-		blueGhost.setGameCharacterImage(blueGhostImage);
+		blueGhost.setGameCharacterImage(blue_ghost_image);
 		blueGhost.setGrid_x(randEmptyRow);
 		blueGhost.setGrid_y(firstIndexInEmptyRow+1);
 		blueGhost.setLocation_x(blueGhost.getGrid_x()*blockHeight + (int)ghost_offset);
 		blueGhost.setLocation_y((int) (blueGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
 		System.out.println("blueGhost grid_x: " + blueGhost.getGrid_x() + " y "+blueGhost.getGrid_y());
 		System.out.println("blueGhost location_x: " + blueGhost.getLocation_x() + " y "+blueGhost.getLocation_y());
-		pinkGhost.setGameCharacterImage(pinkGhostImage);
+		pinkGhost.setGameCharacterImage(pink_ghost_image);
 		pinkGhost.setGrid_x(randEmptyRow);
 		pinkGhost.setGrid_y(firstIndexInEmptyRow+2);
 		pinkGhost.setLocation_x(pinkGhost.getGrid_x()*blockHeight + (int)ghost_offset);
 		pinkGhost.setLocation_y((int) (pinkGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
 		System.out.println("pinkGhost grid_x: " + pinkGhost.getGrid_x() + " y "+pinkGhost.getGrid_y());
 		System.out.println("pinkGhost location_x: " + pinkGhost.getLocation_x() + " y "+pinkGhost.getLocation_y());
-		orangeGhost.setGameCharacterImage(orangeGhostImage);
+		orangeGhost.setGameCharacterImage(orange_ghost_image);
 		orangeGhost.setGrid_x(randEmptyRow);
 		orangeGhost.setGrid_y(firstIndexInEmptyRow+3);
 		System.out.println("orangeGhost grid_x: " + orangeGhost.getGrid_x() + " y "+orangeGhost.getGrid_y());
 		orangeGhost.setLocation_x(orangeGhost.getGrid_x()*blockHeight + (int)ghost_offset);
 		orangeGhost.setLocation_y((int) (orangeGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
 		System.out.println("orangeGhost location_x: " + orangeGhost.getLocation_x() + " y "+orangeGhost.getLocation_y());
-		//ImageIcon blueGhostImage = new ImageIcon("src/Images/ghostGIF.gif");
-		//ImageIcon pinkGhostImage = new ImageIcon("src/Images/ghostGIF.gif");
-		//ImageIcon orangeGhostImage = new ImageIcon("src/Images/ghostGIF.gif");
+
 	}
 
 
-	//This function creates the pacman
+	/**
+	 * This function calls the pacman to enter the game
+	 */
 	public void callPacman() {
 		pacman = new Pacman(null);
-		Image pacmanImage = new ImageIcon("src/Images/pacman_rightGIF.gif").getImage();
-		pacman.setGameCharacterImage(pacmanImage);
+		Image pacman_image = new ImageIcon("src/Images/pacman_rightGIF.gif").getImage();
+		pacman.setGameCharacterImage(pacman_image);
 	}
 
-	//This function creates the power balls
-	public void callPowerBalls(Graphics2D g2d, int x, int y, int width, int height) {
-		//Draws and paints the white balls
-		g2d.setColor(Color.WHITE);
-		g2d.fillOval(x, y, width,height);
-		g2d.setStroke(new BasicStroke(8f));
-		//this.repaint();
-		//PacmanLog.log("creatBoard","DRAW");
-		g2d.setStroke(new BasicStroke(5));
-		g2d.setColor(Color.WHITE);
-	}
-
+	/**
+	 * This function calls the power balls to enter the game
+	 */
 	public void callPowerBalls() {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -398,83 +403,60 @@ public class Board extends JPanel implements ActionListener{
 		powerBall_2 = new Power_Ball(null);
 		powerBall_3 = new Power_Ball(null);
 		powerBall_4 = new Power_Ball(null);
-		Image powerBall_1Image = new ImageIcon("src/Images/powerball.png").getImage();
-		Image powerBall_2Image = new ImageIcon("src/Images/powerball.png").getImage();
-		Image powerBall_3Image = new ImageIcon("src/Images/powerball.png").getImage();
-		Image powerBall_4Image = new ImageIcon("src/Images/powerball.png").getImage();
-		powerBall_1.setGameCharacterImage(powerBall_1Image);
+		Image power_ball_1_image = new ImageIcon("src/Images/powerball.png").getImage();
+		Image power_ball_2_image = new ImageIcon("src/Images/powerball.png").getImage();
+		Image power_ball_3_image = new ImageIcon("src/Images/powerball.png").getImage();
+		Image power_ball_4_image = new ImageIcon("src/Images/powerball.png").getImage();
+		powerBall_1.setGameCharacterImage(power_ball_1_image);
 		powerBall_1.setGrid_x(pbIndex2);
 		powerBall_1.setGrid_y(pbIndex1);
-		powerBall_2.setGameCharacterImage(powerBall_2Image);
+		powerBall_2.setGameCharacterImage(power_ball_2_image);
 		powerBall_2.setGrid_x(pbIndex3);
 		powerBall_2.setGrid_y(pbIndex1);
-		powerBall_3.setGameCharacterImage(powerBall_3Image);
+		powerBall_3.setGameCharacterImage(power_ball_3_image);
 		powerBall_3.setGrid_x(pbIndex5);
 		powerBall_3.setGrid_y(pbIndex4);
-		powerBall_4.setGameCharacterImage(powerBall_4Image);
+		powerBall_4.setGameCharacterImage(power_ball_4_image);
 		powerBall_4.setGrid_x(pbIndex6);
 		powerBall_4.setGrid_y(pbIndex4);
-
-		//ImageIcon blueGhostImage = new ImageIcon("src/Images/ghostGIF.gif");
-		//ImageIcon pinkGhostImage = new ImageIcon("src/Images/ghostGIF.gif");
-		//ImageIcon orangeGhostImage = new ImageIcon("src/Images/ghostGIF.gif");
 	}
 
-
-	/*private void imagePanel() {
-		try {                
-			redGhostBI = ImageIO.read(new File("src/Images/ghost.png"));
-			blueGhostBI = ImageIO.read(new File("src/Images/ghostGIF.gif"));
-			pinkGhostBI = ImageIO.read(new File("src/Images/ghostGIF.gif"));
-			orangeGhostBI = ImageIO.read(new File("src/Images/ghostGIF.gif"));
-		} catch (IOException ex) {
-			// handle exception...
-		}
-	}*/
-
-	/* @Override
-	    protected void paintComponent(Graphics g) {
-	        super.paintComponent(g);
-	        g.drawImage(image, 0, 0, this); // see javadoc for more info on the parameters            
-	    }*/
-
 	/**
+	 * This function draws the ghosts on the game board
 	 * @param g2d
 	 * @param ghost
 	 */
 	private void drawGhost(Graphics2D g2d, Ghosts ghost) {
-
-		/*double offsetGhostPacman_w = 1.05;
-		double offsetGhostPacman_h = 1.015;
-		//ghost.setGrid_x(firstIndexInEmptyRow);
-		//ghost.setGrid_y(randEmptyRow);
-		int xIndex = ghost.getGrid_x();
-		ghost.setLocation_x((int)(xIndex*blockWidth*offsetGhostPacman_w)+boardOffset);
-		ghost.setLocation_y((int)(randEmptyRow*blockHeight*offsetGhostPacman_h));
-		//(int)(firstIndexInEmptyRow*blockWidth*offsetGhostPacman_w)+boardOffset, (int)(randEmptyRow*blockHeight*offsetGhostPacman_h)*/
 		g2d.drawImage(ghost.getGameCharacterImage(), ghost.getLocation_y(), ghost.getLocation_x(), this);
 
 	}
 
-
-
+	/**
+	 * This function draws the pacman on the game board
+	 * @param g2d
+	 * @param player
+	 * @param x
+	 * @param y
+	 */
 	private void drawPacman(Graphics2D g2d, Pacman player, int x, int y) {
 		g2d.drawImage(player.getGameCharacterImage(), x, y, this);
 	}
 
+	/**
+	 * This function draws the power balls on the game board
+	 * @param g2d
+	 * @param powerBall
+	 */
 	private void drawPowerBall(Graphics2D g2d, Power_Ball powerBall) {
 		double offsetPowerBall_w_h = 0.2;
-		int xIndexPB = powerBall.getGrid_x();
-		int yIndexPB = powerBall.getGrid_y();
-		powerBall.setLocation_x(xIndexPB*blockWidth+(int)(blockWidth*offsetPowerBall_w_h)+boardOffset);
-		powerBall.setLocation_y(yIndexPB*blockHeight+(int)(blockHeight*offsetPowerBall_w_h));
-		//(int)(firstIndexInEmptyRow*blockWidth*offsetGhostPacman_w)+boardOffset, (int)(randEmptyRow*blockHeight*offsetGhostPacman_h)
+		int x_index_pb = powerBall.getGrid_x();
+		int y_index_pb = powerBall.getGrid_y();
+		powerBall.setLocation_x(x_index_pb*blockWidth+(int)(blockWidth*offsetPowerBall_w_h)+boardOffset);
+		powerBall.setLocation_y(y_index_pb*blockHeight+(int)(blockHeight*offsetPowerBall_w_h));
 		g2d.drawImage(powerBall.getGameCharacterImage(), powerBall.getLocation_x(), powerBall.getLocation_y(), this);
 	}
 
-	public void init() {
-
-	}
+	public void init() {}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
