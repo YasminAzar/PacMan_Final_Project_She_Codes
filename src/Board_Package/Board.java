@@ -39,17 +39,10 @@ public class Board extends JPanel implements ActionListener{
 	int [] cubeSize = new int[2];
 	int [] ballsLocation = new int[2];
 	int [] pbLocation = new int[6];
-	//Image redGhostImage = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
-	//Image blueGhostImage = new ImageIcon("src/Images/blueGhostGIF.gif").getImage();
-	//Image pinkGhostImage = new ImageIcon("src/Images/pinkGhostGIF.gif").getImage();
-	//Image orangeGhostImage = new ImageIcon("src/Images/orangeGhostGIF.gif").getImage();
-	//Image pacmanImage = new ImageIcon("src/Images/pacman_rightGIF.gif").getImage();
 	Ghosts redGhost, blueGhost, pinkGhost, orangeGhost;
 	Pacman pacman;
-	//int ghost_w = redGhost.getGameCharacterImage().getWidth(null);
-	//int ghost_h = redGhost.getGameCharacterImage().getHeight(null);
 	Power_Ball powerBall_1, powerBall_2, powerBall_3, powerBall_4;
-	int []locInArray = new int[2];
+	int [] locInArray = new int[2];
 	int [] redGhostLoc = new int[2];
 	int [] blueGhostLoc = new int[2];
 	int [] pinkGhostLoc = new int[2];
@@ -59,7 +52,6 @@ public class Board extends JPanel implements ActionListener{
 	int [] pbLoc2 = new int[2];
 	int [] pbLoc3 = new int[2];
 	int [] pbLoc4 = new int[2];
-
 
 	/**
 	 * Constructor
@@ -82,31 +74,16 @@ public class Board extends JPanel implements ActionListener{
 		//map [randEmptyRow][firstIndexInEmptyRow+blockWidth] = "gh2";
 		//map [randEmptyRow][firstIndexInEmptyRow+blockWidth*2] = "gh3";
 		//map [randEmptyRow][firstIndexInEmptyRow+blockWidth*3] = "gh4";
-		/*int [] locationBalls = calcLocationBall(blockWidth);
-		for (int i = 0; i < locationBalls.length; i++) {
-			System.out.println("locationBalls["+i+"] = " + locationBalls[i]);
-		}*/
+		
 		locationBallX = calcLocationBall(blockWidth)[0];
 		//System.out.println("locationBallX = " + locationBallX);
 		locationBallY = calcLocationBall(blockHeight)[1];
 		//System.out.println("locationBallY = " + locationBallY);
 		createPowerBalls();
-		//pbLocation = findPBlocation(map);
-		//pbIndex1 = pbLocation[0]; 
-		//pbIndex2 = pbLocation[1];
-		//pbIndex3 = pbLocation[2];
-		//pbIndex4 = pbLocation[3];
-		//pbIndex5 = pbLocation[4];
-		//pbIndex6 = pbLocation[5];
-		//System.out.println("pbIndex1 = " + pbIndex1 + " ,  pbIndex2 = " + pbIndex2 + ", pbIndex3 = " + pbIndex3 + " , pbIndex4 = " + pbIndex4 + " , pbIndex5 = " + pbIndex5 + " , pbIndex6 = " + pbIndex6);
-		locInArray = locationXYinTheArray(34,95);
-		System.out.print("loc_xy_in_map[0] = " + locInArray[0]+", ");
-		System.out.println("loc_xy_in_map[1] = " + locInArray[1]);
-		//int [] red_ghost_loc = locationXYinTheArray(redGhost.getLocation_x(),redGhost.getLocation_y());
-		//map[red_ghost_loc[0]][red_ghost_loc[1]] = "gh1";
-		//System.out.println(map[red_ghost_loc[0]][red_ghost_loc[1]]);
-		
-		
+		//locInArray = locationXYinTheArray(34,95);
+		//System.out.print("loc_xy_in_map[0] = " + locInArray[0]+", ");
+		//System.out.println("loc_xy_in_map[1] = " + locInArray[1]);
+			
 	}
 
 	//Need this function?
@@ -153,7 +130,7 @@ public class Board extends JPanel implements ActionListener{
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				PacmanLog.log("creatBoard","i "+i+" j "+j + " index " + index);
-				index+=1;
+				index += 1;
 				if(map[i][j] == "1") {
 					//Draws and paints the block
 					g2d.setColor(Color.BLUE);
@@ -176,15 +153,16 @@ public class Board extends JPanel implements ActionListener{
 			}
 		}
 	}
+	
 	/**
-	 * This function draws rhe new status on the screen in each new frame
+	 * This function draws the new status on the screen in each new frame
 	 * @param g
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		double offset_ghost_pacman_w = 1.05;
-		double offset_ghost_pacman_h = 1.015;
+		//double offset_ghost_pacman_w = 1.05;
+		//double offset_ghost_pacman_h = 1.015;
 		//int position_x = blockWidth/2 - ghost_width/2;
 
 		Graphics2D g2 = (Graphics2D) g;
@@ -227,15 +205,18 @@ public class Board extends JPanel implements ActionListener{
 		map[pbLoc4[0]][pbLoc4[1]] = "pb4";
 		printMap();
 	}
+	/**
+	 * This function prints the map
+	 */
 	public void printMap() {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
-				System.out.print(map[i][j] + " ");
-				
+				System.out.print(map[i][j] + " ");	
 			}
 			System.out.println();
 		}
 	}
+	
 	/**
 	 * This function calculates the size of the blocks that make up the walls
 	 * @param arraySize
@@ -272,7 +253,7 @@ public class Board extends JPanel implements ActionListener{
 	}
 
 	/**
-	 * his function finds where there are rows with at least 8 balls in a row, and returns such a row randomly
+	 * This function finds where there are rows with at least 8 balls in a row, and returns such a row randomly
 	 * @param gameBoard
 	 * @return rand_val - the random line as an integer
 	 */
@@ -430,7 +411,6 @@ public class Board extends JPanel implements ActionListener{
 		
 	}
 
-
 	/**
 	 * This function calls the pacman to enter the game
 	 */
@@ -476,7 +456,6 @@ public class Board extends JPanel implements ActionListener{
 		powerBall_2.setGrid_y(pbIndex1);
 		powerBall_2.setLocation_x(powerBall_2.getGrid_x()*blockHeight + (int)offsetPowerBall_w_h);
 		powerBall_2.setLocation_y((int)(powerBall_2.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
-
 		powerBall_3.setGameCharacterImage(power_ball_3_image);
 		powerBall_3.setGrid_x(pbIndex5);
 		powerBall_3.setGrid_y(pbIndex4);
@@ -496,15 +475,12 @@ public class Board extends JPanel implements ActionListener{
 	 */
 	private void drawGhost(Graphics2D g2d, Ghosts ghost) {
 		g2d.drawImage(ghost.getGameCharacterImage(), ghost.getLocation_y(), ghost.getLocation_x(), this);
-
 	}
 
 	/**
 	 * This function draws the pacman on the game board
 	 * @param g2d
 	 * @param player
-	 * @param x
-	 * @param y
 	 */
 	private void drawPacman(Graphics2D g2d, Pacman player) {
 		g2d.drawImage(player.getGameCharacterImage(), player.getLocation_y(), player.getLocation_x(), this);
@@ -524,6 +500,12 @@ public class Board extends JPanel implements ActionListener{
 		g2d.drawImage(powerBall.getGameCharacterImage(), powerBall.getLocation_y(), powerBall.getLocation_x(), this);
 	}
 
+	/**
+	 * This function gets a general position in pixels and returns a position on the array
+	 * @param locationX
+	 * @param locationY
+	 * @return loc_xy_in_map - location on the map (grid location)
+	 */
 	public int[] locationXYinTheArray(int locationX, int locationY) {
 		int []loc_xy_in_map = {-1,-1};
 		if(locationY >= boardOffset && locationY <= (GameConstants.SCREEN_WIDTH - boardOffset) && locationX > 0 && locationX <= GameConstants.BOARD_HEIGHT) {
@@ -554,7 +536,6 @@ public class Board extends JPanel implements ActionListener{
 		else
 			System.out.println("Your not in the borad");
 		return loc_xy_in_map;
-
 	}
 
 

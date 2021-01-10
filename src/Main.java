@@ -12,7 +12,7 @@ import Menu_Package.Menu;
 
 public class Main extends JFrame implements ActionListener {
 
-	private static Main game_main;
+	private static Main gameMain;
 	private Menu menu;
 
 	public static void main(String[] args) {
@@ -20,7 +20,10 @@ public class Main extends JFrame implements ActionListener {
 		game_main.initFrame(args);
 	}
 
-	//This function defines and initializes the frame
+	/**
+	 * This function defines and initializes the frame
+	 * @param args
+	 */
 	private void initFrame(String[] args) {
 		int height = GameConstants.SCREEN_HEIGHT;
 		int width = GameConstants.SCREEN_WIDTH;
@@ -36,6 +39,9 @@ public class Main extends JFrame implements ActionListener {
 		initMenu();
 	}
 
+	/**
+	 * This function initializes the menu screen
+	 */
 	private void initMenu() {
 		menu = new Menu();
 		menu.newGame.addActionListener(this);
@@ -45,8 +51,12 @@ public class Main extends JFrame implements ActionListener {
 		this.pack();
 	}
 
-	//This function describes the actions that will happen if you press the main buttons
+	
 	// EB remove override
+	/**
+	 * This function describes the actions that will happen if you press the main buttons
+	 * @param arg0
+	 */
 	public void actionPerformed(ActionEvent arg0) {
 		int height = GameConstants.SCREEN_HEIGHT;
 		int width = GameConstants.SCREEN_WIDTH;
@@ -54,9 +64,9 @@ public class Main extends JFrame implements ActionListener {
 			this.menu.setVisible(false);
 			this.remove(menu);
 			System.out.println("New Game is pressed");
-			Board gameBoard = new Board();
-			gameBoard.setPreferredSize(new Dimension(width,height));
-			this.add(gameBoard, BorderLayout.CENTER);
+			Board game_board = new Board();
+			game_board.setPreferredSize(new Dimension(width,height));
+			this.add(game_board, BorderLayout.CENTER);
 			this.revalidate();
 			this.repaint();
 			this.pack();

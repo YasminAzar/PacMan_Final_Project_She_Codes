@@ -34,7 +34,10 @@ public class Menu extends JPanel implements  ActionListener  {
 		creatPanel(gbc);
 	}
 
-	//This function display the panel with the main buttons
+	/**
+	 * This function display the panel with the main buttons
+	 * @param gbc
+	 */
 	public void creatPanel(GridBagConstraints gbc)  {
 		newGame = new JButton(new ImageIcon("src/Images/button_new_game.png"));
 		loadGame = new JButton(new ImageIcon("src/Images/button_load_game.png"));
@@ -57,7 +60,9 @@ public class Menu extends JPanel implements  ActionListener  {
 		this.repaint();
 	}
 
-	//This function defines a black background
+	/**
+	 * This function defines a black background
+	 */
 	public void paint(Graphics g) {
 		int w = getSize().width;
 		int h = getSize().height;

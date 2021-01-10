@@ -9,13 +9,17 @@ import Log_Package.PacmanLog;
 public class GameCharacter {
 	ImageIcon gameCharacterIcon;
 	private Image gameCharacterImage;
-	private int location_x;
-	private int location_y;
-	private int grid_x;
-	private int grid_y;
+	private int locationX;
+	private int locationY;
+	private int gridX;
+	private int gridY;
 	String status;
 	boolean isPlayer;
 	
+	/**
+	 * Contractor
+	 * @param args
+	 */
 	public GameCharacter(String[] args) {
 		PacmanLog.log("GameCharacter: ", "Start");
 		
@@ -32,35 +36,35 @@ public class GameCharacter {
 	}
 
 	public int getGrid_x() {
-		return grid_x;
+		return gridX;
 	}
 
 	public void setGrid_x(int grid_x) {
-		this.grid_x = grid_x;
+		this.gridX = grid_x;
 	}
 
 	public int getGrid_y() {
-		return grid_y;
+		return gridY;
 	}
 
 	public void setGrid_y(int grid_y) {
-		this.grid_y = grid_y;
+		this.gridY = grid_y;
 	}
 
 	public int getLocation_x() {
-		return location_x;
+		return locationX;
 	}
 
 	public void setLocation_x(int location_x) {
-		this.location_x = location_x;
+		this.locationX = location_x;
 	}
 
 	public int getLocation_y() {
-		return location_y;
+		return locationY;
 	}
 
 	public void setLocation_y(int location_y) {
-		this.location_y = location_y;
+		this.locationY = location_y;
 	}
 	
 	
