@@ -52,6 +52,8 @@ public class Board extends JPanel implements ActionListener{
 	int [] pbLoc2 = new int[2];
 	int [] pbLoc3 = new int[2];
 	int [] pbLoc4 = new int[2];
+	Junction [][] junctionArr = new Junction[map.length][map.length];
+	Junction junc = new Junction();
 
 	/**
 	 * Constructor
@@ -79,6 +81,7 @@ public class Board extends JPanel implements ActionListener{
 		//System.out.println("locationBallX = " + locationBallX);
 		locationBallY = calcLocationBall(blockHeight)[1];
 		//System.out.println("locationBallY = " + locationBallY);
+		createJunction();
 		createPowerBalls();
 		//locInArray = locationXYinTheArray(34,95);
 		//System.out.print("loc_xy_in_map[0] = " + locInArray[0]+", ");
@@ -107,6 +110,139 @@ public class Board extends JPanel implements ActionListener{
 		pbIndex6 = pbLocation[5];
 		System.out.println("pbIndex1 = " + pbIndex1 + " ,  pbIndex2 = " + pbIndex2 + ", pbIndex3 = " + pbIndex3 + " , pbIndex4 = " + pbIndex4 + " , pbIndex5 = " + pbIndex5 + " , pbIndex6 = " + pbIndex6);
 	}
+	
+	private void createJunction() {
+		//Junction.setOpenDirection = 0
+		String dir = "";
+		//String objInMap = map[junc.getX()][junc.getY()];
+		for (int i = 0; i < junctionArr.length; i++) {
+			for (int j = 0; j < junctionArr[0].length; j++) {
+				//junctionArr[i][j] = junc.getX(), junc.getY();
+				dir = "";
+				if(i == 0 && j == 0) {//first row and first column
+					if(map[i][j+1] != "1") {//right
+						dir = dir + "R";
+					}
+					if(map[i+1][j] != "1") {//down
+						dir = dir + "D";
+					}
+				}
+				else if(i == 0 && j == map.length-1) {//first row last column
+					if(map[i][j-1] != "1") {//left
+						dir = dir + "L";
+					}
+					if(map[i+1][j] != "1") {//down
+						dir = dir + "D";
+					}
+				}
+				else if(i == map.length-1 && j == 0 ) {//last row first column
+					if(map[i][j+1] != "1") {//right
+						dir = dir + "R";
+					}
+					if(map[i-1][j] != "1") {//up
+						dir = dir + "U";
+					}
+				}
+				else if(i == map.length-1 && j == map.length-1 ) {//last row last column
+					if(map[i][j-1] != "1") {//left
+						dir = dir + "L";
+					}
+					if(map[i-1][j] != "1") {//up
+						dir = dir + "U";
+					}
+				}
+				
+				else if(i != 0 && j != 0 && i != map.length-1 && j != map.length - 1 && map[i][j] != "1") {
+					if(map[i][j+1] != "1") {//right
+						//junc.setnumOfOption(junc.getnumOfOption() + 1);
+						//junc.setDirection("R");
+						dir = dir + "R";
+					}
+					if(map[i][j-1] != "1") {//left
+						//junc.setnumOfOption(junc.getnumOfOption() + 1);
+						//junc.setDirection(junc.getDirection() + "L");
+						dir = dir + "L";
+					}
+					if(map[i-1][j] != "1") {//up
+						//junc.setnumOfOption(junc.getnumOfOption() + 1);
+						//junc.setDirection(junc.getDirection() + "U");
+						dir = dir + "U";
+
+					}
+					if(map[i+1][j] != "1") {//down
+						//junc.setnumOfOption(junc.getnumOfOption() + 1);
+						//junc.setDirection(junc.getDirection() + "D");
+						dir = dir + "D";
+					}
+				}
+				else if(i == 0) {//first row
+					if(map[i][j+1] != "1") {//right
+						dir = dir + "R";
+					}
+					if(map[i][j-1] != "1") {//left
+						dir = dir + "L";
+					}
+					if(map[i+1][j] != "1") {//down
+						dir = dir + "D";
+					}
+				}
+				else if(j == 0) {
+					if(map[i][j+1] != "1") {//right
+						dir = dir + "R";
+					}
+					if(map[i-1][j] != "1") {//up
+						dir = dir + "U";
+
+					}
+					if(map[i+1][j] != "1") {//down
+						//junc.setnumOfOption(junc.getnumOfOption() + 1);
+						//junc.setDirection(junc.getDirection() + "D");
+						dir = dir + "D";
+					}
+				}
+				else if(i == map.length - 1) {
+					if(map[i][j+1] != "1") {//right
+						dir = dir + "R";
+					}
+					if(map[i][j-1] != "1") {//left
+						dir = dir + "L";
+					}
+					if(map[i-1][j] != "1") {//up
+						dir = dir + "U";
+
+					}
+					
+				}
+				else if(j == map.length - 1) {
+					if(map[i][j-1] != "1") {//left
+						dir = dir + "L";
+					}
+					if(map[i-1][j] != "1") {//up
+						dir = dir + "U";
+
+					}
+					if(map[i+1][j] != "1") {//down
+						dir = dir + "D";
+					}
+				}
+				
+				//else
+					//dir = "NULL";
+				
+				if(dir.length() > 1) {
+					//Junction junc = new Junction();
+					junc.setX(i);
+					junc.setY(j);
+					junc.setDirection(dir);
+					junc.setnumOfOption(dir.length());
+					junctionArr[i][j] = junc;
+					System.out.print("("+i+","+j+")"+junc.getDirection() + ", ");
+				}	
+			}
+			System.out.println();
+		}	
+	}
+	
 
 	/**
 	 * This function creates the selected game board
@@ -314,6 +450,7 @@ public class Board extends JPanel implements ActionListener{
 	 * @return indexPB - index of the power ball on the game board
 	 */
 	public int[] findPBlocation(String[][] gameBoard) {
+		int count = 0;
 		int min_i = gameBoard.length-1;
 		int max_i = 0;
 		int min_j_first_row = gameBoard.length-1;
@@ -324,6 +461,7 @@ public class Board extends JPanel implements ActionListener{
 		for (int i = 0; i < gameBoard.length; i++) {
 			for (int j = 0; j < gameBoard.length; j++) {
 				if(gameBoard[i][j] == "0") {
+					if(map[i][j] == "0") {
 					//Saves the indexes to the top balls
 					if(i < min_i) {
 						min_i = i;
@@ -359,9 +497,32 @@ public class Board extends JPanel implements ActionListener{
 				}
 			}
 		}
+		}
 		return index_pb;
 	}
 
+	/*public void findJunction(int xInMap, int yInMap) {
+		//Junction.setOpenDirection = 0
+		String r, l, u, d;
+		String objInMap = map[xInMap][yInMap];
+		
+		if(objInMap != "1") {
+			if(map[xInMap-1][yInMap] != "1") {//up
+				junc.setnumOfOption(junc.getnumOfOption() + 1);
+				junc.setX(xInMap);
+				junc.setY(yInMap);
+			}
+			if(map[xInMap+1][yInMap] != "1") {//down
+				
+			}
+			if(map[xInMap][yInMap-1] != "1") {//left
+			}
+			if(map[xInMap][yInMap+1] != "1") {//right
+			}
+		}
+		
+	}*/
+	
 	/**
 	 * This function calls the ghosts to enter the game
 	 */
