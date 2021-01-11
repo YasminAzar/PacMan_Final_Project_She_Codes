@@ -78,7 +78,7 @@ public class Board extends JPanel implements ActionListener{
 		//map [randEmptyRow][firstIndexInEmptyRow+blockWidth] = "gh2";
 		//map [randEmptyRow][firstIndexInEmptyRow+blockWidth*2] = "gh3";
 		//map [randEmptyRow][firstIndexInEmptyRow+blockWidth*3] = "gh4";
-		
+
 		locationBallX = calcLocationBall(blockWidth)[0];
 		//System.out.println("locationBallX = " + locationBallX);
 		locationBallY = calcLocationBall(blockHeight)[1];
@@ -88,7 +88,7 @@ public class Board extends JPanel implements ActionListener{
 		//locInArray = locationXYinTheArray(34,95);
 		//System.out.print("loc_xy_in_map[0] = " + locInArray[0]+", ");
 		//System.out.println("loc_xy_in_map[1] = " + locInArray[1]);
-			
+
 	}
 
 	//Need this function?
@@ -112,6 +112,7 @@ public class Board extends JPanel implements ActionListener{
 		pbIndex6 = pbLocation[5];
 		System.out.println("pbIndex1 = " + pbIndex1 + " ,  pbIndex2 = " + pbIndex2 + ", pbIndex3 = " + pbIndex3 + " , pbIndex4 = " + pbIndex4 + " , pbIndex5 = " + pbIndex5 + " , pbIndex6 = " + pbIndex6);
 	}
+	
 	/**
 	 * This function checks where there are junctions in the game biard and saves them in an ArrayList
 	 */
@@ -162,27 +163,45 @@ public class Board extends JPanel implements ActionListener{
 				}
 				
 				else if(i != 0 && j != 0 && i != map.length-1 && j != map.length - 1 && map[i][j] != blue) {
-					if(map[i][j+1] != blue) {//right
-						//junc.setnumOfOption(junc.getnumOfOption() + 1);
-						//junc.setDirection("R");
-						dir = dir + right;
-					}
-					if(map[i][j-1] != blue) {//left
-						//junc.setnumOfOption(junc.getnumOfOption() + 1);
-						//junc.setDirection(junc.getDirection() + "L");
-						dir = dir + left;
-					}
-					if(map[i-1][j] != blue) {//up
-						//junc.setnumOfOption(junc.getnumOfOption() + 1);
-						//junc.setDirection(junc.getDirection() + "U");
-						dir = dir + up;
+					
+					if(map[i][j+1] != blue && map[i][j-1] != blue && map[i-1][j] != blue || 
+							map[i][j+1] != blue && map[i][j-1] != blue && map[i+1][j] != blue || 
+							map[i+1][j] != blue && map[i-1][j] != blue && map[i][j+1] != blue || 
+							map[i+1][j] != blue && map[i-1][j] != blue && map[i][j-1] != blue ) {
+						if(map[i][j+1] != blue) {//right
+							//junc.setnumOfOption(junc.getnumOfOption() + 1);
+							//junc.setDirection("R");
+							dir = dir + right;
+						}
+						if(map[i][j-1] != blue) {//left
+							//junc.setnumOfOption(junc.getnumOfOption() + 1);
+							//junc.setDirection(junc.getDirection() + "L");
+							dir = dir + left;
+						}
+						if(map[i-1][j] != blue) {//up
+							//junc.setnumOfOption(junc.getnumOfOption() + 1);
+							//junc.setDirection(junc.getDirection() + "U");
+							dir = dir + up;
 
+						}
+						if(map[i+1][j] != blue) {//down
+							//junc.setnumOfOption(junc.getnumOfOption() + 1);
+							//junc.setDirection(junc.getDirection() + "D");
+							dir = dir + down;
+						}
 					}
-					if(map[i+1][j] != blue) {//down
-						//junc.setnumOfOption(junc.getnumOfOption() + 1);
-						//junc.setDirection(junc.getDirection() + "D");
-						dir = dir + down;
+					/*else if(map[i-1][j] == blue && map[i][j-1] == blue) {
+						dir = dir + right + down;
 					}
+					else if(map[i+1][j] == blue && map[i][j-1] == blue) {
+						dir = dir + up + right;
+					}
+					else if(map[i-1][j] == blue && map[i][j+1] == blue) {
+						dir = dir + left + down;
+					}
+					else if(map[i+1][j] == blue && map[i][j+1] == blue) {
+						dir = dir + left + up;
+					}*/
 				}
 				else if(i == 0) {//first row
 					if(map[i][j+1] != blue) {//right
@@ -232,8 +251,8 @@ public class Board extends JPanel implements ActionListener{
 					}
 				}
 				//else
-					//dir = "NULL";
-				
+				//dir = "NULL";
+
 				if(dir.length() > 1) {
 					//Junction junc = new Junction();
 					junc.setX(i);
@@ -241,13 +260,13 @@ public class Board extends JPanel implements ActionListener{
 					junc.setDirection(dir);
 					junc.setnumOfOption(dir.length());
 					junctionArrList.add(junc);
-					System.out.print(junc.getDirection() + ", ");
+					//System.out.print(junc.getDirection() + ", ");
 				}	
-			}
+			}		
 		}	
-		System.out.println();
+		System.out.println("num of junctions: " + junctionArrList.size());
 	}
-	
+
 	/**
 	 * This function creates the selected game board
 	 * @param g2d
@@ -293,7 +312,7 @@ public class Board extends JPanel implements ActionListener{
 			}
 		}
 	}
-	
+
 	/**
 	 * This function draws the new status on the screen in each new frame
 	 * @param g
@@ -356,7 +375,7 @@ public class Board extends JPanel implements ActionListener{
 			System.out.println();
 		}
 	}
-	
+
 	/**
 	 * This function calculates the size of the blocks that make up the walls
 	 * @param arraySize
@@ -466,41 +485,41 @@ public class Board extends JPanel implements ActionListener{
 			for (int j = 0; j < gameBoard.length; j++) {
 				if(gameBoard[i][j] == "0") {
 					if(map[i][j] == "0") {
-					//Saves the indexes to the top balls
-					if(i < min_i) {
-						min_i = i;
-						index_pb[0] = i;
-						if(j < min_j_first_row) {
-							index_pb[1] = j;
-							max_j_first_row = j;
+						//Saves the indexes to the top balls
+						if(i < min_i) {
+							min_i = i;
+							index_pb[0] = i;
+							if(j < min_j_first_row) {
+								index_pb[1] = j;
+								max_j_first_row = j;
+							}
 						}
-					}
-					else if(i == min_i){
-						if(j > max_j_first_row) {
-							index_pb[2] = j;
-							max_j_first_row = j;
+						else if(i == min_i){
+							if(j > max_j_first_row) {
+								index_pb[2] = j;
+								max_j_first_row = j;
+							}
 						}
-					}
-					//Saves the indexes to the bottom balls
-					if(i > max_i) {
-						max_i = i;
-						index_pb[3] = i;
-						min_j_last_row = gameBoard.length-1;
-						if(j < min_j_last_row) {
-							index_pb[4] = j;
-							min_j_last_row = j;
+						//Saves the indexes to the bottom balls
+						if(i > max_i) {
+							max_i = i;
+							index_pb[3] = i;
+							min_j_last_row = gameBoard.length-1;
+							if(j < min_j_last_row) {
+								index_pb[4] = j;
+								min_j_last_row = j;
+							}
 						}
-					}
-					if(i >= max_i) {
-						max_j_last_row = 0;
-						if(j > max_j_last_row) {
-							index_pb[5] = j;
-							max_j_last_row = j;
+						if(i >= max_i) {
+							max_j_last_row = 0;
+							if(j > max_j_last_row) {
+								index_pb[5] = j;
+								max_j_last_row = j;
+							}
 						}
 					}
 				}
 			}
-		}
 		}
 		return index_pb;
 	}
@@ -509,7 +528,7 @@ public class Board extends JPanel implements ActionListener{
 		//Junction.setOpenDirection = 0
 		String r, l, u, d;
 		String objInMap = map[xInMap][yInMap];
-		
+
 		if(objInMap != "1") {
 			if(map[xInMap-1][yInMap] != "1") {//up
 				junc.setnumOfOption(junc.getnumOfOption() + 1);
@@ -517,16 +536,16 @@ public class Board extends JPanel implements ActionListener{
 				junc.setY(yInMap);
 			}
 			if(map[xInMap+1][yInMap] != "1") {//down
-				
+
 			}
 			if(map[xInMap][yInMap-1] != "1") {//left
 			}
 			if(map[xInMap][yInMap+1] != "1") {//right
 			}
 		}
-		
+
 	}*/
-	
+
 	/**
 	 * This function calls the ghosts to enter the game
 	 */
@@ -573,7 +592,7 @@ public class Board extends JPanel implements ActionListener{
 		orangeGhost.setLocation_x(orangeGhost.getGrid_x()*blockHeight + (int)ghost_offset);
 		orangeGhost.setLocation_y((int) (orangeGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
 		System.out.println("orangeGhost location_x: " + orangeGhost.getLocation_x() + " y "+orangeGhost.getLocation_y());
-		
+
 	}
 
 	/**
@@ -691,12 +710,12 @@ public class Board extends JPanel implements ActionListener{
 						loc_xy_in_map[1] = k;
 						//System.out.print("loc_xy_in_map[0] = " + loc_xy_in_map[0] +", ");
 					}
-					
+
 					//System.out.print("loc_xy_in_map[0] = " + loc_xy_in_map[0]+", ");
 					//System.out.println("loc_xy_in_map[1] = " + loc_xy_in_map[0] +", ");
 				}
 			}
-			
+
 		}
 		else
 			System.out.println("Your not in the borad");
