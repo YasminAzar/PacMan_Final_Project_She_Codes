@@ -15,6 +15,7 @@ public class GameCharacter {
 	private int gridY;
 	String status;
 	boolean isPlayer;
+	String direction;
 	
 	/**
 	 * Contractor
@@ -66,6 +67,12 @@ public class GameCharacter {
 	public void setLocation_y(int location_y) {
 		this.locationY = location_y;
 	}
-	
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
 	
 }

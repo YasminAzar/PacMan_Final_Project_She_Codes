@@ -53,7 +53,10 @@ public class Board extends JPanel implements ActionListener{
 	int [] pbLoc2 = new int[2];
 	int [] pbLoc3 = new int[2];
 	int [] pbLoc4 = new int[2];
-	//Junction [][] junctionArr = new Junction[map.length][map.length];
+	String UP = "U";
+	String DOWN = "D";
+	String LEFT = "L";
+	String RIGHT = "R";
 	ArrayList<Junction> junctionArrList = new ArrayList<Junction>();
 	Junction junc = new Junction();
 
@@ -117,10 +120,7 @@ public class Board extends JPanel implements ActionListener{
 		ArrayList<Junction> junctionsArrList = new ArrayList<Junction>();
 		String BLUE = "1";
 		String WHITE = "0";
-		String UP = "U";
-		String DOWN = "D";
-		String LEFT = "L";
-		String RIGHT = "R";
+
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
 				// check directions
@@ -129,29 +129,34 @@ public class Board extends JPanel implements ActionListener{
 					continue;
 				} 
 				else {
-					if(x-1 >= 0 && x+1 <= map.length-1) {//between two walls above and below
+					//between two walls above and below
+					if(x-1 >= 0 && x+1 <= map.length-1) {
 						if(map[x-1][y] == BLUE && map[x+1][y] == BLUE) {
 							continue;
 						}
 					}
-					if(y-1 >= 0 && y+1 <= map.length-1) {//between two walls right and left
+					//between two walls right and left
+					if(y-1 >= 0 && y+1 <= map.length-1) {
 						if(map[x][y-1] == BLUE && map[x][y+1] == BLUE) {
 							continue;
 						}
 					}
-					if(y == 0 && map[x][y+1] == BLUE) {//edge on the left and wall on the right
+					//edge on the left and wall on the right
+					if(y == 0 && map[x][y+1] == BLUE) {
 						continue;
 					}
-					if(y == map.length-1 && map[x][y-1] == BLUE) {//edge on the right and wall on the left
+					//edge on the right and wall on the left
+					if(y == map.length-1 && map[x][y-1] == BLUE) {
 						continue;
 					}
-					if(x == 0 && map[x+1][y] == BLUE) {//edge on top and wall on bottom
+					//edge on top and wall on bottom
+					if(x == 0 && map[x+1][y] == BLUE) {
 						continue;
 					}
-					if(x == map.length-1 && map[x-1][y] == BLUE) {//edge on bottom and wall on top
+					//edge on bottom and wall on top
+					if(x == map.length-1 && map[x-1][y] == BLUE) {
 						continue;
 					}
-
 					// up
 					// make sure not zero
 					if (x-1 >= 0) { // top row
@@ -455,28 +460,6 @@ public class Board extends JPanel implements ActionListener{
 		return index_pb;
 	}
 
-	/*public void findJunction(int xInMap, int yInMap) {
-		//Junction.setOpenDirection = 0
-		String r, l, u, d;
-		String objInMap = map[xInMap][yInMap];
-
-		if(objInMap != "1") {
-			if(map[xInMap-1][yInMap] != "1") {//up
-				junc.setnumOfOption(junc.getnumOfOption() + 1);
-				junc.setX(xInMap);
-				junc.setY(yInMap);
-			}
-			if(map[xInMap+1][yInMap] != "1") {//down
-
-			}
-			if(map[xInMap][yInMap-1] != "1") {//left
-			}
-			if(map[xInMap][yInMap+1] != "1") {//right
-			}
-		}
-
-	}*/
-
 	/**
 	 * This function calls the ghosts to enter the game
 	 */
@@ -500,7 +483,7 @@ public class Board extends JPanel implements ActionListener{
 		redGhost.setGrid_y(firstIndexInEmptyRow);
 		redGhost.setLocation_x(redGhost.getGrid_x()*blockHeight + (int)ghost_offset);
 		redGhost.setLocation_y((int) (redGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
-		//redGhost.setDir
+		redGhost.setDirection(LEFT);
 		System.out.println("redGhost grid_x: " + redGhost.getGrid_x() + " y "+redGhost.getGrid_y());
 		System.out.println("redGhost location_x: " + redGhost.getLocation_x() + " y "+redGhost.getLocation_y());
 		blueGhost.setGameCharacterImage(blue_ghost_image);
@@ -508,6 +491,7 @@ public class Board extends JPanel implements ActionListener{
 		blueGhost.setGrid_y(firstIndexInEmptyRow+1);
 		blueGhost.setLocation_x(blueGhost.getGrid_x()*blockHeight + (int)ghost_offset);
 		blueGhost.setLocation_y((int) (blueGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
+		blueGhost.setDirection(LEFT);
 		System.out.println("blueGhost grid_x: " + blueGhost.getGrid_x() + " y "+blueGhost.getGrid_y());
 		System.out.println("blueGhost location_x: " + blueGhost.getLocation_x() + " y "+blueGhost.getLocation_y());
 		pinkGhost.setGameCharacterImage(pink_ghost_image);
@@ -515,16 +499,17 @@ public class Board extends JPanel implements ActionListener{
 		pinkGhost.setGrid_y(firstIndexInEmptyRow+2);
 		pinkGhost.setLocation_x(pinkGhost.getGrid_x()*blockHeight + (int)ghost_offset);
 		pinkGhost.setLocation_y((int) (pinkGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
+		pinkGhost.setDirection(RIGHT);
 		System.out.println("pinkGhost grid_x: " + pinkGhost.getGrid_x() + " y "+pinkGhost.getGrid_y());
 		System.out.println("pinkGhost location_x: " + pinkGhost.getLocation_x() + " y "+pinkGhost.getLocation_y());
 		orangeGhost.setGameCharacterImage(orange_ghost_image);
 		orangeGhost.setGrid_x(randEmptyRow);
 		orangeGhost.setGrid_y(firstIndexInEmptyRow+3);
-		System.out.println("orangeGhost grid_x: " + orangeGhost.getGrid_x() + " y "+orangeGhost.getGrid_y());
 		orangeGhost.setLocation_x(orangeGhost.getGrid_x()*blockHeight + (int)ghost_offset);
 		orangeGhost.setLocation_y((int) (orangeGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
+		orangeGhost.setDirection(RIGHT);
+		System.out.println("orangeGhost grid_x: " + orangeGhost.getGrid_x() + " y "+orangeGhost.getGrid_y());
 		System.out.println("orangeGhost location_x: " + orangeGhost.getLocation_x() + " y "+orangeGhost.getLocation_y());
-
 	}
 
 	/**
