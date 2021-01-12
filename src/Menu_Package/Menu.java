@@ -21,7 +21,6 @@ public class Menu extends JPanel implements  ActionListener  {
 	public JButton loadGame;
 	public JButton leaderBoard;
 
-	//Constructor
 	public Menu() {
 		setBorder(new EmptyBorder(10,10,10,10));
 		setLayout(new GridBagLayout());

@@ -1,7 +1,6 @@
 package Board_Package;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -60,9 +59,6 @@ public class Board extends JPanel implements ActionListener{
 	ArrayList<Junction> junctionArrList = new ArrayList<Junction>();
 	Junction junc = new Junction();
 
-	/**
-	 * Constructor
-	 */
 	public 	Board() {
 		blockWidth = calcBlockSize(map.length, Game_Constants_Package.GameConstants.BOARD_WIDTH,
 				Game_Constants_Package.GameConstants.BOARD_HEIGHT)[0];
@@ -77,11 +73,6 @@ public class Board extends JPanel implements ActionListener{
 		//System.out.println("randEmptyRow = " + randEmptyRow);
 		firstIndexInEmptyRow = findFirstIndex(randEmptyRow);
 		System.out.println("firstIndexInEmptyRow = " + firstIndexInEmptyRow);
-		//map [randEmptyRow][firstIndexInEmptyRow] = Game_Constants_Package.GameConstants.GHOST_1_STRING;
-		//map [randEmptyRow][firstIndexInEmptyRow+blockWidth] = "gh2";
-		//map [randEmptyRow][firstIndexInEmptyRow+blockWidth*2] = "gh3";
-		//map [randEmptyRow][firstIndexInEmptyRow+blockWidth*3] = "gh4";
-
 		locationBallX = calcLocationBall(blockWidth)[0];
 		//System.out.println("locationBallX = " + locationBallX);
 		locationBallY = calcLocationBall(blockHeight)[1];
@@ -94,19 +85,11 @@ public class Board extends JPanel implements ActionListener{
 
 	}
 
-	//Need this function?
-	/*//EB change to screen size
-	@Override
-	public Dimension getPreferredSize()
-	{
-		return new Dimension(600, 600);
-	}*/
-
 	/**
 	 * This function places the power balls on the map
 	 */
 	private void createPowerBalls() {
-		pbLocation = findPBlocation(map);
+		pbLocation = findPBLocation(map);
 		pbIndex1 = pbLocation[0]; 
 		pbIndex2 = pbLocation[1];
 		pbIndex3 = pbLocation[2];
@@ -120,7 +103,6 @@ public class Board extends JPanel implements ActionListener{
 		ArrayList<Junction> junctionsArrList = new ArrayList<Junction>();
 		String BLUE = "1";
 		String WHITE = "0";
-
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
 				// check directions
@@ -201,7 +183,6 @@ public class Board extends JPanel implements ActionListener{
 		}
 		System.out.println(" Number of junctions: " + junctionsArrList.size());
 	}
-
 
 	/**
 	 * This function creates the selected game board
@@ -300,6 +281,7 @@ public class Board extends JPanel implements ActionListener{
 		map[pbLoc4[0]][pbLoc4[1]] = "pb4";
 		printMap();
 	}
+	
 	/**
 	 * This function prints the map
 	 */
@@ -408,7 +390,7 @@ public class Board extends JPanel implements ActionListener{
 	 * @param gameBoard
 	 * @return indexPB - index of the power ball on the game board
 	 */
-	public int[] findPBlocation(String[][] gameBoard) {
+	public int[] findPBLocation(String[][] gameBoard) {
 		int count = 0;
 		int min_i = gameBoard.length-1;
 		int max_i = 0;
@@ -638,7 +620,6 @@ public class Board extends JPanel implements ActionListener{
 			System.out.println("Your not in the borad");
 		return loc_xy_in_map;
 	}
-
 
 	public void init() {}
 

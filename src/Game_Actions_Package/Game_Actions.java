@@ -27,9 +27,6 @@ public class Game_Actions extends JPanel implements KeyListener, ActionListener 
 	private Menu menu;
 	private boolean board_1 = false;
 
-	/**
-	 *Constructor
-	 */
 	public Game_Actions() {
 		//EB
 		board = new Board();
