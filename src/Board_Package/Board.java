@@ -112,160 +112,91 @@ public class Board extends JPanel implements ActionListener{
 		pbIndex6 = pbLocation[5];
 		System.out.println("pbIndex1 = " + pbIndex1 + " ,  pbIndex2 = " + pbIndex2 + ", pbIndex3 = " + pbIndex3 + " , pbIndex4 = " + pbIndex4 + " , pbIndex5 = " + pbIndex5 + " , pbIndex6 = " + pbIndex6);
 	}
-	
-	/**
-	 * This function checks where there are junctions in the game biard and saves them in an ArrayList
-	 */
+
 	private void createJunction() {
-		//Junction.setOpenDirection = 0
-		String dir = "";
-		String blue = "1";
-		String right = "R";
-		String left = "L";
-		String up = "U";
-		String down = "D";
-		//String objInMap = map[junc.getX()][junc.getY()];
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[0].length; j++) {
-				//junctionArr[i][j] = junc.getX(), junc.getY();
-				dir = "";
-				if(i == 0 && j == 0) {//first row and first column
-					if(map[i][j+1] != blue) {//right
-						dir = dir + right;
-					}
-					if(map[i+1][j] != blue) {//down
-						dir = dir + down;
-					}
-				}
-				else if(i == 0 && j == map.length-1) {//first row last column
-					if(map[i][j-1] != blue) {//left
-						dir = dir + left;
-					}
-					if(map[i+1][j] != blue) {//down
-						dir = dir + down;
-					}
-				}
-				else if(i == map.length-1 && j == 0 ) {//last row first column
-					if(map[i][j+1] != blue) {//right
-						dir = dir + right;
-					}
-					if(map[i-1][j] != blue) {//up
-						dir = dir + up;
-					}
-				}
-				else if(i == map.length-1 && j == map.length-1 ) {//last row last column
-					if(map[i][j-1] != blue) {//left
-						dir = dir + left;
-					}
-					if(map[i-1][j] != blue) {//up
-						dir = dir + up;
-					}
-				}
-				
-				else if(i != 0 && j != 0 && i != map.length-1 && j != map.length - 1 && map[i][j] != blue) {
-					
-					if(map[i][j+1] != blue && map[i][j-1] != blue && map[i-1][j] != blue || 
-							map[i][j+1] != blue && map[i][j-1] != blue && map[i+1][j] != blue || 
-							map[i+1][j] != blue && map[i-1][j] != blue && map[i][j+1] != blue || 
-							map[i+1][j] != blue && map[i-1][j] != blue && map[i][j-1] != blue ) {
-						if(map[i][j+1] != blue) {//right
-							//junc.setnumOfOption(junc.getnumOfOption() + 1);
-							//junc.setDirection("R");
-							dir = dir + right;
+		ArrayList<Junction> junctionsArrList = new ArrayList<Junction>();
+		String BLUE = "1";
+		String WHITE = "0";
+		String UP = "U";
+		String DOWN = "D";
+		String LEFT = "L";
+		String RIGHT = "R";
+		for (int x = 0; x < map.length; x++) {
+			for (int y = 0; y < map[0].length; y++) {
+				// check directions
+				String directions="";
+				if (map[x][y] == BLUE) {
+					continue;
+				} 
+				else {
+					if(x-1 >= 0 && x+1 <= map.length-1) {//between two walls above and below
+						if(map[x-1][y] == BLUE && map[x+1][y] == BLUE) {
+							continue;
 						}
-						if(map[i][j-1] != blue) {//left
-							//junc.setnumOfOption(junc.getnumOfOption() + 1);
-							//junc.setDirection(junc.getDirection() + "L");
-							dir = dir + left;
+					}
+					if(y-1 >= 0 && y+1 <= map.length-1) {//between two walls right and left
+						if(map[x][y-1] == BLUE && map[x][y+1] == BLUE) {
+							continue;
 						}
-						if(map[i-1][j] != blue) {//up
-							//junc.setnumOfOption(junc.getnumOfOption() + 1);
-							//junc.setDirection(junc.getDirection() + "U");
-							dir = dir + up;
+					}
+					if(y == 0 && map[x][y+1] == BLUE) {//edge on the left and wall on the right
+						continue;
+					}
+					if(y == map.length-1 && map[x][y-1] == BLUE) {//edge on the right and wall on the left
+						continue;
+					}
+					if(x == 0 && map[x+1][y] == BLUE) {//edge on top and wall on bottom
+						continue;
+					}
+					if(x == map.length-1 && map[x-1][y] == BLUE) {//edge on bottom and wall on top
+						continue;
+					}
 
+					// up
+					// make sure not zero
+					if (x-1 >= 0) { // top row
+						if (map[x-1][y] == WHITE) {
+							directions = directions.concat(UP);
 						}
-						if(map[i+1][j] != blue) {//down
-							//junc.setnumOfOption(junc.getnumOfOption() + 1);
-							//junc.setDirection(junc.getDirection() + "D");
-							dir = dir + down;
+					}
+					// down
+					// make sure not bottom
+					if (x+1 <= map.length-1) {
+						if (map[x+1][y] == WHITE) {
+							directions = directions.concat(DOWN);
 						}
 					}
-					/*else if(map[i-1][j] == blue && map[i][j-1] == blue) {
-						dir = dir + right + down;
+					// left
+					// make sure not zero
+					if (y-1 >= 0) {
+						if (map[x][y-1] == WHITE) {
+							directions = directions.concat(LEFT);
+						}
 					}
-					else if(map[i+1][j] == blue && map[i][j-1] == blue) {
-						dir = dir + up + right;
-					}
-					else if(map[i-1][j] == blue && map[i][j+1] == blue) {
-						dir = dir + left + down;
-					}
-					else if(map[i+1][j] == blue && map[i][j+1] == blue) {
-						dir = dir + left + up;
-					}*/
-				}
-				else if(i == 0) {//first row
-					if(map[i][j+1] != blue) {//right
-						dir = dir + right;
-					}
-					if(map[i][j-1] != blue) {//left
-						dir = dir + left;
-					}
-					if(map[i+1][j] != blue) {//down
-						dir = dir + down;
+					// right
+					// make sure not right
+					if (y+1 <= map.length-1) {
+						if (map[x][y+1] == WHITE) {
+							directions = directions.concat(RIGHT);
+						}
 					}
 				}
-				else if(j == 0) {
-					if(map[i][j+1] != blue) {//right
-						dir = dir + right;
-					}
-					if(map[i-1][j] != blue) {//up
-						dir = dir + up;
-
-					}
-					if(map[i+1][j] != blue) {//down
-						//junc.setnumOfOption(junc.getnumOfOption() + 1);
-						//junc.setDirection(junc.getDirection() + "D");
-						dir = dir + down;
-					}
+				// check value
+				System.out.println(" x " + x + " y " + y + " directions " + directions);
+				if (directions.length() > 1) {
+					Junction j = new Junction();
+					j.setDirection(directions);
+					j.setnumOfOption(directions.length());
+					j.setX(x);
+					j.setY(y);
+					junctionsArrList.add(j);
+					j = null;
 				}
-				else if(i == map.length - 1) {
-					if(map[i][j+1] != blue) {//right
-						dir = dir + right;
-					}
-					if(map[i][j-1] != blue) {//left
-						dir = dir + left;
-					}
-					if(map[i-1][j] != blue) {//up
-						dir = dir + up;
-					}				
-				}
-				else if(j == map.length - 1) {
-					if(map[i][j-1] != blue) {//left
-						dir = dir + left;
-					}
-					if(map[i-1][j] != blue) {//up
-						dir = dir + up;
-					}
-					if(map[i+1][j] != blue) {//down
-						dir = dir + down;
-					}
-				}
-				//else
-				//dir = "NULL";
-
-				if(dir.length() > 1) {
-					//Junction junc = new Junction();
-					junc.setX(i);
-					junc.setY(j);
-					junc.setDirection(dir);
-					junc.setnumOfOption(dir.length());
-					junctionArrList.add(junc);
-					//System.out.print(junc.getDirection() + ", ");
-				}	
-			}		
-		}	
-		System.out.println("num of junctions: " + junctionArrList.size());
+			}
+		}
+		System.out.println(" Number of junctions: " + junctionsArrList.size());
 	}
+
 
 	/**
 	 * This function creates the selected game board
@@ -569,6 +500,7 @@ public class Board extends JPanel implements ActionListener{
 		redGhost.setGrid_y(firstIndexInEmptyRow);
 		redGhost.setLocation_x(redGhost.getGrid_x()*blockHeight + (int)ghost_offset);
 		redGhost.setLocation_y((int) (redGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
+		//redGhost.setDir
 		System.out.println("redGhost grid_x: " + redGhost.getGrid_x() + " y "+redGhost.getGrid_y());
 		System.out.println("redGhost location_x: " + redGhost.getLocation_x() + " y "+redGhost.getLocation_y());
 		blueGhost.setGameCharacterImage(blue_ghost_image);
