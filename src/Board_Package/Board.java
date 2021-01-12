@@ -281,7 +281,7 @@ public class Board extends JPanel implements ActionListener{
 		map[pbLoc4[0]][pbLoc4[1]] = "pb4";
 		printMap();
 	}
-	
+
 	/**
 	 * This function prints the map
 	 */
@@ -392,6 +392,7 @@ public class Board extends JPanel implements ActionListener{
 	 */
 	public int[] findPBLocation(String[][] gameBoard) {
 		int count = 0;
+		ArrayList<Integer> row_with_2_empty_blocks = new ArrayList<Integer>();
 		int min_i = gameBoard.length-1;
 		int max_i = 0;
 		int min_j_first_row = gameBoard.length-1;
@@ -399,41 +400,53 @@ public class Board extends JPanel implements ActionListener{
 		int min_j_last_row = gameBoard.length-1;
 		int max_j_last_row = 0;
 		int [] index_pb = new int[6];
+		//Keeps the rows with at least 2 empty spaces in the arrayList 
 		for (int i = 0; i < gameBoard.length; i++) {
+			count = 0;
 			for (int j = 0; j < gameBoard.length; j++) {
 				if(gameBoard[i][j] == "0") {
-					if(map[i][j] == "0") {
-						//Saves the indexes to the top balls
-						if(i < min_i) {
-							min_i = i;
-							index_pb[0] = i;
-							if(j < min_j_first_row) {
-								index_pb[1] = j;
-								max_j_first_row = j;
-							}
+					count++;
+					if(count > 1 && !row_with_2_empty_blocks.contains(i)) {
+						row_with_2_empty_blocks.add(i);
+					}
+				}
+			}
+		}
+		System.out.println(row_with_2_empty_blocks);
+		for (int i = 0; i < gameBoard.length; i++) {
+			for (int j = 0; j < gameBoard.length; j++) {
+				//if we are in a empty block and in a row with at least 2 empty blocks
+				if(gameBoard[i][j] == "0" && row_with_2_empty_blocks.contains(i)) {
+					//Saves the indexes to the top balls
+					if(i < min_i) {
+						min_i = i;
+						index_pb[0] = i;
+						if(j < min_j_first_row) {
+							index_pb[1] = j;
+							min_j_first_row = j;
 						}
-						else if(i == min_i){
-							if(j > max_j_first_row) {
-								index_pb[2] = j;
-								max_j_first_row = j;
-							}
+					}
+					else if(i == min_i){
+						if(j > max_j_first_row) {
+							index_pb[2] = j;
+							max_j_first_row = j;
 						}
-						//Saves the indexes to the bottom balls
-						if(i > max_i) {
-							max_i = i;
-							index_pb[3] = i;
-							min_j_last_row = gameBoard.length-1;
-							if(j < min_j_last_row) {
-								index_pb[4] = j;
-								min_j_last_row = j;
-							}
+					}
+					//Saves the indexes to the bottom balls
+					if(i > max_i) {
+						max_i = i;
+						index_pb[3] = i;
+						min_j_last_row = gameBoard.length-1;
+						if(j < min_j_last_row) {
+							index_pb[4] = j;
+							min_j_last_row = j;
 						}
-						if(i >= max_i) {
-							max_j_last_row = 0;
-							if(j > max_j_last_row) {
-								index_pb[5] = j;
-								max_j_last_row = j;
-							}
+					}
+					if(i >= max_i) {
+						max_j_last_row = 0;
+						if(j > max_j_last_row) {
+							index_pb[5] = j;
+							max_j_last_row = j;
 						}
 					}
 				}
@@ -530,23 +543,23 @@ public class Board extends JPanel implements ActionListener{
 		Image power_ball_4_image = new ImageIcon("src/Images/powerball.png").getImage();
 		double offsetPowerBall_w_h = blockWidth/2 - power_ball_1_image.getHeight(null)/2;;
 		powerBall_1.setGameCharacterImage(power_ball_1_image);
-		powerBall_1.setGrid_x(pbIndex2);
-		powerBall_1.setGrid_y(pbIndex1);
+		powerBall_1.setGrid_x(pbIndex1);
+		powerBall_1.setGrid_y(pbIndex2);
 		powerBall_1.setLocation_x(powerBall_1.getGrid_x()*blockHeight + (int)offsetPowerBall_w_h);
 		powerBall_1.setLocation_y((int)(powerBall_1.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
 		powerBall_2.setGameCharacterImage(power_ball_2_image);
-		powerBall_2.setGrid_x(pbIndex3);
-		powerBall_2.setGrid_y(pbIndex1);
+		powerBall_2.setGrid_x(pbIndex1);
+		powerBall_2.setGrid_y(pbIndex3);
 		powerBall_2.setLocation_x(powerBall_2.getGrid_x()*blockHeight + (int)offsetPowerBall_w_h);
 		powerBall_2.setLocation_y((int)(powerBall_2.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
 		powerBall_3.setGameCharacterImage(power_ball_3_image);
-		powerBall_3.setGrid_x(pbIndex5);
-		powerBall_3.setGrid_y(pbIndex4);
+		powerBall_3.setGrid_x(pbIndex4);
+		powerBall_3.setGrid_y(pbIndex5);
 		powerBall_3.setLocation_x(powerBall_3.getGrid_x()*blockHeight + (int)offsetPowerBall_w_h);
 		powerBall_3.setLocation_y((int)(powerBall_3.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
 		powerBall_4.setGameCharacterImage(power_ball_4_image);
-		powerBall_4.setGrid_x(pbIndex6);
-		powerBall_4.setGrid_y(pbIndex4);
+		powerBall_4.setGrid_x(pbIndex4);
+		powerBall_4.setGrid_y(pbIndex6);
 		powerBall_4.setLocation_x(powerBall_4.getGrid_x()*blockHeight + (int)offsetPowerBall_w_h);
 		powerBall_4.setLocation_y((int)(powerBall_4.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
 	}
