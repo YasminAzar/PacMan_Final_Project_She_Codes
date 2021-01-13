@@ -79,7 +79,7 @@ public class Board extends JPanel implements ActionListener{
 		//System.out.println("locationBallY = " + locationBallY);
 		createJunction();
 		createPowerBalls();
-		locInArray = locationXYinTheArray(66,124);
+		locInArray = locationXYinTheArray(463,124);
 		System.out.print("check: loc_xy_in_map[0] = " + locInArray[0]+", ");
 		System.out.println("loc_xy_in_map[1] = " + locInArray[1]);
 
@@ -468,7 +468,9 @@ public class Board extends JPanel implements ActionListener{
 		blueGhost = new Ghosts(null);
 		pinkGhost = new Ghosts(null);
 		orangeGhost = new Ghosts(null);
+		
 		Image red_ghost_image = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
+		//Image red_ghost_image = redGhost.setGhostImage(red_ghost_image1);
 		Image blue_ghost_image = new ImageIcon("src/Images/blueGhostGIF.gif").getImage();
 		Image pink_ghost_image = new ImageIcon("src/Images/pinkGhostGIF.gif").getImage();
 		Image orange_ghost_image = new ImageIcon("src/Images/orangeGhostGIF.gif").getImage();
@@ -480,8 +482,8 @@ public class Board extends JPanel implements ActionListener{
 		redGhost.setLocation_y((int) (redGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
 		redGhost.setDirection(LEFT);
 		/*redGhost = new Ghosts(red_ghost_image, randEmptyRow, firstIndexInEmptyRow, 
-				redGhost.getGrid_x()*blockHeight + (int)ghost_offset, 
-				(int) (redGhost.getGrid_y()*blockWidth+blockWidth-ghost_offset), LEFT);*/
+				randEmptyRow*blockHeight+(int)ghost_offset, 
+				(int)(firstIndexInEmptyRow*blockWidth+blockWidth-ghost_offset), LEFT);*/
 		System.out.println("redGhost grid_x: " + redGhost.getGrid_x() + " y "+redGhost.getGrid_y());
 		System.out.println("redGhost location_x: " + redGhost.getLocation_x() + " y "+redGhost.getLocation_y());
 		
@@ -492,8 +494,8 @@ public class Board extends JPanel implements ActionListener{
 		blueGhost.setLocation_y((int)(blueGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
 		blueGhost.setDirection(LEFT);
 		/*blueGhost = new Ghosts(blue_ghost_image, randEmptyRow, firstIndexInEmptyRow+1, 
-				blueGhost.getGrid_x()*blockHeight + (int)ghost_offset, 
-				(int)(blueGhost.getGrid_y()*blockWidth+blockWidth-ghost_offset), LEFT);*/
+				randEmptyRow*blockHeight+(int)ghost_offset, 
+				(int)((firstIndexInEmptyRow+1)*blockWidth+blockWidth-ghost_offset), LEFT);*/
 		System.out.println("blueGhost grid_x: " + blueGhost.getGrid_x() + " y "+blueGhost.getGrid_y());
 		System.out.println("blueGhost location_x: " + blueGhost.getLocation_x() + " y "+blueGhost.getLocation_y());
 		
@@ -504,8 +506,8 @@ public class Board extends JPanel implements ActionListener{
 		pinkGhost.setLocation_y((int) (pinkGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
 		pinkGhost.setDirection(RIGHT);
 		/*pinkGhost = new Ghosts(pink_ghost_image, randEmptyRow, firstIndexInEmptyRow+2, 
-				pinkGhost.getGrid_x()*blockHeight + (int)ghost_offset, 
-				(int) (pinkGhost.getGrid_y()*blockWidth+blockWidth-ghost_offset), RIGHT);*/
+				randEmptyRow*blockHeight+(int)ghost_offset, 
+				(int) ((firstIndexInEmptyRow+2)*blockWidth+blockWidth-ghost_offset), RIGHT);*/
 		System.out.println("pinkGhost grid_x: " + pinkGhost.getGrid_x() + " y "+pinkGhost.getGrid_y());
 		System.out.println("pinkGhost location_x: " + pinkGhost.getLocation_x() + " y "+pinkGhost.getLocation_y());
 		orangeGhost.setGameCharacterImage(orange_ghost_image);
@@ -515,8 +517,8 @@ public class Board extends JPanel implements ActionListener{
 		orangeGhost.setLocation_y((int)(orangeGhost.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-ghost_offset));
 		orangeGhost.setDirection(RIGHT);
 		/*orangeGhost = new Ghosts(orange_ghost_image, randEmptyRow, firstIndexInEmptyRow+3, 
-				orangeGhost.getGrid_x()*blockHeight + (int)ghost_offset, 
-				(int)(orangeGhost.getGrid_y()*blockWidth+blockWidth-ghost_offset), RIGHT);*/
+				randEmptyRow*blockHeight+(int)ghost_offset, 
+				(int)((firstIndexInEmptyRow+3)*blockWidth+blockWidth-ghost_offset), RIGHT);*/
 		System.out.println("orangeGhost grid_x: " + orangeGhost.getGrid_x() + " y "+orangeGhost.getGrid_y());
 		System.out.println("orangeGhost location_x: " + orangeGhost.getLocation_x() + " y "+orangeGhost.getLocation_y());
 	}
@@ -618,11 +620,16 @@ public class Board extends JPanel implements ActionListener{
 	 */
 	public int[] locationXYinTheArray(int locationX, int locationY) {
 		int []loc_xy_in_map = {-1,-1};
-		if(locationY < boardOffset || locationY > (GameConstants.SCREEN_WIDTH - boardOffset) || locationX < 0 || locationX > GameConstants.BOARD_HEIGHT) {
+		//double location_y_offset = 1.16;
+		if(locationY < boardOffset || locationY >= GameConstants.BOARD_WIDTH + boardOffset || locationX < 0 || locationX >= GameConstants.BOARD_HEIGHT) {
 			System.out.println("Your not in the borad");
 		}
-		else if(locationY >= boardOffset && locationY <= (GameConstants.SCREEN_WIDTH - boardOffset) && locationX > 0 && locationX <= GameConstants.BOARD_HEIGHT) {
-			for (int i = 1; i <= map.length; i++) {
+		else if(locationY >= boardOffset && locationY <= (GameConstants.SCREEN_WIDTH - boardOffset) && locationX > 0 && locationX < GameConstants.BOARD_HEIGHT) {
+			//grid_y:
+			loc_xy_in_map[0] = locationX/blockHeight;
+			//grid_y:
+			loc_xy_in_map[1] = (locationY-boardOffset)/blockWidth;
+			/*for (int i = 1; i <= map.length; i++) {
 				for (int k = 1; k <= map.length; k++) {
 					if(locationX <= blockHeight) {
 						loc_xy_in_map[0] = 0;
@@ -631,11 +638,11 @@ public class Board extends JPanel implements ActionListener{
 					else if(locationX >= blockHeight*i && locationX < blockHeight+33*i) {
 						loc_xy_in_map[0] = i;
 					}
-					if(locationY == boardOffset || locationY < boardOffset+33) {
+					if(locationY >= boardOffset && locationY < boardOffset+33) {
 						loc_xy_in_map[1] = 0;
 						//System.out.print("loc_xy_in_map[0] = " + loc_xy_in_map[0]+", ");
 					}
-					else if(locationY >= boardOffset+33*k && locationY <= boardOffset+33*k*2) {
+					else if(locationY >= boardOffset+33*k && locationY < boardOffset+33*k*location_y_offset) {
 						loc_xy_in_map[1] = k;
 						//System.out.print("loc_xy_in_map[0] = " + loc_xy_in_map[0] +", ");
 					}
@@ -643,10 +650,8 @@ public class Board extends JPanel implements ActionListener{
 					//System.out.print("loc_xy_in_map[0] = " + loc_xy_in_map[0]+", ");
 					//System.out.println("loc_xy_in_map[1] = " + loc_xy_in_map[0] +", ");
 				}
-			}
+			}*/
 		}
-		/*else
-			System.out.println("Your not in the borad");*/
 		return loc_xy_in_map;
 	}
 
