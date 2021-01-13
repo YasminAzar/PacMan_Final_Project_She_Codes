@@ -79,7 +79,7 @@ public class Board extends JPanel implements ActionListener{
 		//System.out.println("locationBallY = " + locationBallY);
 		createJunction();
 		createPowerBalls();
-		locInArray = locationXYinTheArray(463,124);
+		locInArray = locationXYinTheArray(10,124);
 		System.out.print("check: loc_xy_in_map[0] = " + locInArray[0]+", ");
 		System.out.println("loc_xy_in_map[1] = " + locInArray[1]);
 
@@ -621,10 +621,10 @@ public class Board extends JPanel implements ActionListener{
 	public int[] locationXYinTheArray(int locationX, int locationY) {
 		int []loc_xy_in_map = {-1,-1};
 		//double location_y_offset = 1.16;
-		if(locationY < boardOffset || locationY >= GameConstants.BOARD_WIDTH + boardOffset || locationX < 0 || locationX >= GameConstants.BOARD_HEIGHT) {
+		if(locationY < boardOffset || locationY > GameConstants.BOARD_WIDTH + boardOffset || locationX <= 0 || locationX > GameConstants.BOARD_HEIGHT) {
 			System.out.println("Your not in the borad");
 		}
-		else if(locationY >= boardOffset && locationY <= (GameConstants.SCREEN_WIDTH - boardOffset) && locationX > 0 && locationX < GameConstants.BOARD_HEIGHT) {
+		else if(locationY >= boardOffset && locationY <= (GameConstants.SCREEN_WIDTH - boardOffset) && locationX > 0 && locationX <= GameConstants.BOARD_HEIGHT) {
 			//grid_y:
 			loc_xy_in_map[0] = locationX/blockHeight;
 			//grid_y:
