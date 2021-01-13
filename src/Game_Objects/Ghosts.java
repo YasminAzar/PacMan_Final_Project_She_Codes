@@ -19,9 +19,9 @@ public class Ghosts extends GameCharacter {
 		//int location_y;
 		//String direction;
 	}
-	public Ghosts(Image image, int grid_x, int grid_y, int location_x, int location_y, String direction) {
+	public Ghosts(String image_string, int grid_x, int grid_y, int location_x, int location_y, String direction) {
 		super(null);
-		this.ghostImage = new ImageIcon().getImage();
+		this.ghostImage = new ImageIcon(image_string).getImage();
 		this.grid_x = grid_x;
 		this.grid_y = grid_y;
 		this.location_x = location_x;
