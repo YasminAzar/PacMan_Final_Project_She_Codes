@@ -10,6 +10,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -46,6 +47,7 @@ public class Board extends JPanel implements ActionListener{
 	String RIGHT = "R";
 	String BLUE = "1";
 	String WHITE = "0";
+	String EMPTY = "E";
 	String direction;
 	ArrayList<Junction> junctionArrList = new ArrayList<Junction>();
 	Junction junc = new Junction();
@@ -89,6 +91,79 @@ public class Board extends JPanel implements ActionListener{
 		callGhosts();
 		callPacman();
 		callPowerBalls();
+		/*this.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				switch(arg0.getKeyCode()) {
+				case KeyEvent.VK_UP:
+					//System.out.println("press");
+					if(isFree(pacman.getGrid_x()-1,pacman.getGrid_y()) == true){
+						//direction = UP;
+						pacman.setDirection(UP);
+						pacman.setGrid_x(pacman.getGrid_x()-1);
+						pacman.setGrid_y(pacman.getGrid_y());
+						pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+						map[pacman.getGrid_x()+1][pacman.getGrid_y()] = EMPTY;
+
+					}
+					break;
+				case  KeyEvent.VK_DOWN:
+					if(isFree(pacman.getGrid_x()+1,pacman.getGrid_y()) == true){
+						//direction = DOWN;
+						pacman.setDirection(DOWN);
+						pacman.setGrid_x(pacman.getGrid_x()+1);
+						pacman.setGrid_y(pacman.getGrid_y());
+						pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+						map[pacman.getGrid_x()-1][pacman.getGrid_y()] = EMPTY;
+					}
+					break;
+				case KeyEvent.VK_LEFT:
+					if(isFree(pacman.getGrid_x(),pacman.getGrid_y()-1) == true){
+						//direction = LEFT;
+						pacman.setDirection(LEFT);
+						pacman.setGrid_x(pacman.getGrid_x());
+						pacman.setGrid_y(pacman.getGrid_y()-1);
+						pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+						map[pacman.getGrid_x()][pacman.getGrid_y()+1] = EMPTY;
+					}
+					break;
+				case  KeyEvent.VK_RIGHT:
+					if(isFree(pacman.getGrid_x(),pacman.getGrid_y()+1) == true){
+						//direction = RIGHT;
+						pacman.setDirection(RIGHT);
+						pacman.setGrid_x(pacman.getGrid_x());
+						pacman.setGrid_y(pacman.getGrid_y()+1);
+						pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+						map[pacman.getGrid_x()][pacman.getGrid_y()-1] = EMPTY;
+					}
+					break;
+					//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
+				}
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});*/
+
 	}
 
 	/**
@@ -234,6 +309,7 @@ public class Board extends JPanel implements ActionListener{
 				}
 			}
 		}
+
 	}
 
 	/**
@@ -284,6 +360,8 @@ public class Board extends JPanel implements ActionListener{
 		pbLoc4 = locationXYinTheArray(powerBall_4.getLocation_x(),powerBall_4.getLocation_y());
 		map[pbLoc4[0]][pbLoc4[1]] = "pb4";
 		printMap();
+		System.out.println();
+
 	}
 
 	/**
@@ -666,12 +744,137 @@ public class Board extends JPanel implements ActionListener{
 		return loc_xy_in_map;
 	}
 
-	public void addKeyBoard(KeyEvent e, int x, int y){
-		int key = e.getKeyCode();
-		switch(key) {
+	private void addKeyBoard(){
+		KeyListener key = new KeyListener() {
+			boolean isReleased = false;
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				if(isReleased) {
+					switch(arg0.getKeyCode()) {
+					case KeyEvent.VK_UP:
+						if(isFree(pacman.getGrid_x()-1,pacman.getGrid_y()) == true){
+							//direction = UP;
+							pacman.setDirection(UP);
+							pacman.setGrid_x(pacman.getGrid_x()-1);
+							pacman.setGrid_y(pacman.getGrid_y());
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+							map[pacman.getGrid_x()+1][pacman.getGrid_y()] = EMPTY;
+
+						}
+						break;
+					case  KeyEvent.VK_DOWN:
+						if(isFree(pacman.getGrid_x()+1,pacman.getGrid_y()) == true){
+							//direction = DOWN;
+							pacman.setDirection(DOWN);
+							pacman.setGrid_x(pacman.getGrid_x()+1);
+							pacman.setGrid_y(pacman.getGrid_y());
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+							map[pacman.getGrid_x()-1][pacman.getGrid_y()] = EMPTY;
+						}
+						break;
+					case KeyEvent.VK_LEFT:
+						if(isFree(pacman.getGrid_x(),pacman.getGrid_y()-1) == true){
+							//direction = LEFT;
+							pacman.setDirection(LEFT);
+							pacman.setGrid_x(pacman.getGrid_x());
+							pacman.setGrid_y(pacman.getGrid_y()-1);
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+							map[pacman.getGrid_x()][pacman.getGrid_y()+1] = EMPTY;
+						}
+						break;
+					case  KeyEvent.VK_RIGHT:
+						if(isFree(pacman.getGrid_x(),pacman.getGrid_y()+1) == true){
+							//direction = RIGHT;
+							pacman.setDirection(RIGHT);
+							pacman.setGrid_x(pacman.getGrid_x());
+							pacman.setGrid_y(pacman.getGrid_y()+1);
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+							map[pacman.getGrid_x()][pacman.getGrid_y()-1] = EMPTY;
+						}
+						break;
+						//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
+					}
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				isReleased = true;
+			}
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				if(isReleased) {
+					switch(arg0.getKeyCode()) {
+					case KeyEvent.VK_UP:
+						if(isFree(pacman.getGrid_x()-1,pacman.getGrid_y()) == true){
+							//direction = UP;
+							pacman.setDirection(UP);
+							pacman.setGrid_x(pacman.getGrid_x()-1);
+							pacman.setGrid_y(pacman.getGrid_y());
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+							map[pacman.getGrid_x()+1][pacman.getGrid_y()] = EMPTY;
+
+						}
+						break;
+					case  KeyEvent.VK_DOWN:
+						if(isFree(pacman.getGrid_x()+1,pacman.getGrid_y()) == true){
+							//direction = DOWN;
+							pacman.setDirection(DOWN);
+							pacman.setGrid_x(pacman.getGrid_x()+1);
+							pacman.setGrid_y(pacman.getGrid_y());
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+							map[pacman.getGrid_x()-1][pacman.getGrid_y()] = EMPTY;
+						}
+						break;
+					case KeyEvent.VK_LEFT:
+						if(isFree(pacman.getGrid_x(),pacman.getGrid_y()-1) == true){
+							//direction = LEFT;
+							pacman.setDirection(LEFT);
+							pacman.setGrid_x(pacman.getGrid_x());
+							pacman.setGrid_y(pacman.getGrid_y()-1);
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+							map[pacman.getGrid_x()][pacman.getGrid_y()+1] = EMPTY;
+						}
+						break;
+					case  KeyEvent.VK_RIGHT:
+						if(isFree(pacman.getGrid_x(),pacman.getGrid_y()+1) == true){
+							//direction = RIGHT;
+							pacman.setDirection(RIGHT);
+							pacman.setGrid_x(pacman.getGrid_x());
+							pacman.setGrid_y(pacman.getGrid_y()+1);
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+							map[pacman.getGrid_x()][pacman.getGrid_y()-1] = EMPTY;
+						}
+						break;
+						//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
+					}
+				}
+			}
+		};
+		//int key = e.getKeyCode();
+		/*switch(key) {
 		case KeyEvent.VK_UP:
 			if(isFree(x-1,y) == true){
 				direction = UP;
+				//pacman.setDirection(UP);
 			}
 			break;
 		case  KeyEvent.VK_DOWN:
@@ -686,9 +889,10 @@ public class Board extends JPanel implements ActionListener{
 		case  KeyEvent.VK_RIGHT:
 			if(isFree(x,y+1) == true){
 				direction = RIGHT;
+				//pacman.setDirection(RIGHT);
 			}
 			//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
-		}
+		}*/
 	}
 
 	//is free means WHITE or pb 	
@@ -700,8 +904,10 @@ public class Board extends JPanel implements ActionListener{
 		}
 		return false;
 	}
-	
-	public void init() {}
+
+	public void init() {
+		
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
