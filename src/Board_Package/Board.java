@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
@@ -43,6 +44,9 @@ public class Board extends JPanel implements ActionListener{
 	String DOWN = "D";
 	String LEFT = "L";
 	String RIGHT = "R";
+	String BLUE = "1";
+	String WHITE = "0";
+	String direction;
 	ArrayList<Junction> junctionArrList = new ArrayList<Junction>();
 	Junction junc = new Junction();
 	int [] cubeSize = new int[2];
@@ -103,8 +107,8 @@ public class Board extends JPanel implements ActionListener{
 
 	private void createJunction() {
 		ArrayList<Junction> junctionsArrList = new ArrayList<Junction>();
-		String BLUE = "1";
-		String WHITE = "0";
+		//String BLUE = "1";
+		//String WHITE = "0";
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
 				// check directions
@@ -468,11 +472,11 @@ public class Board extends JPanel implements ActionListener{
 		blueGhost = new Ghosts(null);
 		pinkGhost = new Ghosts(null);
 		orangeGhost = new Ghosts(null);*/
-		
+
 		// calculate ghost offset
 		Image image_for_size = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
 		double ghost_offset = blockWidth/2 - image_for_size.getHeight(null)/2;
-		
+
 		/*Image red_ghost_image = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
 		Image blue_ghost_image = new ImageIcon("src/Images/blueGhostGIF.gif").getImage();
 		Image pink_ghost_image = new ImageIcon("src/Images/pinkGhostGIF.gif").getImage();
@@ -489,7 +493,7 @@ public class Board extends JPanel implements ActionListener{
 				(int)(firstIndexInEmptyRow*blockWidth+blockWidth-ghost_offset), LEFT);
 		System.out.println("redGhost grid_x: " + redGhost.getGrid_x() + " y "+redGhost.getGrid_y());
 		System.out.println("redGhost location_x: " + redGhost.getLocation_x() + " y "+redGhost.getLocation_y());
-		
+
 		/*blueGhost.setGameCharacterImage(blue_ghost_image);
 		blueGhost.setGrid_x(randEmptyRow);
 		blueGhost.setGrid_y(firstIndexInEmptyRow+1);
@@ -501,7 +505,7 @@ public class Board extends JPanel implements ActionListener{
 				(int)((firstIndexInEmptyRow+1)*blockWidth+blockWidth-ghost_offset), LEFT);
 		System.out.println("blueGhost grid_x: " + blueGhost.getGrid_x() + " y "+blueGhost.getGrid_y());
 		System.out.println("blueGhost location_x: " + blueGhost.getLocation_x() + " y "+blueGhost.getLocation_y());
-		
+
 		/*pinkGhost.setGameCharacterImage(pink_ghost_image);
 		pinkGhost.setGrid_x(randEmptyRow);
 		pinkGhost.setGrid_y(firstIndexInEmptyRow+2);
@@ -662,17 +666,41 @@ public class Board extends JPanel implements ActionListener{
 		return loc_xy_in_map;
 	}
 
-	//public addKeyBoard
-	// is free means WHITE or pb 	
-	/*private boolean isFree(int x, int y) { 		
-		if ((x >= 0 && x <= map.length) && (y >= 0 && y <= map.length)) { 			
-			if (map[x][y] == WHITE || map[x][y] == "pb1" || map[x][y] == "pb2" || map[x][y] == "pb3" || map[x][y] == "pb4") 				
-				return true;
+	public void addKeyBoard(KeyEvent e, int x, int y){
+		int key = e.getKeyCode();
+		switch(key) {
+		case KeyEvent.VK_UP:
+			if(isFree(x-1,y) == true){
+				direction = UP;
 			}
+			break;
+		case  KeyEvent.VK_DOWN:
+			if(isFree(x+1,y) == true){
+				direction = DOWN;
+			}
+		case KeyEvent.VK_LEFT:
+			if(isFree(x,y-1) == true){
+				direction = LEFT;
+			}
+			break;
+		case  KeyEvent.VK_RIGHT:
+			if(isFree(x,y+1) == true){
+				direction = RIGHT;
+			}
+			//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
+		}
+	}
 
-			return false;
-		}*/
-
+	//is free means WHITE or pb 	
+	private boolean isFree(int x, int y) { 	
+		if ((x >= 0 && x <= map.length) && (y >= 0 && y <= map.length)) { 			
+			if (map[x][y] != BLUE) {
+				return true;	
+			}
+		}
+		return false;
+	}
+	
 	public void init() {}
 
 	@Override
