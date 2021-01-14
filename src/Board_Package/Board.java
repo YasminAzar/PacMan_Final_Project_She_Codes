@@ -82,6 +82,9 @@ public class Board extends JPanel implements ActionListener{
 		locInArray = locationXYinTheArray(10,124);
 		System.out.print("check: loc_xy_in_map[0] = " + locInArray[0]+", ");
 		System.out.println("loc_xy_in_map[1] = " + locInArray[1]);
+		callGhosts();
+		callPacman();
+		callPowerBalls();
 	}
 
 	/**
@@ -243,9 +246,7 @@ public class Board extends JPanel implements ActionListener{
 		Graphics2D g2 = (Graphics2D) g;
 		// this is the transform I was using when I found the bug.
 		createBoard(g2);
-		callGhosts();
-		callPacman();
-		callPowerBalls();
+
 		drawGhost(g2, redGhost);
 		drawGhost(g2, blueGhost);
 		drawGhost(g2, pinkGhost);
@@ -529,15 +530,19 @@ public class Board extends JPanel implements ActionListener{
 	 * This function calls the pacman to enter the game
 	 */
 	public void callPacman() {
-		pacman = new Pacman(null);
-		Image pacman_image = new ImageIcon("src/Images/pacman_rightGIF.gif").getImage();
-		double pacman_offset = blockWidth/2 - pacman_image.getHeight(null)/2;
-		pacman.setGameCharacterImage(pacman_image);
+		//pacman = new Pacman(null);
+		Image pacman_image_for_size = new ImageIcon("src/Images/pacman_rightGIF.gif").getImage();
+		double pacman_offset = blockWidth/2 - pacman_image_for_size.getHeight(null)/2;
+		//pacman.setGameCharacterImage(pacman_image);
 		//(int)(firstIndexInEmptyRow*blockWidth*offset_ghost_pacman_w)+blockWidth*5+boardOffset, (int)(randEmptyRow*blockHeight*offset_ghost_pacman_h))
-		pacman.setGrid_x(randEmptyRow);
-		pacman.setGrid_y(firstIndexInEmptyRow+5);
-		pacman.setLocation_x(pacman.getGrid_x()*blockHeight + (int)pacman_offset);
-		pacman.setLocation_y((int)(pacman.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-pacman_offset));
+		//pacman.setGrid_x(randEmptyRow);
+		//pacman.setGrid_y(firstIndexInEmptyRow+5);
+		//pacman.setLocation_x(pacman.getGrid_x()*blockHeight + (int)pacman_offset);
+		//pacman.setLocation_y((int)(pacman.getGrid_y()*blockWidth/**offsetGhostPacman_w)*/+blockWidth-pacman_offset));
+		pacman = new Pacman("src/Images/pacman_rightGIF.gif", randEmptyRow, firstIndexInEmptyRow+5,
+				randEmptyRow*blockHeight + (int)pacman_offset,
+				(int)((firstIndexInEmptyRow+5)*blockWidth+blockWidth-pacman_offset),
+				RIGHT);
 		System.out.println("pacman grid_x: " + pacman.getGrid_x() + " y "+pacman.getGrid_y());
 		System.out.println("pacman location_x: " + pacman.getLocation_x() + " y "+pacman.getLocation_y());
 	}
@@ -597,7 +602,7 @@ public class Board extends JPanel implements ActionListener{
 	 * @param player
 	 */
 	private void drawPacman(Graphics2D g2d, Pacman player) {
-		g2d.drawImage(player.getGameCharacterImage(), player.getLocation_y(), player.getLocation_x(), this);
+		g2d.drawImage(player.getPacmanImage(), player.getLocation_y(), player.getLocation_x(), this);
 	}
 
 	/**
@@ -656,6 +661,17 @@ public class Board extends JPanel implements ActionListener{
 		}
 		return loc_xy_in_map;
 	}
+
+	//public addKeyBoard
+	// is free means WHITE or pb 	
+	/*private boolean isFree(int x, int y) { 		
+		if ((x >= 0 && x <= map.length) && (y >= 0 && y <= map.length)) { 			
+			if (map[x][y] == WHITE || map[x][y] == "pb1" || map[x][y] == "pb2" || map[x][y] == "pb3" || map[x][y] == "pb4") 				
+				return true;
+			}
+
+			return false;
+		}*/
 
 	public void init() {}
 
