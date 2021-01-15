@@ -12,6 +12,7 @@ public class Pacman extends GameCharacter{
 		super(args);
 		// TODO Auto-generated constructor stub
 	}
+	
 	public Pacman(String image_string, int grid_x, int grid_y, int location_x, int location_y, String direction) {
 		super(null);
 		this.pacmanImage = new ImageIcon(image_string).getImage();
@@ -28,5 +29,4 @@ public class Pacman extends GameCharacter{
 	public void setPacmanImage(Image image) {
 		this.pacmanImage = image;
 	}
-
 }

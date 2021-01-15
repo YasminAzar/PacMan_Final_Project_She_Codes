@@ -19,6 +19,7 @@ public class Ghosts extends GameCharacter {
 		//int location_y;
 		//String direction;
 	}
+	
 	public Ghosts(String image_string, int grid_x, int grid_y, int location_x, int location_y, String direction) {
 		super(null);
 		this.ghostImage = new ImageIcon(image_string).getImage();
@@ -64,5 +65,4 @@ public class Ghosts extends GameCharacter {
 	public void setLocation_y(int location_y) {
 		this.location_y = location_y;
 	}
-
 }
