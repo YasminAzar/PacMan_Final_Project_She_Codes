@@ -91,23 +91,8 @@ public class Board extends JPanel implements ActionListener{
 		callGhosts();
 		callPacman();
 		callPowerBalls();
+		addKeyBoard();
 		/*this.addKeyListener(new KeyListener() {
-	          @Override
-	          public void keyTyped(KeyEvent e) {
-	        	  System.out.println("keyTyped " + e.getKeyChar());
-	          }
-	          @Override
-	          public void keyReleased(KeyEvent e) {
-	        	  System.out.println("keyReleased " + e.getKeyChar());
-	          }
-	          @Override
-	          public void keyPressed(KeyEvent e) {
-	            System.out.println("Pressed " + e.getKeyChar());
-	          }
-	        });
-		 this.setFocusable(true);
-	     this.requestFocusInWindow();*/
-		this.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				switch(arg0.getKeyCode()) {
@@ -163,24 +148,24 @@ public class Board extends JPanel implements ActionListener{
 					break;
 					//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
 				}
-				
+
 			}
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		});
-		 this.setFocusable(true);
-	     this.requestFocusInWindow();
+		this.setFocusable(true);
+		this.requestFocusInWindow();*/
 	}
 
 	/**
@@ -752,7 +737,6 @@ public class Board extends JPanel implements ActionListener{
 						loc_xy_in_map[1] = k;
 						//System.out.print("loc_xy_in_map[0] = " + loc_xy_in_map[0] +", ");
 					}
-
 					//System.out.print("loc_xy_in_map[0] = " + loc_xy_in_map[0]+", ");
 					//System.out.println("loc_xy_in_map[1] = " + loc_xy_in_map[0] +", ");
 				}
@@ -762,12 +746,15 @@ public class Board extends JPanel implements ActionListener{
 	}
 
 	private void addKeyBoard(){
-		KeyListener key = new KeyListener() {
+		Image pacman_image_for_size = new ImageIcon("src/Images/pacman_rightGIF.gif").getImage();
+		double pacman_offset = blockWidth/2 - pacman_image_for_size.getHeight(null)/2;
+		//KeyListener key = new KeyListener();
 			boolean isReleased = false;
+			this.addKeyListener(new KeyListener() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				if(isReleased) {
-					switch(arg0.getKeyCode()) {
+				//if(isReleased) {
+					/*switch(arg0.getKeyCode()) {
 					case KeyEvent.VK_UP:
 						if(isFree(pacman.getGrid_x()-1,pacman.getGrid_y()) == true){
 							//direction = UP;
@@ -818,19 +805,19 @@ public class Board extends JPanel implements ActionListener{
 						}
 						break;
 						//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
-					}
-				}
+					}*/
+				//}
 			}
 
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				// TODO Auto-generated method stub
-				isReleased = true;
+				//isReleased = true;
 			}
 
 			@Override
 			public void keyPressed(KeyEvent arg0) {
-				if(isReleased) {
+				//if(isReleased) {
 					switch(arg0.getKeyCode()) {
 					case KeyEvent.VK_UP:
 						if(isFree(pacman.getGrid_x()-1,pacman.getGrid_y()) == true){
@@ -838,8 +825,8 @@ public class Board extends JPanel implements ActionListener{
 							pacman.setDirection(UP);
 							pacman.setGrid_x(pacman.getGrid_x()-1);
 							pacman.setGrid_y(pacman.getGrid_y());
-							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
-							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
 							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 							map[pacman.getGrid_x()+1][pacman.getGrid_y()] = EMPTY;
 
@@ -851,8 +838,8 @@ public class Board extends JPanel implements ActionListener{
 							pacman.setDirection(DOWN);
 							pacman.setGrid_x(pacman.getGrid_x()+1);
 							pacman.setGrid_y(pacman.getGrid_y());
-							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
-							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
 							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 							map[pacman.getGrid_x()-1][pacman.getGrid_y()] = EMPTY;
 						}
@@ -863,8 +850,8 @@ public class Board extends JPanel implements ActionListener{
 							pacman.setDirection(LEFT);
 							pacman.setGrid_x(pacman.getGrid_x());
 							pacman.setGrid_y(pacman.getGrid_y()-1);
-							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
-							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
 							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 							map[pacman.getGrid_x()][pacman.getGrid_y()+1] = EMPTY;
 						}
@@ -875,8 +862,8 @@ public class Board extends JPanel implements ActionListener{
 							pacman.setDirection(RIGHT);
 							pacman.setGrid_x(pacman.getGrid_x());
 							pacman.setGrid_y(pacman.getGrid_y()+1);
-							pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
-							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
+							pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
+							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
 							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 							map[pacman.getGrid_x()][pacman.getGrid_y()-1] = EMPTY;
 						}
@@ -884,32 +871,10 @@ public class Board extends JPanel implements ActionListener{
 						//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
 					}
 				}
-			}
-		};
-		//int key = e.getKeyCode();
-		/*switch(key) {
-		case KeyEvent.VK_UP:
-			if(isFree(x-1,y) == true){
-				direction = UP;
-				//pacman.setDirection(UP);
-			}
-			break;
-		case  KeyEvent.VK_DOWN:
-			if(isFree(x+1,y) == true){
-				direction = DOWN;
-			}
-		case KeyEvent.VK_LEFT:
-			if(isFree(x,y-1) == true){
-				direction = LEFT;
-			}
-			break;
-		case  KeyEvent.VK_RIGHT:
-			if(isFree(x,y+1) == true){
-				direction = RIGHT;
-				//pacman.setDirection(RIGHT);
-			}
-			//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
-		}*/
+			//}
+		});
+		this.setFocusable(true);
+		this.requestFocusInWindow();
 	}
 
 	//is free means WHITE or pb 	
@@ -923,7 +888,7 @@ public class Board extends JPanel implements ActionListener{
 	}
 
 	public void init() {
-		
+
 	}
 
 	@Override
