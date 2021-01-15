@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 import Game_Constants_Package.GameConstants;
 import Game_Objects.Ghosts;
+import Game_Objects.Lives;
 import Game_Objects.Pacman;
 import Game_Objects.Power_Ball;
 import Log_Package.PacmanLog;
@@ -40,7 +41,8 @@ public class Board extends JPanel implements ActionListener{
 	Ghosts redGhost, blueGhost, pinkGhost, orangeGhost;
 	Pacman pacman;
 	Power_Ball powerBall_1, powerBall_2, powerBall_3, powerBall_4;
-	String [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_1.clone() ;
+	Lives firstLife, secondLife, thirdLife;
+	String [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_2.clone() ;
 	String UP = "U";
 	String DOWN = "D";
 	String LEFT = "L";
@@ -91,6 +93,7 @@ public class Board extends JPanel implements ActionListener{
 		callGhosts();
 		callPacman();
 		callPowerBalls();
+		callLives();
 		addKeyBoard();
 		/*this.addKeyListener(new KeyListener() {
 			@Override
@@ -336,6 +339,9 @@ public class Board extends JPanel implements ActionListener{
 		drawPowerBall(g2, powerBall_2);
 		drawPowerBall(g2, powerBall_3);
 		drawPowerBall(g2, powerBall_4);
+		drawLives(g2, firstLife);
+		drawLives(g2, secondLife);
+		drawLives(g2, thirdLife);
 		//addCharacter();
 		redGhostLoc = locationXYinTheArray(redGhost.getLocation_x(),redGhost.getLocation_y());
 		map[redGhostLoc[0]][redGhostLoc[1]] = "rg";
@@ -632,6 +638,38 @@ public class Board extends JPanel implements ActionListener{
 		powerBall_4.setLocation_x(powerBall_4.getGrid_x()*blockHeight + (int)offsetPowerBall_w_h);
 		powerBall_4.setLocation_y((int)(powerBall_4.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
 	}
+	public void callLives() {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.anchor = GridBagConstraints.NORTH;
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		// calculate ghost offset
+		Image heart_image_for_size = new ImageIcon("src/Images/heart.png").getImage();
+		double heart_offset = blockWidth/2 - heart_image_for_size.getHeight(null)/2;
+		firstLife = new Lives(null);
+		secondLife = new Lives(null);
+		thirdLife = new Lives(null);
+		Image first_life_image = new ImageIcon("src/Images/heart.png").getImage();
+		Image second_life_image = new ImageIcon("src/Images/heart.png").getImage();
+		Image third_life_image = new ImageIcon("src/Images/heart.png").getImage();
+		firstLife.setGameCharacterImage(first_life_image);
+		firstLife.setLocation_x((int)(GameConstants.SCREEN_HEIGHT/2 - heart_image_for_size.getHeight(null)*2));
+		firstLife.setLocation_y((int)(boardOffset/2-heart_offset));
+		secondLife.setGameCharacterImage(second_life_image);
+		secondLife.setLocation_x((int)(GameConstants.SCREEN_HEIGHT/2- heart_image_for_size.getHeight(null)));
+		secondLife.setLocation_y((int)(boardOffset/2-heart_offset));
+		thirdLife.setGameCharacterImage(third_life_image);
+		thirdLife.setLocation_x(GameConstants.SCREEN_HEIGHT/2);
+		thirdLife.setLocation_y((int)(boardOffset/2-heart_offset));
+		/*firstLife = new Lives("src/Images/heart.png", (int)GameConstants.SCREEN_HEIGHT/2, 
+				(int)boardOffset/2);
+		secondLife = new Lives("src/Images/heart.png", (int)(GameConstants.SCREEN_HEIGHT/2 + heart_image_for_size.getHeight(null)), 
+				(int)boardOffset/2);
+		thirdLife = new Lives("src/Images/heart.png", (int)(GameConstants.SCREEN_HEIGHT/2 + heart_image_for_size.getHeight(null)*2), 
+				(int)boardOffset/2);*/
+	}
+	
 
 	/**
 	 * This function draws the ghosts on the game board
@@ -661,6 +699,10 @@ public class Board extends JPanel implements ActionListener{
 				powerBall.getLocation_x(), this);
 	}
 
+	private void drawLives(Graphics2D g2d, Lives lives) {
+		g2d.drawImage(lives.getGameCharacterImage(), lives.getLocation_y(), 
+				lives.getLocation_x(), this);
+	}
 	/**
 	 * This function gets a general position in pixels and returns a position on the array
 	 * @param locationX
@@ -775,7 +817,7 @@ public class Board extends JPanel implements ActionListener{
 
 						}
 						break;
-					case  KeyEvent.VK_DOWN:
+					case KeyEvent.VK_DOWN:
 						if(isFree(pacman.getGrid_x()+1,pacman.getGrid_y()) == true){
 							//direction = DOWN;
 							pacman.setDirection(DOWN);
@@ -799,7 +841,7 @@ public class Board extends JPanel implements ActionListener{
 							map[pacman.getGrid_x()][pacman.getGrid_y()+1] = EMPTY;
 						}
 						break;
-					case  KeyEvent.VK_RIGHT:
+					case KeyEvent.VK_RIGHT:
 						if(isFree(pacman.getGrid_x(),pacman.getGrid_y()+1) == true){
 							//direction = RIGHT;
 							pacman.setDirection(RIGHT);
@@ -822,14 +864,20 @@ public class Board extends JPanel implements ActionListener{
 
 	//is free means WHITE or pb 	
 	private boolean isFree(int x, int y) { 	
-		if ((x >= 0 && x <= map.length) && (y >= 0 && y <= map.length)) { 			
+		if ((x >= 0 && x <= map.length) && (y >= 0 && y < map.length)) { 			
 			if (map[x][y] != BLUE) {
 				return true;	
 			}
 		}
 		return false;
 	}
-
+	
+	//Write here a code for update score
+	public int updateScore() {
+		//TODO update the score
+		return 1;
+	}
+	
 	public void init() {
 
 	}
