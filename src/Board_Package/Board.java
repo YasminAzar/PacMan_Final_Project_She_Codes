@@ -92,6 +92,22 @@ public class Board extends JPanel implements ActionListener{
 		callPacman();
 		callPowerBalls();
 		/*this.addKeyListener(new KeyListener() {
+	          @Override
+	          public void keyTyped(KeyEvent e) {
+	        	  System.out.println("keyTyped " + e.getKeyChar());
+	          }
+	          @Override
+	          public void keyReleased(KeyEvent e) {
+	        	  System.out.println("keyReleased " + e.getKeyChar());
+	          }
+	          @Override
+	          public void keyPressed(KeyEvent e) {
+	            System.out.println("Pressed " + e.getKeyChar());
+	          }
+	        });
+		 this.setFocusable(true);
+	     this.requestFocusInWindow();*/
+		this.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				switch(arg0.getKeyCode()) {
@@ -162,8 +178,9 @@ public class Board extends JPanel implements ActionListener{
 				
 			}
 			
-		});*/
-
+		});
+		 this.setFocusable(true);
+	     this.requestFocusInWindow();
 	}
 
 	/**
