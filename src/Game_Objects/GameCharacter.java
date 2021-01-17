@@ -70,5 +70,12 @@ public class GameCharacter {
 	public void setDirection(String direction) {
 		this.direction = direction;
 	}
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	
 }

@@ -42,6 +42,7 @@ public class Board extends JPanel implements ActionListener{
 	Pacman pacman;
 	Power_Ball powerBall_1, powerBall_2, powerBall_3, powerBall_4;
 	Lives firstLife, secondLife, thirdLife;
+	UpdatedData updatedData;
 	String [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_1.clone() ;
 	String UP = "U";
 	String DOWN = "D";
@@ -50,6 +51,8 @@ public class Board extends JPanel implements ActionListener{
 	String BLUE = "1";
 	String WHITE = "0";
 	String EMPTY = "E";
+	String EXISTS = "exists";
+	String NOT_EXIST = "not exist";
 	String direction;
 	ArrayList<Junction> junctionArrList = new ArrayList<Junction>();
 	Junction junc = new Junction();
@@ -78,23 +81,18 @@ public class Board extends JPanel implements ActionListener{
 		setBorder(new EmptyBorder(10, 10, 600, 600));
 		setLayout(new GridBagLayout());
 		randEmptyRow = findEmptyRow(map);
-		//System.out.println("randEmptyRow = " + randEmptyRow);
 		firstIndexInEmptyRow = findFirstIndex(randEmptyRow);
 		System.out.println("firstIndexInEmptyRow = " + firstIndexInEmptyRow);
 		locationBallX = calcLocationBall(blockWidth)[0];
-		//System.out.println("locationBallX = " + locationBallX);
 		locationBallY = calcLocationBall(blockHeight)[1];
-		//System.out.println("locationBallY = " + locationBallY);
 		createJunction();
 		createPowerBalls();
-		locInArray = locationXYinTheArray(10,124);
-		System.out.print("check: loc_xy_in_map[0] = " + locInArray[0]+", ");
-		System.out.println("loc_xy_in_map[1] = " + locInArray[1]);
 		callGhosts();
 		callPacman();
 		callPowerBalls();
 		callLives();
-		addKeyBoard();
+		addKeyBoard();		
+		//updateScore(1,3);
 		/*this.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
@@ -184,7 +182,7 @@ public class Board extends JPanel implements ActionListener{
 		pbIndex6 = pbLocation[5];
 		System.out.println("pbIndex1 = " + pbIndex1 + " ,  pbIndex2 = " + pbIndex2 + ", pbIndex3 = " + pbIndex3 + " , pbIndex4 = " + pbIndex4 + " , pbIndex5 = " + pbIndex5 + " , pbIndex6 = " + pbIndex6);
 	}
-	
+
 	/**
 	 * This function finds all the junction on the board and saves them in an ArrayList
 	 */
@@ -329,6 +327,7 @@ public class Board extends JPanel implements ActionListener{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		// this is the transform I was using when I found the bug.
+
 		createBoard(g2);
 		drawGhost(g2, redGhost);
 		drawGhost(g2, blueGhost);
@@ -356,15 +355,24 @@ public class Board extends JPanel implements ActionListener{
 		map[orangeGhostLoc[0]][orangeGhostLoc[1]] = "og";
 		//System.out.println("map["+orangeGhostLoc[0]+ "][" + orangeGhostLoc[1]+ "]" + " = gh4");
 		pacmanLoc = locationXYinTheArray(pacman.getLocation_x(),pacman.getLocation_y());
+		//updateScore(pacman.getGrid_x(), pacman.getGrid_y());
 		map[pacmanLoc[0]][pacmanLoc[1]] = "pac";
+		if(powerBall_1.getStatus() == EXISTS) {
 		pbLoc1 = locationXYinTheArray(powerBall_1.getLocation_x(),powerBall_1.getLocation_y());
 		map[pbLoc1[0]][pbLoc1[1]] = "pb1";
+		}
+		if(powerBall_2.getStatus() == EXISTS) {
 		pbLoc2 = locationXYinTheArray(powerBall_2.getLocation_x(),powerBall_2.getLocation_y());
 		map[pbLoc2[0]][pbLoc2[1]] = "pb2";
+		}
+		if(powerBall_3.getStatus() == EXISTS) {
 		pbLoc3 = locationXYinTheArray(powerBall_3.getLocation_x(),powerBall_3.getLocation_y());
 		map[pbLoc3[0]][pbLoc3[1]] = "pb3";
+		}
+		if(powerBall_4.getStatus() == EXISTS) {
 		pbLoc4 = locationXYinTheArray(powerBall_4.getLocation_x(),powerBall_4.getLocation_y());
 		map[pbLoc4[0]][pbLoc4[1]] = "pb4";
+		}
 		printMap();
 		System.out.println();
 	}
@@ -556,11 +564,6 @@ public class Board extends JPanel implements ActionListener{
 		// calculate ghost offset
 		Image image_for_size = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
 		double ghost_offset = blockWidth/2 - image_for_size.getHeight(null)/2;
-
-		/*Image red_ghost_image = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
-		Image blue_ghost_image = new ImageIcon("src/Images/blueGhostGIF.gif").getImage();
-		Image pink_ghost_image = new ImageIcon("src/Images/pinkGhostGIF.gif").getImage();
-		Image orange_ghost_image = new ImageIcon("src/Images/orangeGhostGIF.gif").getImage();*/
 		redGhost = new Ghosts("src/Images/redGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow, 
 				randEmptyRow*blockHeight+(int)ghost_offset, 
 				(int)(firstIndexInEmptyRow*blockWidth+blockWidth-ghost_offset), LEFT);
@@ -622,21 +625,25 @@ public class Board extends JPanel implements ActionListener{
 		powerBall_1.setGrid_y(pbIndex2);
 		powerBall_1.setLocation_x(powerBall_1.getGrid_x()*blockHeight + (int)offsetPowerBall_w_h);
 		powerBall_1.setLocation_y((int)(powerBall_1.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
+		powerBall_1.setStatus(EXISTS);
 		powerBall_2.setGameCharacterImage(power_ball_2_image);
 		powerBall_2.setGrid_x(pbIndex1);
 		powerBall_2.setGrid_y(pbIndex3);
 		powerBall_2.setLocation_x(powerBall_2.getGrid_x()*blockHeight + (int)offsetPowerBall_w_h);
 		powerBall_2.setLocation_y((int)(powerBall_2.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
+		powerBall_2.setStatus(EXISTS);
 		powerBall_3.setGameCharacterImage(power_ball_3_image);
 		powerBall_3.setGrid_x(pbIndex4);
 		powerBall_3.setGrid_y(pbIndex5);
 		powerBall_3.setLocation_x(powerBall_3.getGrid_x()*blockHeight + (int)offsetPowerBall_w_h);
 		powerBall_3.setLocation_y((int)(powerBall_3.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
+		powerBall_3.setStatus(EXISTS);
 		powerBall_4.setGameCharacterImage(power_ball_4_image);
 		powerBall_4.setGrid_x(pbIndex4);
 		powerBall_4.setGrid_y(pbIndex6);
 		powerBall_4.setLocation_x(powerBall_4.getGrid_x()*blockHeight + (int)offsetPowerBall_w_h);
 		powerBall_4.setLocation_y((int)(powerBall_4.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
+		powerBall_4.setStatus(EXISTS);
 	}
 	public void callLives() {
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -669,7 +676,7 @@ public class Board extends JPanel implements ActionListener{
 		thirdLife = new Lives("src/Images/heart.png", (int)(GameConstants.SCREEN_HEIGHT/2 + heart_image_for_size.getHeight(null)*2), 
 				(int)boardOffset/2);*/
 	}
-	
+
 
 	/**
 	 * This function draws the ghosts on the game board
@@ -695,14 +702,18 @@ public class Board extends JPanel implements ActionListener{
 	 * @param powerBall
 	 */
 	private void drawPowerBall(Graphics2D g2d, Power_Ball powerBall) {
+		if(powerBall.getStatus() == EXISTS) {
 		g2d.drawImage(powerBall.getGameCharacterImage(), powerBall.getLocation_y(), 
 				powerBall.getLocation_x(), this);
+		}
+		//if(powerBall.getStatus() == "NotExist"
 	}
 
 	private void drawLives(Graphics2D g2d, Lives lives) {
 		g2d.drawImage(lives.getGameCharacterImage(), lives.getLocation_y(), 
 				lives.getLocation_x(), this);
 	}
+
 	/**
 	 * This function gets a general position in pixels and returns a position on the array
 	 * @param locationX
@@ -735,7 +746,7 @@ public class Board extends JPanel implements ActionListener{
 		double pacman_offset = blockWidth/2 - pacman_image_for_size.getHeight(null)/2;
 		//KeyListener key = new KeyListener();
 		//boolean isReleased = false;
-			this.addKeyListener(new KeyListener() {
+		this.addKeyListener(new KeyListener() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 			}
@@ -745,71 +756,84 @@ public class Board extends JPanel implements ActionListener{
 				// TODO Auto-generated method stub
 				//isReleased = true;
 			}
-
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				//if(isReleased) {
-					switch(arg0.getKeyCode()) {
-					case KeyEvent.VK_UP:
-						if(isFree(pacman.getGrid_x()-1,pacman.getGrid_y()) == true){
-							//direction = UP;
-							Image pacman_image_up = new ImageIcon("src/Images/pacman_upGIF.gif").getImage();
-							pacman.setDirection(UP);
-							pacman.setGrid_x(pacman.getGrid_x()-1);
-							pacman.setGrid_y(pacman.getGrid_y());
-							pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
-							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
-							pacman.setPacmanImage(pacman_image_up);
-							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
-							map[pacman.getGrid_x()+1][pacman.getGrid_y()] = EMPTY;
-
+				switch(arg0.getKeyCode()) {
+				case KeyEvent.VK_UP:
+					if(isFree(pacman.getGrid_x()-1,pacman.getGrid_y()) == true){
+						//direction = UP;
+						Image pacman_image_up = new ImageIcon("src/Images/pacman_upGIF.gif").getImage();
+						pacman.setDirection(UP);
+						pacman.setGrid_x(pacman.getGrid_x()-1);
+						pacman.setGrid_y(pacman.getGrid_y());
+						pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
+						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
+						pacman.setPacmanImage(pacman_image_up);
+						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
+							System.out.println("Eat PB");
 						}
-						break;
-					case KeyEvent.VK_DOWN:
-						if(isFree(pacman.getGrid_x()+1,pacman.getGrid_y()) == true){
-							//direction = DOWN;
-							Image pacman_image_down = new ImageIcon("src/Images/pacman_downGIF.gif").getImage();
-							pacman.setDirection(DOWN);
-							pacman.setGrid_x(pacman.getGrid_x()+1);
-							pacman.setGrid_y(pacman.getGrid_y());
-							pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
-							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
-							pacman.setPacmanImage(pacman_image_down);
-							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
-							map[pacman.getGrid_x()-1][pacman.getGrid_y()] = EMPTY;
-						}
-						break;
-					case KeyEvent.VK_LEFT:
-						if(isFree(pacman.getGrid_x(),pacman.getGrid_y()-1) == true){
-							//direction = LEFT;
-							Image pacman_image_left = new ImageIcon("src/Images/pacman_leftGIF.gif").getImage();
-							pacman.setDirection(LEFT);
-							pacman.setGrid_x(pacman.getGrid_x());
-							pacman.setGrid_y(pacman.getGrid_y()-1);
-							pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
-							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
-							pacman.setPacmanImage(pacman_image_left);
-							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
-							map[pacman.getGrid_x()][pacman.getGrid_y()+1] = EMPTY;
-						}
-						break;
-					case KeyEvent.VK_RIGHT:
-						if(isFree(pacman.getGrid_x(),pacman.getGrid_y()+1) == true){
-							//direction = RIGHT;
-							Image pacman_image_right = new ImageIcon("src/Images/pacman_rightGIF.gif").getImage();
-							pacman.setDirection(RIGHT);
-							pacman.setGrid_x(pacman.getGrid_x());
-							pacman.setGrid_y(pacman.getGrid_y()+1);
-							pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
-							pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
-							pacman.setPacmanImage(pacman_image_right);
-							map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
-							map[pacman.getGrid_x()][pacman.getGrid_y()-1] = EMPTY;
-						}
-						break;
-						//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
+						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+						map[pacman.getGrid_x()+1][pacman.getGrid_y()] = EMPTY;
+						
 					}
+					break;
+				case KeyEvent.VK_DOWN:
+					if(isFree(pacman.getGrid_x()+1,pacman.getGrid_y()) == true){
+						//direction = DOWN;
+						Image pacman_image_down = new ImageIcon("src/Images/pacman_downGIF.gif").getImage();
+						pacman.setDirection(DOWN);
+						pacman.setGrid_x(pacman.getGrid_x()+1);
+						pacman.setGrid_y(pacman.getGrid_y());
+						pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
+						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
+						pacman.setPacmanImage(pacman_image_down);
+						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
+							System.out.println("Eat PB");
+						}
+						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+						map[pacman.getGrid_x()-1][pacman.getGrid_y()] = EMPTY;
+					}
+					break;
+				case KeyEvent.VK_LEFT:
+					if(isFree(pacman.getGrid_x(),pacman.getGrid_y()-1) == true){
+						//direction = LEFT;
+						Image pacman_image_left = new ImageIcon("src/Images/pacman_leftGIF.gif").getImage();
+						pacman.setDirection(LEFT);
+						pacman.setGrid_x(pacman.getGrid_x());
+						pacman.setGrid_y(pacman.getGrid_y()-1);
+						pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
+						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
+						pacman.setPacmanImage(pacman_image_left);
+						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
+							System.out.println("Eat PB");
+						}
+						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+						map[pacman.getGrid_x()][pacman.getGrid_y()+1] = EMPTY;
+					}
+					break;
+				case KeyEvent.VK_RIGHT:
+					if(isFree(pacman.getGrid_x(),pacman.getGrid_y()+1) == true){
+						//direction = RIGHT;
+						Image pacman_image_right = new ImageIcon("src/Images/pacman_rightGIF.gif").getImage();
+						pacman.setDirection(RIGHT);
+						pacman.setGrid_x(pacman.getGrid_x());
+						pacman.setGrid_y(pacman.getGrid_y()+1);
+						pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
+						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
+						pacman.setPacmanImage(pacman_image_right);
+						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
+							System.out.println("Eat PB");
+						}
+						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
+						map[pacman.getGrid_x()][pacman.getGrid_y()-1] = EMPTY;
+					}
+					break;
+				default:
+					System.out.println("You did not press the correct button");
+					//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
 				}
+			}
 			//}
 		});
 		this.setFocusable(true);
@@ -825,13 +849,47 @@ public class Board extends JPanel implements ActionListener{
 		}
 		return false;
 	}
-	
-	//Write here a code for update score
-	public int updateScore() {
-		//TODO update the score
-		return 1;
+	/**
+	 * This function checks if the Pacman has reached the power ball
+	 * @param x
+	 * @param y
+	 * @return True - if the Pacman got to the power ball
+	 */
+	private boolean isItPbLocatin(int x, int y) {
+		if(map[x][y] == "pb1") { 
+			powerBall_1.setStatus(NOT_EXIST);
+			return true;
+		}
+		if(map[x][y] == "pb2") {
+			powerBall_2.setStatus(NOT_EXIST);
+			return true;
+		}
+		if(map[x][y] == "pb3") {
+			powerBall_3.setStatus(NOT_EXIST);
+			return true;
+		}
+		if(map[x][y] == "pb4") {
+			powerBall_4.setStatus(NOT_EXIST);
+			return true;
+		}
+		return false;
 	}
-	
+
+	//Write here a code for update score
+	public int updateScore(int x, int y) {
+		int score = 0;
+		if(map[x][y] == WHITE) {
+			updatedData.setScore(10);
+		}
+		else if(map[x][y] == "pb1" || map[x][y] == "pb2" || map[x][y] == "pb3" 
+				|| map[x][y] == "pb4") {
+			updatedData.setScore(50);
+		}
+		score = score + updatedData.getScore();
+		System.out.println("Score: " + score);
+		return score;
+	}
+
 	public void init() {
 
 	}
