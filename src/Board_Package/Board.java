@@ -25,6 +25,7 @@ import Game_Objects.Lives;
 import Game_Objects.Pacman;
 import Game_Objects.Power_Ball;
 import Log_Package.PacmanLog;
+import Score.GameScore;
 
 public class Board extends JPanel implements ActionListener{
 
@@ -43,6 +44,7 @@ public class Board extends JPanel implements ActionListener{
 	Power_Ball powerBall_1, powerBall_2, powerBall_3, powerBall_4;
 	Lives firstLife, secondLife, thirdLife;
 	UpdatedData updatedData;
+	GameScore gameScore;
 	String [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_1.clone() ;
 	String UP = "U";
 	String DOWN = "D";
@@ -91,7 +93,7 @@ public class Board extends JPanel implements ActionListener{
 		callPacman();
 		callPowerBalls();
 		callLives();
-		addKeyBoard();		
+		addKeyBoard();	
 		//updateScore(1,3);
 		/*this.addKeyListener(new KeyListener() {
 			@Override
@@ -327,7 +329,7 @@ public class Board extends JPanel implements ActionListener{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		// this is the transform I was using when I found the bug.
-
+		
 		createBoard(g2);
 		drawGhost(g2, redGhost);
 		drawGhost(g2, blueGhost);
@@ -342,6 +344,7 @@ public class Board extends JPanel implements ActionListener{
 		drawLives(g2, secondLife);
 		drawLives(g2, thirdLife);
 		//addCharacter();
+		
 		redGhostLoc = locationXYinTheArray(redGhost.getLocation_x(),redGhost.getLocation_y());
 		map[redGhostLoc[0]][redGhostLoc[1]] = "rg";
 		//System.out.println("map["+redGhostLoc[0]+ "][" + redGhostLoc[1]+ "]" + " = gh1");
@@ -355,6 +358,7 @@ public class Board extends JPanel implements ActionListener{
 		map[orangeGhostLoc[0]][orangeGhostLoc[1]] = "og";
 		//System.out.println("map["+orangeGhostLoc[0]+ "][" + orangeGhostLoc[1]+ "]" + " = gh4");
 		pacmanLoc = locationXYinTheArray(pacman.getLocation_x(),pacman.getLocation_y());
+		//gameScore.updateScore(pacman.getGrid_x(), pacman.getGrid_y());
 		//updateScore(pacman.getGrid_x(), pacman.getGrid_y());
 		map[pacmanLoc[0]][pacmanLoc[1]] = "pac";
 		if(powerBall_1.getStatus() == EXISTS) {
@@ -791,6 +795,7 @@ public class Board extends JPanel implements ActionListener{
 						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat PB");
 						}
+						//gameScore.updateScore(pacman.getGrid_x(), pacman.getGrid_y());
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 						map[pacman.getGrid_x()-1][pacman.getGrid_y()] = EMPTY;
 					}
@@ -849,6 +854,19 @@ public class Board extends JPanel implements ActionListener{
 		}
 		return false;
 	}
+	//Write here a code for update score
+	public int updateScore(int x, int y) {
+		//int score = 0;
+		if(map[x][y] == WHITE) {
+			gameScore.setScore(10);
+		}
+		else if(map[x][y] == "pb1" || map[x][y] == "pb2" || 
+				map[x][y] == "pb3" || map[x][y] == "pb4") {
+			gameScore.setScore(50);
+		}
+		System.out.println("Score: " + gameScore.getScore());
+		return gameScore.getScore();
+	}
 	/**
 	 * This function checks if the Pacman has reached the power ball
 	 * @param x
@@ -875,20 +893,7 @@ public class Board extends JPanel implements ActionListener{
 		return false;
 	}
 
-	//Write here a code for update score
-	public int updateScore(int x, int y) {
-		int score = 0;
-		if(map[x][y] == WHITE) {
-			updatedData.setScore(10);
-		}
-		else if(map[x][y] == "pb1" || map[x][y] == "pb2" || map[x][y] == "pb3" 
-				|| map[x][y] == "pb4") {
-			updatedData.setScore(50);
-		}
-		score = score + updatedData.getScore();
-		System.out.println("Score: " + score);
-		return score;
-	}
+
 
 	public void init() {
 
