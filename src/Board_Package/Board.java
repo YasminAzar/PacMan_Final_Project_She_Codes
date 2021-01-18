@@ -1,6 +1,8 @@
 package Board_Package;
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -25,6 +27,7 @@ import Game_Objects.Lives;
 import Game_Objects.Pacman;
 import Game_Objects.Power_Ball;
 import Log_Package.PacmanLog;
+import Menu_Package.Menu;
 import Score.GameScore;
 
 public class Board extends JPanel implements ActionListener{
@@ -43,7 +46,6 @@ public class Board extends JPanel implements ActionListener{
 	Pacman pacman;
 	Power_Ball powerBall_1, powerBall_2, powerBall_3, powerBall_4;
 	Lives firstLife, secondLife, thirdLife;
-	UpdatedData updatedData;
 	GameScore gameScore;
 	String [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_1.clone() ;
 	String UP = "U";
@@ -56,6 +58,7 @@ public class Board extends JPanel implements ActionListener{
 	String EXISTS = "exists";
 	String NOT_EXIST = "not exist";
 	String direction;
+	String SMALL_BALL, POWER_BALL;
 	ArrayList<Junction> junctionArrList = new ArrayList<Junction>();
 	Junction junc = new Junction();
 	int [] cubeSize = new int[2];
@@ -79,14 +82,20 @@ public class Board extends JPanel implements ActionListener{
 		blockHeight = calcBlockSize(map.length, Game_Constants_Package.GameConstants.BOARD_WIDTH,
 				Game_Constants_Package.GameConstants.BOARD_HEIGHT)[1];
 		System.out.println("block height: " + blockHeight);
+		
 		this.setLayout(new GridLayout(15,15));
+		
+
 		setBorder(new EmptyBorder(10, 10, 600, 600));
 		setLayout(new GridBagLayout());
+		
+		scorePanel();
 		randEmptyRow = findEmptyRow(map);
 		firstIndexInEmptyRow = findFirstIndex(randEmptyRow);
 		System.out.println("firstIndexInEmptyRow = " + firstIndexInEmptyRow);
 		locationBallX = calcLocationBall(blockWidth)[0];
 		locationBallY = calcLocationBall(blockHeight)[1];
+		
 		createJunction();
 		createPowerBalls();
 		callGhosts();
@@ -94,6 +103,7 @@ public class Board extends JPanel implements ActionListener{
 		callPowerBalls();
 		callLives();
 		addKeyBoard();	
+		
 		//updateScore(1,3);
 		/*this.addKeyListener(new KeyListener() {
 			@Override
@@ -283,10 +293,12 @@ public class Board extends JPanel implements ActionListener{
 		gbc.anchor = GridBagConstraints.NORTH;
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
+		
 		int w = getSize().width;
 		int h = getSize().height;
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(0, 0, w, h);
+		
 		PacmanLog.log("creatBoard","map.length "+map.length+" map[0].length "+map[0].length);
 		int index = 0;
 		// EB back to 15
@@ -746,6 +758,7 @@ public class Board extends JPanel implements ActionListener{
 	 * and sends commands according to each button
 	 */
 	private void addKeyBoard(){
+		//updateScore(SMALL_BALL);
 		Image pacman_image_for_size = new ImageIcon("src/Images/pacman_rightGIF.gif").getImage();
 		double pacman_offset = blockWidth/2 - pacman_image_for_size.getHeight(null)/2;
 		//KeyListener key = new KeyListener();
@@ -776,6 +789,11 @@ public class Board extends JPanel implements ActionListener{
 						pacman.setPacmanImage(pacman_image_up);
 						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat PB");
+							//updateScore(POWER_BALL);
+						}
+						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
+							System.out.println("Eat Small Ball");
+							//updateScore(SMALL_BALL);
 						}
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 						map[pacman.getGrid_x()+1][pacman.getGrid_y()] = EMPTY;
@@ -795,6 +813,10 @@ public class Board extends JPanel implements ActionListener{
 						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat PB");
 						}
+						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
+							System.out.println("Eat Small Ball");
+							//updateScore(SMALL_BALL);
+						}
 						//gameScore.updateScore(pacman.getGrid_x(), pacman.getGrid_y());
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 						map[pacman.getGrid_x()-1][pacman.getGrid_y()] = EMPTY;
@@ -812,6 +834,11 @@ public class Board extends JPanel implements ActionListener{
 						pacman.setPacmanImage(pacman_image_left);
 						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat PB");
+							//update score
+						}
+						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
+							System.out.println("Eat Small Ball");
+							//updateScore(SMALL_BALL);
 						}
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 						map[pacman.getGrid_x()][pacman.getGrid_y()+1] = EMPTY;
@@ -829,6 +856,10 @@ public class Board extends JPanel implements ActionListener{
 						pacman.setPacmanImage(pacman_image_right);
 						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat PB");
+						}
+						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
+							System.out.println("Eat Small Ball");
+							//updateScore(SMALL_BALL);
 						}
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 						map[pacman.getGrid_x()][pacman.getGrid_y()-1] = EMPTY;
@@ -854,19 +885,20 @@ public class Board extends JPanel implements ActionListener{
 		}
 		return false;
 	}
+	
 	//Write here a code for update score
-	public int updateScore(int x, int y) {
+	public int updateScore(String ballType) {
 		//int score = 0;
-		if(map[x][y] == WHITE) {
+		if(ballType == SMALL_BALL) {
 			gameScore.setScore(10);
 		}
-		else if(map[x][y] == "pb1" || map[x][y] == "pb2" || 
-				map[x][y] == "pb3" || map[x][y] == "pb4") {
+		else if(ballType == POWER_BALL) {
 			gameScore.setScore(50);
 		}
 		System.out.println("Score: " + gameScore.getScore());
 		return gameScore.getScore();
 	}
+	
 	/**
 	 * This function checks if the Pacman has reached the power ball
 	 * @param x
@@ -893,14 +925,39 @@ public class Board extends JPanel implements ActionListener{
 		return false;
 	}
 
-
+	/**
+	 * This function checks if the Pacman has reached the small ball
+	 * @param x
+	 * @param y
+	 * @return True - if the Pacman got to the small ball
+	 */
+	private boolean isItSmallBallLocation(int x, int y) {
+		if(map[x][y] == WHITE) { 
+			return true;
+		}
+		return false;
+	}
+	
 
 	public void init() {
 
 	}
 
+	private void scorePanel() {
+		gameScore = new GameScore();
+		this.add(gameScore);
+		//this.pack();
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
+		//this.gameScore.setPreferredSize(new Dimension(100,30));
+		//this.add(gameScore, BorderLayout.SOUTH);
+		/*this.add(gameScore, BorderLayout.SOUTH);
+		this.revalidate();
+		this.repaint();*/
+		
+
 	}
 }

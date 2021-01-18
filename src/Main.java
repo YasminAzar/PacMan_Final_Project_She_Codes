@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 
 import Board_Package.Board;
-import Board_Package.UpdatedData;
 import Game_Constants_Package.GameConstants;
 import Menu_Package.Menu;
 import Score.GameScore;
@@ -68,13 +67,13 @@ public class Main extends JFrame implements ActionListener {
 			System.out.println("New Game is pressed");
 			Board game_board = new Board();
 			//UpdatedData updated_data = new UpdatedData();
-			GameScore score = new GameScore();
+			//GameScore score = new GameScore();
 			game_board.setPreferredSize(new Dimension(width,height));
-			score.setPreferredSize(new Dimension(100,30));
+			//score.setPreferredSize(new Dimension(100,30));
 			this.add(game_board, BorderLayout.CENTER);
 			this.revalidate();
-			this.add(score, BorderLayout.SOUTH);
-			this.revalidate();
+			//this.add(score, BorderLayout.SOUTH);
+			//this.revalidate();
 			this.repaint();
 			this.pack();
 			

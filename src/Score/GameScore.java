@@ -1,10 +1,15 @@
 package Score;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -13,16 +18,46 @@ import Game_Constants_Package.GameConstants;
 
 public class GameScore extends JPanel {
 	int score = 0;
-	String [][]scoreMap = Game_Constants_Package.GameConstants.BOARD_OPTION_1.clone() ;
-	String WHITE = "0";
+	
 	
 	public GameScore() {
-		JTextField t1;
-		t1=new JTextField("Score: " + getScore());  
-	    t1.setBounds((GameConstants.SCREEN_HEIGHT-GameConstants.BOARD_HEIGHT)/2,
-	    		GameConstants.SCREEN_WIDTH/2 ,200,30);
-	    this.add(t1);
+		setBorder(new EmptyBorder(5,5,5,5));
+		setLayout(new GridBagLayout());
+		//setLocation(new Point(500, getHeight()));
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridwidth = GridBagConstraints.VERTICAL;
+		gbc.gridheight = GridBagConstraints.HORIZONTAL;
+		gbc.anchor = GridBagConstraints.NORTH;
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		
+		creatPanel(gbc);
+		
 	}
+	
+	public void creatPanel(GridBagConstraints gbc)  {
+		
+		JTextField tScore, tPbEaten, tTimer, tWarning;
+		JPanel score_panel = new JPanel();
+		score_panel.setSize(300, 200);
+		score_panel.setLocation(550, 350);
+		score_panel.getMaximumSize();
+		
+		tScore = new JTextField("Score: " + getScore(), 15); 
+		tPbEaten = new JTextField("Power Balls Eaten: ", 15);
+		tTimer = new JTextField("Time: ", 15);
+		tWarning = new JTextField("Ghost is Close", 15);
+		//tScore.setBounds((GameConstants.SCREEN_HEIGHT-GameConstants.BOARD_HEIGHT)/2,
+	    //		GameConstants.SCREEN_WIDTH/2 ,200,30);
+		score_panel.add(tScore, gbc);
+		score_panel.add(tPbEaten, gbc);
+		score_panel.add(tTimer, gbc);
+		score_panel.add(tWarning, gbc);
+		this.add(score_panel);
+		this.revalidate();
+		this.repaint();
+	}
+	
 	/*@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
