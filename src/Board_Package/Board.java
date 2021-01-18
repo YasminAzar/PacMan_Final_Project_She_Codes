@@ -49,17 +49,17 @@ public class Board extends JPanel implements ActionListener{
 	GameScore gameScore;
 	String [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_1.clone() ;
 	final String UP = "U";
-	String DOWN = "D";
-	String LEFT = "L";
-	String RIGHT = "R";
-	String BLUE = "1";
-	String WHITE = "0";
-	String EMPTY = "E";
-	String EXISTS = "exists";
-	String NOT_EXIST = "not exist";
+	final String DOWN = "D";
+	final String LEFT = "L";
+	final String RIGHT = "R";
+	final String BLUE = "1";
+	final String WHITE = "0";
+	final String EMPTY = "E";
+	final String EXISTS = "exists";
+	final String NOT_EXIST = "not exist";
+	final String SMALL_BALL = "small_ball";
+	final String POWER_BALL = "power_ball";
 	String direction;
-	String SMALL_BALL = "small_ball";
-	String POWER_BALL = "power_ball";
 	ArrayList<Junction> junctionArrList = new ArrayList<Junction>();
 	Junction junc = new Junction();
 	GridBagConstraints gbc;
@@ -941,7 +941,7 @@ public class Board extends JPanel implements ActionListener{
 	    //constraints.fill = GridBagConstraints.BOTH;
 		gameScore = new GameScore();
 		constraints.ipadx = 25;  // add padding
-	    constraints.ipady = -35;
+	    constraints.ipady = 25;
 		 //constraints.weighty = .5;
 	    constraints.gridheight = 2;
 	    constraints.weighty = 1.0;

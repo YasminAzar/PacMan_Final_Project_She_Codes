@@ -20,11 +20,11 @@ public class GameScore extends JPanel implements ActionListener {
 	private Timer timer;
 	
 	public GameScore() {
-		setPreferredSize(new Dimension(620, 120));
+		setPreferredSize(new Dimension(660, 60));
         //setBackground(new Color(250, 230, 180));
         setFont(new Font("Serif", Font.BOLD, 20));
 		//setBorder(new EmptyBorder(5,5,5,5));
-		this.setBackground(Color.BLACK);
+		this.setBackground(Color.black);
 		//setBorder(new EmptyBorder(5,5,5,5));
 		//setLayout(new GridBagLayout());
 		//setLocation(new Point(500, getHeight()));
