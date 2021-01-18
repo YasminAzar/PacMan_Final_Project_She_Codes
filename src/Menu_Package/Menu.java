@@ -30,14 +30,14 @@ public class Menu extends JPanel implements  ActionListener  {
 		gbc.anchor = GridBagConstraints.NORTH;
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-		creatPanel(gbc);
+		createPanel(gbc);
 	}
 
 	/**
 	 * This function display the panel with the main buttons
 	 * @param gbc
 	 */
-	public void creatPanel(GridBagConstraints gbc)  {
+	public void createPanel(GridBagConstraints gbc)  {
 		newGame = new JButton(new ImageIcon("src/Images/button_new_game.png"));
 		loadGame = new JButton(new ImageIcon("src/Images/button_load_game.png"));
 		leaderBoard = new JButton(new ImageIcon("src/Images/button_leader_board.png"));

@@ -28,7 +28,7 @@ import Game_Objects.Pacman;
 import Game_Objects.Power_Ball;
 import Log_Package.PacmanLog;
 import Menu_Package.Menu;
-import Score.GameScore;
+import Score_Package.GameScore;
 
 public class Board extends JPanel implements ActionListener{
 
@@ -48,7 +48,7 @@ public class Board extends JPanel implements ActionListener{
 	Lives firstLife, secondLife, thirdLife;
 	GameScore gameScore;
 	String [][]map = Game_Constants_Package.GameConstants.BOARD_OPTION_1.clone() ;
-	String UP = "U";
+	final String UP = "U";
 	String DOWN = "D";
 	String LEFT = "L";
 	String RIGHT = "R";
@@ -58,9 +58,11 @@ public class Board extends JPanel implements ActionListener{
 	String EXISTS = "exists";
 	String NOT_EXIST = "not exist";
 	String direction;
-	String SMALL_BALL, POWER_BALL;
+	String SMALL_BALL = "small_ball";
+	String POWER_BALL = "power_ball";
 	ArrayList<Junction> junctionArrList = new ArrayList<Junction>();
 	Junction junc = new Junction();
+	GridBagConstraints gbc;
 	int [] cubeSize = new int[2];
 	int [] ballsLocation = new int[2];
 	int [] pbLocation = new int[6];
@@ -82,14 +84,16 @@ public class Board extends JPanel implements ActionListener{
 		blockHeight = calcBlockSize(map.length, Game_Constants_Package.GameConstants.BOARD_WIDTH,
 				Game_Constants_Package.GameConstants.BOARD_HEIGHT)[1];
 		System.out.println("block height: " + blockHeight);
-		
-		this.setLayout(new GridLayout(15,15));
-		
-
-		setBorder(new EmptyBorder(10, 10, 600, 600));
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.anchor = GridBagConstraints.NORTH;
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		//this.setLayout(new GridLayout(15,15));
+		//setBorder(new EmptyBorder(10, 10, 600, 600));
 		setLayout(new GridBagLayout());
-		
 		scorePanel();
+		
 		randEmptyRow = findEmptyRow(map);
 		firstIndexInEmptyRow = findFirstIndex(randEmptyRow);
 		System.out.println("firstIndexInEmptyRow = " + firstIndexInEmptyRow);
@@ -288,12 +292,6 @@ public class Board extends JPanel implements ActionListener{
 	 * @param g2d
 	 */
 	private void createBoard(Graphics2D g2d) {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.anchor = GridBagConstraints.NORTH;
-		gbc.anchor = GridBagConstraints.CENTER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		
 		int w = getSize().width;
 		int h = getSize().height;
 		g2d.setColor(Color.BLACK);
@@ -572,11 +570,7 @@ public class Board extends JPanel implements ActionListener{
 	 * This function calls the ghosts to enter the game
 	 */
 	public void callGhosts() {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.anchor = GridBagConstraints.NORTH;
-		gbc.anchor = GridBagConstraints.CENTER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		
 		// calculate ghost offset
 		Image image_for_size = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
 		double ghost_offset = blockWidth/2 - image_for_size.getHeight(null)/2;
@@ -622,11 +616,7 @@ public class Board extends JPanel implements ActionListener{
 	 * This function calls the power balls to enter the game
 	 */
 	public void callPowerBalls() {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.anchor = GridBagConstraints.NORTH;
-		gbc.anchor = GridBagConstraints.CENTER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		
 		powerBall_1 = new Power_Ball(null);
 		powerBall_2 = new Power_Ball(null);
 		powerBall_3 = new Power_Ball(null);
@@ -662,11 +652,7 @@ public class Board extends JPanel implements ActionListener{
 		powerBall_4.setStatus(EXISTS);
 	}
 	public void callLives() {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		gbc.anchor = GridBagConstraints.NORTH;
-		gbc.anchor = GridBagConstraints.CENTER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		
 		// calculate ghost offset
 		Image heart_image_for_size = new ImageIcon("src/Images/heart.png").getImage();
 		double heart_offset = blockWidth/2 - heart_image_for_size.getHeight(null)/2;
@@ -789,11 +775,11 @@ public class Board extends JPanel implements ActionListener{
 						pacman.setPacmanImage(pacman_image_up);
 						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat PB");
-							//updateScore(POWER_BALL);
+							updateScore(POWER_BALL);
 						}
 						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat Small Ball");
-							//updateScore(SMALL_BALL);
+							updateScore(SMALL_BALL);
 						}
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 						map[pacman.getGrid_x()+1][pacman.getGrid_y()] = EMPTY;
@@ -815,7 +801,7 @@ public class Board extends JPanel implements ActionListener{
 						}
 						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat Small Ball");
-							//updateScore(SMALL_BALL);
+							updateScore(SMALL_BALL);
 						}
 						//gameScore.updateScore(pacman.getGrid_x(), pacman.getGrid_y());
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
@@ -838,7 +824,7 @@ public class Board extends JPanel implements ActionListener{
 						}
 						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat Small Ball");
-							//updateScore(SMALL_BALL);
+							updateScore(SMALL_BALL);
 						}
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 						map[pacman.getGrid_x()][pacman.getGrid_y()+1] = EMPTY;
@@ -859,7 +845,7 @@ public class Board extends JPanel implements ActionListener{
 						}
 						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat Small Ball");
-							//updateScore(SMALL_BALL);
+							updateScore(SMALL_BALL);
 						}
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
 						map[pacman.getGrid_x()][pacman.getGrid_y()-1] = EMPTY;
@@ -889,11 +875,13 @@ public class Board extends JPanel implements ActionListener{
 	//Write here a code for update score
 	public int updateScore(String ballType) {
 		//int score = 0;
+		int small_ball_points = 10;
+		int power_ball_points = 50;
 		if(ballType == SMALL_BALL) {
-			gameScore.setScore(10);
+			gameScore.setScore(gameScore.getScore() + small_ball_points);
 		}
 		else if(ballType == POWER_BALL) {
-			gameScore.setScore(50);
+			gameScore.setScore(gameScore.getScore() + power_ball_points);
 		}
 		System.out.println("Score: " + gameScore.getScore());
 		return gameScore.getScore();
@@ -906,6 +894,7 @@ public class Board extends JPanel implements ActionListener{
 	 * @return True - if the Pacman got to the power ball
 	 */
 	private boolean isItPbLocatin(int x, int y) {
+		//this.addAncestorListener();
 		if(map[x][y] == "pb1") { 
 			powerBall_1.setStatus(NOT_EXIST);
 			return true;
@@ -944,8 +933,22 @@ public class Board extends JPanel implements ActionListener{
 	}
 
 	private void scorePanel() {
+		//gameScore = new GameScore();
+		//this.add(gameScore);
+		//this.pack();
+		GridBagConstraints constraints = new GridBagConstraints( );
+		//setLayout(new GridBagLayout( ));
+	    //constraints.fill = GridBagConstraints.BOTH;
 		gameScore = new GameScore();
-		this.add(gameScore);
+		constraints.ipadx = 25;  // add padding
+	    constraints.ipady = -35;
+		 //constraints.weighty = .5;
+	    constraints.gridheight = 2;
+	    constraints.weighty = 1.0;
+		constraints.anchor = GridBagConstraints.PAGE_END;
+		this.add(gameScore, constraints);//e, BorderLayout.PAGE_END
+		this.invalidate();
+		this.repaint();
 		//this.pack();
 	}
 	

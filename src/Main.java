@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import Board_Package.Board;
 import Game_Constants_Package.GameConstants;
 import Menu_Package.Menu;
-import Score.GameScore;
+import Score_Package.GameScore;
 
 public class Main extends JFrame implements ActionListener {
 
@@ -68,9 +68,11 @@ public class Main extends JFrame implements ActionListener {
 			Board game_board = new Board();
 			//UpdatedData updated_data = new UpdatedData();
 			//GameScore score = new GameScore();
+
 			game_board.setPreferredSize(new Dimension(width,height));
+			this.add(game_board, BorderLayout.PAGE_START);
 			//score.setPreferredSize(new Dimension(100,30));
-			this.add(game_board, BorderLayout.CENTER);
+			//this.add(game_board, BorderLayout.CENTER);
 			this.revalidate();
 			//this.add(score, BorderLayout.SOUTH);
 			//this.revalidate();
