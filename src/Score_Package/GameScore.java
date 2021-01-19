@@ -16,9 +16,18 @@ import javax.swing.border.EmptyBorder;
 
 public class GameScore extends JPanel implements ActionListener {
 	int score = 0;
+	int powerBallCounter = 0;
 	JTextField tScore, tPbEaten, tTimer, tWarning;
-	private Timer timer;
+	//private Timer timer;
 	
+	public int getPowerBallCounter() {
+		return powerBallCounter;
+	}
+
+	public void setPowerBallCounter(int powerBallCounter) {
+		this.powerBallCounter = powerBallCounter;
+	}
+
 	public GameScore() {
 		setPreferredSize(new Dimension(660, 60));
         //setBackground(new Color(250, 230, 180));
@@ -37,7 +46,7 @@ public class GameScore extends JPanel implements ActionListener {
 		
 		tScore = new JTextField("Score: " + getScore(), 15); 
 		tPbEaten = new JTextField("Power Balls Eaten: ", 15);
-		tTimer = new JTextField("Time: " + getTimer(), 15);
+		tTimer = new JTextField("Time: ", 15);
 		tWarning = new JTextField("Ghost is Close", 15);
 		this.add(tScore, gbc);
 		this.add(tPbEaten, gbc);
@@ -51,8 +60,9 @@ public class GameScore extends JPanel implements ActionListener {
 		g.setColor(Color.WHITE);
 		tScore.setText("Score: " + getScore());
 		tPbEaten.setText("Power Balls Eaten: ");
-		tTimer.setText("Time: " + getTimer());
+		tTimer.setText("Time: " + this.powerBallCounter);
 		tWarning.setText("Ghost is Close");
+		
 	}
 	
 	public int getScore() {
@@ -67,13 +77,9 @@ public class GameScore extends JPanel implements ActionListener {
 		 timer = new Timer(15, this);
 	     timer.start();
 	}*/
-	public Timer getTimer() {
-		return timer;
-	}
-
-	public void setTimer(Timer timer) {
-		this.timer = timer;
-	}
+	
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub

@@ -10,6 +10,7 @@ public final class GameConstants implements Cloneable{
 	public static final int GHOST_SPEED = 12;
 	public static final int GHOST_SLOW_SPEED_FOR_15_SEC = 3;
 	
+	public static final int GHOST_IN_ACTIVE_TIME = 15;
 	public static final int GHOST_SPEED1 = 1;
 	public static final int GHOST_SPEED2 = 2;
 	public static final int GHOST_SPEED3 = 3;
