@@ -3,6 +3,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JFrame;
 
@@ -19,6 +21,11 @@ public class Main extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		Main game_main = new Main();
 		game_main.initFrame(args);
+		
+		//
+		//Timer timer = new Timer(); 
+        //TimerTask task = new Board_Package.HelperForTimer(); 
+        //timer.schedule(task, 1000, 1000); 
 	}
 
 	/**

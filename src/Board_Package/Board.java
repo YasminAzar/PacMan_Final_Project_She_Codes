@@ -15,6 +15,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.IntStream;
 
 import javax.swing.ImageIcon;
@@ -76,7 +78,8 @@ public class Board extends JPanel implements ActionListener{
 	int [] pbLoc2 = new int[2];
 	int [] pbLoc3 = new int[2];
 	int [] pbLoc4 = new int[2];
-
+	TimerCountdown timer = new TimerCountdown();
+	
 	public 	Board() {
 		blockWidth = calcBlockSize(map.length, Game_Constants_Package.GameConstants.BOARD_WIDTH,
 				Game_Constants_Package.GameConstants.BOARD_HEIGHT)[0];
@@ -776,6 +779,10 @@ public class Board extends JPanel implements ActionListener{
 						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat PB");
 							updateScore(POWER_BALL);
+							gameScore.setTimer(timer.timerCountDown1());
+							//timer.timerCountDown1();
+							
+							
 						}
 						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat Small Ball");
@@ -798,6 +805,8 @@ public class Board extends JPanel implements ActionListener{
 						pacman.setPacmanImage(pacman_image_down);
 						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat PB");
+							gameScore.setTimer(timer.timerCountDown1());
+							//timer.timerCountDown1();
 						}
 						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat Small Ball");
@@ -820,7 +829,10 @@ public class Board extends JPanel implements ActionListener{
 						pacman.setPacmanImage(pacman_image_left);
 						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat PB");
+							//HelperForTimer.run();
 							//update score
+							gameScore.setTimer(timer.timerCountDown1());
+							//timer.timerCountDown1();
 						}
 						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat Small Ball");
@@ -842,6 +854,8 @@ public class Board extends JPanel implements ActionListener{
 						pacman.setPacmanImage(pacman_image_right);
 						if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat PB");
+							gameScore.setTimer(timer.timerCountDown1());
+							//timer.timerCountDown1();
 						}
 						else if(isItSmallBallLocation(pacman.getGrid_x(), pacman.getGrid_y())) {
 							System.out.println("Eat Small Ball");
@@ -952,6 +966,11 @@ public class Board extends JPanel implements ActionListener{
 		//this.pack();
 	}
 	
+	public TimerCountdown timerCountdown() {
+		TimerCountdown timer = new TimerCountdown();
+		timer.timerCountDown1();
+		return timer;
+	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub

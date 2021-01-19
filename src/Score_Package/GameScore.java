@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.Timer;
+import java.util.Timer;
 import javax.swing.border.EmptyBorder;
 
 public class GameScore extends JPanel implements ActionListener {
@@ -63,10 +63,10 @@ public class GameScore extends JPanel implements ActionListener {
 		this.score = score;
 	}
 	
-	public void timer15s() {
+	/*public void timer15s() {
 		 timer = new Timer(15, this);
 	     timer.start();
-	}
+	}*/
 	public Timer getTimer() {
 		return timer;
 	}
