@@ -16,6 +16,7 @@ public class GameCharacter {
 	String status;
 	boolean isPlayer;
 	String direction;
+	
 
 	public GameCharacter(String[] args) {
 		PacmanLog.log("GameCharacter: ", "Start");

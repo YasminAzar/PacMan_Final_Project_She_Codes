@@ -1,13 +1,10 @@
 package Board_Package;
 import java.awt.BasicStroke;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +19,6 @@ import java.util.stream.IntStream;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.border.EmptyBorder;
 
 import Game_Constants_Package.GameConstants;
 import Game_Objects.Ghosts;
@@ -30,7 +26,6 @@ import Game_Objects.Lives;
 import Game_Objects.Pacman;
 import Game_Objects.Power_Ball;
 import Log_Package.PacmanLog;
-import Menu_Package.Menu;
 import Score_Package.GameScore;
 
 public class Board extends JPanel implements ActionListener{
@@ -114,81 +109,6 @@ public class Board extends JPanel implements ActionListener{
 		callLives();
 		addKeyBoard();	
 
-		//updateScore(1,3);
-		/*this.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				switch(arg0.getKeyCode()) {
-				case KeyEvent.VK_UP:
-					//System.out.println("press");
-					if(isFree(pacman.getGrid_x()-1,pacman.getGrid_y()) == true){
-						//direction = UP;
-						pacman.setDirection(UP);
-						pacman.setGrid_x(pacman.getGrid_x()-1);
-						pacman.setGrid_y(pacman.getGrid_y());
-						pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
-						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
-						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
-						map[pacman.getGrid_x()+1][pacman.getGrid_y()] = EMPTY;
-
-					}
-					break;
-				case  KeyEvent.VK_DOWN:
-					if(isFree(pacman.getGrid_x()+1,pacman.getGrid_y()) == true){
-						//direction = DOWN;
-						pacman.setDirection(DOWN);
-						pacman.setGrid_x(pacman.getGrid_x()+1);
-						pacman.setGrid_y(pacman.getGrid_y());
-						pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
-						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
-						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
-						map[pacman.getGrid_x()-1][pacman.getGrid_y()] = EMPTY;
-					}
-					break;
-				case KeyEvent.VK_LEFT:
-					if(isFree(pacman.getGrid_x(),pacman.getGrid_y()-1) == true){
-						//direction = LEFT;
-						pacman.setDirection(LEFT);
-						pacman.setGrid_x(pacman.getGrid_x());
-						pacman.setGrid_y(pacman.getGrid_y()-1);
-						pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
-						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
-						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
-						map[pacman.getGrid_x()][pacman.getGrid_y()+1] = EMPTY;
-					}
-					break;
-				case  KeyEvent.VK_RIGHT:
-					if(isFree(pacman.getGrid_x(),pacman.getGrid_y()+1) == true){
-						//direction = RIGHT;
-						pacman.setDirection(RIGHT);
-						pacman.setGrid_x(pacman.getGrid_x());
-						pacman.setGrid_y(pacman.getGrid_y()+1);
-						pacman.setLocation_x(pacman.getGrid_x()*blockHeight);
-						pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth));
-						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
-						map[pacman.getGrid_x()][pacman.getGrid_y()-1] = EMPTY;
-					}
-					break;
-					//TODO defult and case key == KeyEvent.VK_ESCAPE && timer.isRunning
-				}
-
-			}
-
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-		});
-		this.setFocusable(true);
-		this.requestFocusInWindow();*/
 	}
 
 	/**
@@ -210,8 +130,6 @@ public class Board extends JPanel implements ActionListener{
 	 */
 	private void createJunction() {
 		ArrayList<Junction> junctionsArrList = new ArrayList<Junction>();
-		//String BLUE = "1";
-		//String WHITE = "0";
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[0].length; y++) {
 				// check directions
@@ -345,8 +263,8 @@ public class Board extends JPanel implements ActionListener{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		// this is the transform I was using when I found the bug.
-
 		createBoard(g2);
+		updateGhost();
 		drawGhost(g2, redGhost);
 		drawGhost(g2, blueGhost);
 		drawGhost(g2, pinkGhost);
@@ -360,7 +278,7 @@ public class Board extends JPanel implements ActionListener{
 		drawLives(g2, secondLife);
 		drawLives(g2, thirdLife);
 		//addCharacter();
-		updateGhost();
+		
 		redGhostLoc = locationXYinTheArray(redGhost.getLocation_x(),redGhost.getLocation_y());
 		map[redGhostLoc[0]][redGhostLoc[1]] = "rg";
 		//System.out.println("map["+redGhostLoc[0]+ "][" + redGhostLoc[1]+ "]" + " = gh1");
@@ -582,22 +500,22 @@ public class Board extends JPanel implements ActionListener{
 		double ghost_offset = blockWidth/2 - image_for_size.getHeight(null)/2;
 		redGhost = new Ghosts("src/Images/redGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow, 
 				randEmptyRow*blockHeight+(int)ghost_offset, 
-				(int)(firstIndexInEmptyRow*blockWidth+blockWidth-ghost_offset), LEFT);
+				(int)(firstIndexInEmptyRow*blockWidth+blockWidth-ghost_offset), LEFT, "rg");
 		System.out.println("redGhost grid_x: " + redGhost.getGrid_x() + " y "+redGhost.getGrid_y());
 		System.out.println("redGhost location_x: " + redGhost.getLocation_x() + " y "+redGhost.getLocation_y());
 		blueGhost = new Ghosts("src/Images/blueGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow+1, 
 				randEmptyRow*blockHeight+(int)ghost_offset, 
-				(int)((firstIndexInEmptyRow+1)*blockWidth+blockWidth-ghost_offset), LEFT);
+				(int)((firstIndexInEmptyRow+1)*blockWidth+blockWidth-ghost_offset), LEFT, "bg");
 		System.out.println("blueGhost grid_x: " + blueGhost.getGrid_x() + " y "+blueGhost.getGrid_y());
 		System.out.println("blueGhost location_x: " + blueGhost.getLocation_x() + " y "+blueGhost.getLocation_y());
 		pinkGhost = new Ghosts("src/Images/pinkGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow+5, 
 				randEmptyRow*blockHeight+(int)ghost_offset, 
-				(int) ((firstIndexInEmptyRow+5)*blockWidth+blockWidth-ghost_offset), RIGHT);
+				(int) ((firstIndexInEmptyRow+5)*blockWidth+blockWidth-ghost_offset), RIGHT, "pg");
 		System.out.println("pinkGhost grid_x: " + pinkGhost.getGrid_x() + " y "+pinkGhost.getGrid_y());
 		System.out.println("pinkGhost location_x: " + pinkGhost.getLocation_x() + " y "+pinkGhost.getLocation_y());
 		orangeGhost = new Ghosts("src/Images/orangeGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow+6, 
 				randEmptyRow*blockHeight+(int)ghost_offset, 
-				(int)((firstIndexInEmptyRow+6)*blockWidth+blockWidth-ghost_offset), RIGHT);
+				(int)((firstIndexInEmptyRow+6)*blockWidth+blockWidth-ghost_offset), RIGHT,"og");
 		System.out.println("orangeGhost grid_x: " + orangeGhost.getGrid_x() + " y "+orangeGhost.getGrid_y());
 		System.out.println("orangeGhost location_x: " + orangeGhost.getLocation_x() + " y "+orangeGhost.getLocation_y());
 	}
@@ -606,10 +524,8 @@ public class Board extends JPanel implements ActionListener{
 	 * This function calls the pacman to enter the game
 	 */
 	public void callPacman() {
-		//pacman = new Pacman(null);
 		Image pacman_image_for_size = new ImageIcon("src/Images/pacman_rightGIF.gif").getImage();
 		double pacman_offset = blockWidth/2 - pacman_image_for_size.getHeight(null)/2;
-		//pacman.setGameCharacterImage(pacman_image);
 		pacman = new Pacman("src/Images/pacman_rightGIF.gif", randEmptyRow, firstIndexInEmptyRow+3,
 				randEmptyRow*blockHeight + (int)pacman_offset,
 				(int)((firstIndexInEmptyRow+3)*blockWidth+blockWidth-pacman_offset),
@@ -622,7 +538,6 @@ public class Board extends JPanel implements ActionListener{
 	 * This function calls the power balls to enter the game
 	 */
 	public void callPowerBalls() {
-
 		powerBall_1 = new Power_Ball(null);
 		powerBall_2 = new Power_Ball(null);
 		powerBall_3 = new Power_Ball(null);
@@ -657,9 +572,8 @@ public class Board extends JPanel implements ActionListener{
 		powerBall_4.setLocation_y((int)(powerBall_4.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
 		powerBall_4.setStatus(EXISTS);
 	}
+	
 	public void callLives() {
-
-		// calculate ghost offset
 		Image heart_image_for_size = new ImageIcon("src/Images/heart.png").getImage();
 		double heart_offset = blockWidth/2 - heart_image_for_size.getHeight(null)/2;
 		firstLife = new Lives(null);
@@ -714,7 +628,6 @@ public class Board extends JPanel implements ActionListener{
 			g2d.drawImage(powerBall.getGameCharacterImage(), powerBall.getLocation_y(), 
 					powerBall.getLocation_x(), this);
 		}
-		//if(powerBall.getStatus() == "NotExist"
 	}
 
 	private void drawLives(Graphics2D g2d, Lives lives) {
@@ -737,7 +650,7 @@ public class Board extends JPanel implements ActionListener{
 		}
 		else if(locationY >= boardOffset && locationY <= (GameConstants.SCREEN_WIDTH - boardOffset) 
 				&& locationX > 0 && locationX <= GameConstants.BOARD_HEIGHT) {
-			//grid_y:
+			//grid_x:
 			loc_xy_in_map[0] = locationX/blockHeight;
 			//grid_y:
 			loc_xy_in_map[1] = (locationY-boardOffset)/blockWidth;
@@ -750,11 +663,8 @@ public class Board extends JPanel implements ActionListener{
 	 * and sends commands according to each button
 	 */
 	private void addKeyBoard(){
-		//updateScore(SMALL_BALL);
 		Image pacman_image_for_size = new ImageIcon("src/Images/pacman_rightGIF.gif").getImage();
 		double pacman_offset = blockWidth/2 - pacman_image_for_size.getHeight(null)/2;
-		//KeyListener key = new KeyListener();
-		//boolean isReleased = false;
 		this.addKeyListener(new KeyListener() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
@@ -929,12 +839,7 @@ public class Board extends JPanel implements ActionListener{
 	}
 
 	private void scorePanel() {
-		//gameScore = new GameScore();
-		//this.add(gameScore);
-		//this.pack();
 		GridBagConstraints constraints = new GridBagConstraints( );
-		//setLayout(new GridBagLayout( ));
-		//constraints.fill = GridBagConstraints.BOTH;
 		gameScore = new GameScore();
 		constraints.ipadx = 25;  // add padding
 		constraints.ipady = 25;
@@ -945,7 +850,6 @@ public class Board extends JPanel implements ActionListener{
 		this.add(gameScore, constraints);//e, BorderLayout.PAGE_END
 		this.invalidate();
 		this.repaint();
-		//this.pack();
 	}
 
 	public TimerCountdown timerCountdown() {
@@ -956,7 +860,6 @@ public class Board extends JPanel implements ActionListener{
 
 	private void checkPowerBall() {
 		final int second = 1000;
-
 		if(isItPbLocatin(pacman.getGrid_x(), pacman.getGrid_y())) {
 			System.out.println("Eat PB");
 			timerCounter = GameConstants.GHOST_IN_ACTIVE_TIME;
@@ -984,44 +887,160 @@ public class Board extends JPanel implements ActionListener{
 
 	//Fix and continue this function
 	public void updateGhost() {
-		boolean in_game = false;
-		Image red_ghost_image = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
-		Image blue_ghost_image = new ImageIcon("src/Images/blueGhostGIF.gif").getImage();
-		Image pink_ghost_image = new ImageIcon("src/Images/pinkGhostGIF.gif").getImage();
-		Image orange_ghost_image = new ImageIcon("src/Images/orangeGhostGIF.gif").getImage();
-
-		if(in_game == false) {
+		//boolean in_game = false;
+		Ghosts arr_ghost [] = {redGhost,blueGhost, pinkGhost, orangeGhost};
+		for(int i = 0; i < arr_ghost.length; i++) {
+			Ghosts current = arr_ghost[i];
+			if(current.getMoveCounter() < 33) {
+				current.setMoveCounter(current.getMoveCounter()+1);
+				//per direction update location
+				if(current.getDirection() == UP) {
+				//if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == UP) {
+					//current.setGrid_x(current.getGrid_x()-1);
+					//current.setGrid_y(current.getGrid_y());
+					changeGhostsLocation(current, current.getLocation_x()-1, current.getLocation_y(), current.getGhostImage());
+				}
+				else if(current.getDirection() == DOWN) {
+				//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == DOWN) {
+					//current.setGrid_x(current.getGrid_x()+1);
+					//current.setGrid_y(current.getGrid_y());
+					changeGhostsLocation(current, current.getLocation_x()+1, current.getLocation_y(), current.getGhostImage());
+				}
+				else if(current.getDirection() == RIGHT) {
+				//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == RIGHT) {
+					//current.setGrid_x(current.getGrid_x());
+					//current.setGrid_y(current.getGrid_y()+1);
+					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+1, current.getGhostImage());
+				}
+				else if(current.getDirection() == LEFT) {
+				//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == LEFT) {
+					//current.setGrid_x(current.getGrid_x());
+					//current.setGrid_y(current.getGrid_y()-1);
+					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
+				}
+				//checking to changing map location and grid
+				if(current.getMoveCounter() == (int)(33/2)+1) {
+					//current.setGrid_x(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[0]);
+					//current.setGrid_x(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[1]);
+					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y(), current.getGhostImage());
+					map[current.getGrid_x()][current.getGrid_y()] = current.getNameOnMap();
+				}
+				
+			}
+			else if(current.getMoveCounter() == 33) {
+				current.setMoveCounter(0);
+				//lock for possible direction
+				current.setDirection(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()));
+				if(current.getDirection() == UP) {
+					changeGhostsLocation(current, current.getLocation_x()-33, current.getLocation_y(), current.getGhostImage());
+					//current.setGrid_x(current.getGrid_x()-1);
+					//current.setGrid_y(current.getGrid_y());
+				}
+				else if(current.getDirection() == DOWN) {
+					changeGhostsLocation(current, current.getLocation_x()+33, current.getLocation_y(), current.getGhostImage());
+					//current.setGrid_x(current.getGrid_x()+1);
+					//current.setGrid_y(current.getGrid_y());
+				}
+				else if(current.getDirection() == RIGHT) {
+					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+33, current.getGhostImage());
+					//current.setGrid_x(current.getGrid_x());
+					//current.setGrid_y(current.getGrid_y()+1);
+				}
+				else if(current.getDirection() == LEFT) {
+					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-33, current.getGhostImage());
+					//current.setGrid_x(current.getGrid_x());
+					//current.setGrid_y(current.getGrid_y()-1);
+				}
+				current.setMoveCounter(current.getMoveCounter()+1);
+			}
+		}
+		
+		/*if(in_game == false) {
 			redGhost.setLocation_x(redGhost.getLocation_x());
 			redGhost.setLocation_y(redGhost.getLocation_y()-1);//At first it goes left
 			redGhost.setGrid_x(locationXYinTheArray(redGhost.getLocation_x(), redGhost.getLocation_y())[0]);
 			redGhost.setGrid_y(locationXYinTheArray(redGhost.getLocation_x(), redGhost.getLocation_y())[1]);
-			redGhost.setGameCharacterImage(red_ghost_image);
+			redGhost.setGhostImage(redGhost.getGhostImage());
 			blueGhost.setLocation_x(blueGhost.getLocation_x());
 			blueGhost.setLocation_y(blueGhost.getLocation_y()-1);//At first it goes left
 			blueGhost.setGrid_x(locationXYinTheArray(blueGhost.getLocation_x(), blueGhost.getLocation_y())[0]);
 			blueGhost.setGrid_y(locationXYinTheArray(blueGhost.getLocation_x(), blueGhost.getLocation_y())[1]);
-			blueGhost.setGameCharacterImage(blue_ghost_image);
+			blueGhost.setGhostImage(blueGhost.getGhostImage());
 			pinkGhost.setLocation_x(pinkGhost.getLocation_x());
 			pinkGhost.setLocation_y(pinkGhost.getLocation_y()+1);//At first it goes right
 			pinkGhost.setGrid_x(locationXYinTheArray(pinkGhost.getLocation_x(), pinkGhost.getLocation_y())[0]);
 			pinkGhost.setGrid_y(locationXYinTheArray(pinkGhost.getLocation_x(), pinkGhost.getLocation_y())[1]);
-			pinkGhost.setGameCharacterImage(pink_ghost_image);
+			pinkGhost.setGhostImage(pinkGhost.getGhostImage());
 			orangeGhost.setLocation_x(orangeGhost.getLocation_x());
 			orangeGhost.setLocation_y(orangeGhost.getLocation_y()+1);//At first it goes right
 			orangeGhost.setGrid_x(locationXYinTheArray(orangeGhost.getLocation_x(), orangeGhost.getLocation_y())[0]);
 			orangeGhost.setGrid_y(locationXYinTheArray(orangeGhost.getLocation_x(), orangeGhost.getLocation_y())[1]);
-			orangeGhost.setGameCharacterImage(orange_ghost_image);
+			orangeGhost.setGhostImage(orangeGhost.getGhostImage());
 			in_game = true;
 		}
-		/*else {
-			if(junc.getDirection() == UP) {
-
-			}
+		else {
+			if(junc.getnumOfOption() == 2 || junc.getnumOfOption() == 3) {
+			int randDirection = (int) (Math.random()*junc.getnumOfOption());
+				//if(junc.getDirection().charAt(randDirection) ==  UP) {
+					//changeGhostsDirection
+					
+				//}
+	
+			}		
 		}*/
-
-
 	}
 
+	private String getGhostDirection(int x, int y, String prev_direction) {
+		String direction = "";
+		//check up
+		if(x-1 >= 0) {
+			if(map[x-1][y] != BLUE) {
+				direction = direction.concat(UP);
+			}
+		}
+		//check down
+		if(x+1 <= map.length-1) {
+			if(map[x+1][y] != BLUE) {
+				direction = direction.concat(DOWN);
+			}
+		}
+		//check right
+		if(y+1 <= map.length-1) {
+			if(map[x][y+1] != BLUE) {
+				direction = direction.concat(RIGHT);
+			}
+		}
+		//check left
+		if(y-1 >= 0) {
+			if(map[x][y+1] != BLUE) {
+				direction = direction.concat(LEFT);
+			}
+		}
+		
+		// check value
+		System.out.println(" x " + x + " y " + y + " directions " + direction);
+		if (direction.length() > 0) {
+			direction =String.valueOf(direction.charAt(0));
+			/*Junction j = new Junction();
+			j.setDirection(directions);
+			j.setnumOfOption(directions.length());
+			j.setX(x);
+			j.setY(y);
+			junctionsArrList.add(j);
+			j = null;
+		}*/
+	}
+		System.out.println("New direction: " + direction);
+		return direction;
+	}
+	
+	private void changeGhostsLocation(Ghosts ghost, int location_x, int location_y, Image image) {
+		ghost.setLocation_x(location_x);
+		ghost.setLocation_y(location_y);
+		ghost.setGrid_x(locationXYinTheArray(location_x, location_y)[0]);
+		ghost.setGrid_y(locationXYinTheArray(location_x, location_y)[1]);
+		ghost.setGameCharacterImage(image);
+	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
