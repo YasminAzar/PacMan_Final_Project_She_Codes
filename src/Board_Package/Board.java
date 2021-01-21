@@ -891,74 +891,53 @@ public class Board extends JPanel implements ActionListener{
 		Ghosts arr_ghost [] = {redGhost,blueGhost, pinkGhost, orangeGhost};
 		for(int i = 0; i < arr_ghost.length; i++) {
 			Ghosts current = arr_ghost[i];
+			int prev_grid_x = current.getGrid_x();
+			int prev_grid_y = current.getGrid_y();
 			System.out.println("moveCounter of " + current.getNameOnMap() + ": " + current.getMoveCounter());
 			if(current.getMoveCounter() < 33) {
 				current.setMoveCounter(current.getMoveCounter()+1);
 				//per direction update location
 				if(current.getDirection() == UP) {
-					//if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == UP) {
-					//current.setGrid_x(current.getGrid_x()-1);
-					//current.setGrid_y(current.getGrid_y());
-					changeGhostsLocation(current, current.getLocation_x()-1, current.getLocation_y(), current.getGhostImage());
+					current.setLocation_x(current.getLocation_x()-1);
 				}
 				else if(current.getDirection() == DOWN) {
-					//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == DOWN) {
-					//current.setGrid_x(current.getGrid_x()+1);
-					//current.setGrid_y(current.getGrid_y());
-					changeGhostsLocation(current, current.getLocation_x()+1, current.getLocation_y(), current.getGhostImage());
+					current.setLocation_x(current.getLocation_x()+1);
 				}
 				else if(current.getDirection() == RIGHT) {
-					//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == RIGHT) {
-					//current.setGrid_x(current.getGrid_x());
-					//current.setGrid_y(current.getGrid_y()+1);
-					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+1, current.getGhostImage());
+					current.setLocation_y(current.getLocation_y()+1);
 				}
 				else if(current.getDirection() == LEFT) {
-					//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == LEFT) {
-					//current.setGrid_x(current.getGrid_x());
-					//current.setGrid_y(current.getGrid_y()-1);
-					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
+					current.setLocation_y(current.getLocation_y()-1);
 				}
 				//checking to changing map location and grid
-				if(current.getMoveCounter() == (int)(33/2)+1) {
+				if(current.getMoveCounter() == (int)(33/2)) {
+					//save white balls and power balls if they was exist
 					current.setGrid_x(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[0]);
 					current.setGrid_y(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[1]);
 					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y(), current.getGhostImage());
+					map[prev_grid_x][prev_grid_y] = WHITE;
 					map[current.getGrid_x()][current.getGrid_y()] = current.getNameOnMap();
 				}
-
 			}
 			else if(current.getMoveCounter() == 33) {
 				current.setMoveCounter(0);
 				//lock for possible direction
 				current.setDirection(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()));
-				if(current.getDirection().equalsIgnoreCase(UP)) {
-					//changeGhostsLocation(current, current.getLocation_x()-1, current.getLocation_y(), current.getGhostImage());
-					//current.setGrid_x(current.getGrid_x()-1);
-					//current.setGrid_y(current.getGrid_y());
+				if(current.getDirection().equals(UP)) {
 					current.setDirection(UP);
-					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
-				}
-				else if(current.getDirection().equalsIgnoreCase(DOWN) ) {
-					//changeGhostsLocation(current, current.getLocation_x()+1, current.getLocation_y(), current.getGhostImage());
-					//current.setGrid_x(current.getGrid_x()+1);
-					//current.setGrid_y(current.getGrid_y());
-					current.setDirection(DOWN);
-					changeGhostsLocation(current, current.getLocation_x()+1, current.getLocation_y(), current.getGhostImage());
-				}
-				else if(current.getDirection().equalsIgnoreCase(RIGHT) ) {
-					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+1, current.getGhostImage());
-					//current.setGrid_x(current.getGrid_x());
-					//current.setGrid_y(current.getGrid_y()+1);
-					current.setDirection(RIGHT);
-					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+1, current.getGhostImage());
-				}
-				else if(current.getDirection().equalsIgnoreCase(LEFT) ) {
 					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
-					//current.setGrid_x(current.getGrid_x());
-					//current.setGrid_y(current.getGrid_y()-1);
+				}
+				else if(current.getDirection().equals(DOWN) ) {
+					current.setDirection(DOWN);
+					//changeGhostsLocation(current, current.getLocation_x()+1, current.getLocation_y(), current.getGhostImage());
+				}
+				else if(current.getDirection().equals(RIGHT) ) {
+					current.setDirection(RIGHT);
+					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+1, current.getGhostImage());
+				}
+				else if(current.getDirection().equals(LEFT) ) {
 					current.setDirection(LEFT);
-					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
+					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
 				}
 				current.setMoveCounter(current.getMoveCounter()+1);
 			}
@@ -998,11 +977,271 @@ public class Board extends JPanel implements ActionListener{
 			}		
 		}*/
 	}
-
 	private String getGhostDirection(int x, int y, String prev_direction) {
+		String directions="";
+		if (map[x][y] != BLUE && x >= 0 && y >= 0 && x <= map.length && y <= map.length) {
+			//if there is 3 options
+			if(x>0 && y>0 && x<map.length-1 && y<map.length-1 && 
+					map[x-1][y] != BLUE && map[x+1][y] != BLUE && map[x][y-1] != BLUE &&
+					map[x][y+1] != BLUE) {
+				if(prev_direction.equals(LEFT)) {
+					direction = direction.concat(LEFT+UP+DOWN);
+				}
+				else if(prev_direction.equals(RIGHT)) {
+					direction = direction.concat(RIGHT+UP+DOWN);
+				}
+				else if(prev_direction.equals(UP)) {
+					direction = direction.concat(UP+RIGHT+LEFT);
+				}
+				else if(prev_direction.equals(DOWN)) {
+					direction = direction.concat(DOWN+RIGHT+LEFT);
+				}
+			}
+			//if there is 2 options
+			else if((y == 0 && x>0 && x<map.length-1 && map[x-1][y] != BLUE && map[x+1][y] != BLUE && map[x][y+1] != BLUE)) {
+				if(prev_direction.equals(LEFT)) {
+					direction = direction.concat(UP+DOWN);
+				}
+				else if(prev_direction.equals(UP)) {
+					direction = direction.concat(UP+RIGHT);
+				}
+				else if(prev_direction.equals(DOWN)) {
+					direction = direction.concat(DOWN+RIGHT);
+				}
+			}
+			else if(y == map.length-1 && x>0 && x<map.length-1 && map[x-1][y] != BLUE && map[x+1][y] != BLUE && map[x][y-1] != BLUE) {
+				if(prev_direction.equals(RIGHT)) {
+					direction = direction.concat(UP+DOWN);
+				}
+				else if(prev_direction.equals(UP)) {
+					direction = direction.concat(UP+LEFT);
+				}
+				else if(prev_direction.equals(DOWN)) {
+					direction = direction.concat(DOWN+LEFT);
+				}
+			}
+			else if(x == 0 && y>0 && y<map.length-1 && map[x][y-1] != BLUE && map[x][y+1] != BLUE && map[x+1][y] != BLUE) {
+				if(prev_direction.equals(LEFT)) {
+					direction = direction.concat(LEFT+DOWN);
+				}
+				else if(prev_direction.equals(RIGHT)) {
+					direction = direction.concat(RIGHT+DOWN);
+				}
+				else if(prev_direction.equals(UP)) {
+					direction = direction.concat(RIGHT+LEFT);
+				}
+			}
+			else if(x == map.length-1 && y>0 && y<map.length-1 && map[x][y-1] != BLUE && map[x][y+1] != BLUE && map[x-1][y] != BLUE) {
+				if(prev_direction.equals(LEFT)) {
+					direction = direction.concat(LEFT+UP);
+				}
+				else if(prev_direction.equals(RIGHT)) {
+					direction = direction.concat(RIGHT+UP);
+				}
+				else if(prev_direction.equals(DOWN)) {
+					direction = direction.concat(RIGHT+LEFT);
+				}
+			}
+			else if(map[x][y-1] == BLUE && x>0 && x<map.length-1 && map[x-1][y] != BLUE && map[x+1][y] != BLUE && map[x][y+1] != BLUE) {
+				if(prev_direction.equals(LEFT)) {
+					direction = direction.concat(UP+DOWN);
+				}
+				else if(prev_direction.equals(UP)) {
+					direction = direction.concat(UP+RIGHT);
+				}
+				else if(prev_direction.equals(DOWN)) {
+					direction = direction.concat(DOWN+RIGHT);
+				}
+			}
+			else if(map[x][y+1] == BLUE && x>0 && x<map.length-1 && map[x-1][y] != BLUE && map[x+1][y] != BLUE && map[x][y-1] != BLUE) {
+				if(prev_direction.equals(RIGHT)) {
+					direction = direction.concat(UP+DOWN);
+				}
+				else if(prev_direction.equals(UP)) {
+					direction = direction.concat(UP+LEFT);
+				}
+				else if(prev_direction.equals(DOWN)) {
+					direction = direction.concat(DOWN+LEFT);
+				}
+			}
+			else if(map[x-1][y] == BLUE && y>0 && y<map.length-1 && map[x][y-1] != BLUE && map[x][y+1] != BLUE && map[x+1][y] != BLUE) {
+				if(prev_direction.equals(LEFT)) {
+					direction = direction.concat(LEFT+DOWN);
+				}
+				else if(prev_direction.equals(RIGHT)) {
+					direction = direction.concat(RIGHT+DOWN);
+				}
+				else if(prev_direction.equals(UP)) {
+					direction = direction.concat(RIGHT+LEFT);
+				}
+			}
+			else if(map[x+1][y] == BLUE && y>0 && y<map.length-1 && map[x][y-1] != BLUE && map[x][y+1] != BLUE && map[x-1][y] != BLUE){
+				if(prev_direction.equals(LEFT)) {
+					direction = direction.concat(LEFT+UP);
+				}
+				else if(prev_direction.equals(RIGHT)) {
+					direction = direction.concat(RIGHT+UP);
+				}
+				else if(prev_direction.equals(DOWN)) {
+					direction = direction.concat(RIGHT+LEFT);
+				}
+			}
+			//if there is 1 option
+			else if(x+1 >= 0 && y+1 < map.length-1 && map[x+1][y] != BLUE && map[x][y+1] != BLUE) {
+				//if(map[x+1][y] != BLUE && map[x][y+1] != BLUE) {
+					if(prev_direction.equals(LEFT)) {
+						direction = direction.concat(DOWN);
+					}
+					else {
+						direction = direction.concat(RIGHT);
+					}
+				//}
+			}
+			//check left-down corner
+			else if(x-1 >= 0 && y+1 < map.length-1 && map[x-1][y] != BLUE && map[x][y+1] != BLUE) {
+				//if() {
+					if(prev_direction.equals(LEFT)) {
+						direction = direction.concat(UP);
+					}
+					else {
+						direction = direction.concat(RIGHT);
+					}
+				//}
+			}
+			//check right-down corner
+			else if(x-1 >= 0 && y-1 >= 0 && map[x-1][y] != BLUE && map[x][y-1] != BLUE) {
+				//if() {
+					if(prev_direction.equals(RIGHT)) {
+						direction = direction.concat(UP);
+					}
+					else {
+						direction = direction.concat(LEFT);
+					}
+				//}
+			}
+			//check right-up corner
+			else if(x+1 <= map.length-1 && y-1 >= 0 && map[x+1][y] != BLUE && map[x][y-1] != BLUE) {
+				//if() {
+					if(prev_direction.equals(UP)) {
+						direction = direction.concat(LEFT);
+					}
+					else {
+						direction = direction.concat(DOWN);
+					}
+				//}
+			}
+			//between two walls above and below
+			else if(x-1 >= 0 && x+1 <= map.length-1 && map[x-1][y] == BLUE && map[x+1][y] == BLUE) {
+				//if(map[x-1][y] == BLUE && map[x+1][y] == BLUE) {
+					directions = prev_direction;
+				//}
+			}
+			//between two walls right and left
+			else if(y-1 >= 0 && y+1 <= map.length-1 && map[x][y-1] == BLUE && map[x][y+1] == BLUE) {
+				//if(map[x][y-1] == BLUE && map[x][y+1] == BLUE) {
+					directions = prev_direction;
+				//}
+			}
+			//edge on the left and wall on the right
+			else if(y == 0 && map[x][y+1] == BLUE) {
+				directions = prev_direction;
+			}
+			//edge on the right and wall on the left
+			else if(y == map.length-1 && map[x][y-1] == BLUE) {
+				directions = prev_direction;
+			}
+			//edge on top and wall on bottom
+			else if(x == 0 && map[x+1][y] == BLUE) {
+				directions = prev_direction;
+			}
+			//edge on bottom and wall on top
+			else if(x == map.length-1 && map[x-1][y] == BLUE) {
+				directions = prev_direction;
+			}
+			// up
+			// make sure not zero
+			else if (x-1 >= 0) { // top row
+				if (map[x-1][y] == WHITE) {
+					directions = directions.concat(UP);
+				}
+			}
+			// down
+			// make sure not bottom
+			else if (x+1 <= map.length-1) {
+				if (map[x+1][y] == WHITE) {
+					directions = directions.concat(DOWN);
+				}
+			}
+			// left
+			// make sure not zero
+			else if (y-1 >= 0) {
+				if (map[x][y-1] == WHITE) {
+					directions = directions.concat(LEFT);
+				}
+			}
+			// right
+			// make sure not right
+			else if (y+1 <= map.length-1) {
+				if (map[x][y+1] == WHITE) {
+					directions = directions.concat(RIGHT);
+				}
+			}
+		}
+		// check value
+		System.out.println(" x " + x + " y " + y + " directions " + direction);
+		//if (direction.length() > 0) {
+		//direction =String.valueOf(direction.charAt(0));
+		if(direction.length() < 2) {
+			direction =prev_direction;
+		}
+
+		if(direction.length() == 2) {
+			direction =prev_direction;
+		}
+		else if(direction.length() >= 3) {
+			if(String.valueOf(direction.charAt(0)).equals(UP) && prev_direction.equals(DOWN)) {
+				direction =String.valueOf(direction.charAt(1));
+			}
+			else if(String.valueOf(direction.charAt(0)).equals(DOWN) && prev_direction.equals(UP)) {
+				direction =String.valueOf(direction.charAt(1));
+			}
+			else if(String.valueOf(direction.charAt(0)).equals(RIGHT) && prev_direction.equals(LEFT)) {
+				direction =String.valueOf(direction.charAt(1));
+			}
+			else if(String.valueOf(direction.charAt(0)).equals(LEFT) && prev_direction.equals(RIGHT)) {
+				direction =String.valueOf(direction.charAt(1));
+			}
+			else {
+				direction =String.valueOf(direction.charAt(0));
+			}
+		}
+		System.out.println("New direction: " + direction);
+		return direction;
+	}
+
+	/*private String getGhostDirection(int x, int y, String prev_direction) {
 		String direction = "";
-		//check left-up edge
-		if(x+1 <= map.length-1 && y+1 <= map.length-1) {
+		//2 directions options
+		if()
+
+		//edge on the left and wall on the right
+		if(y == 0 && map[x][y+1] == BLUE) {
+			direction = prev_direction;
+		}
+		//edge on the right and wall on the left
+		if(y == map.length-1 && map[x][y-1] == BLUE) {
+			direction = prev_direction;
+		}
+		//edge on top and wall on bottom
+		if(x == 0 && map[x+1][y] == BLUE) {
+			direction = prev_direction;
+		}
+		//edge on bottom and wall on top
+		if(x == map.length-1 && map[x-1][y] == BLUE) {
+			direction = prev_direction;
+		}
+		//check left-up corner
+		if(x+1 <= map.length-1 && y+1 < map.length-1) {
 			if(map[x+1][y] != BLUE && map[x][y+1] != BLUE) {
 				if(prev_direction.equals(LEFT)) {
 					direction = direction.concat(DOWN);
@@ -1012,9 +1251,8 @@ public class Board extends JPanel implements ActionListener{
 				}
 			}
 		}
-
-		//check left-down edge
-		if(x-1 >= 0 && y+1 <= map.length-1) {
+		//check left-down corner
+		if(x-1 >= 0 && y+1 < map.length-1) {
 			if(map[x-1][y] != BLUE && map[x][y+1] != BLUE) {
 				if(prev_direction.equals(LEFT)) {
 					direction = direction.concat(UP);
@@ -1024,7 +1262,7 @@ public class Board extends JPanel implements ActionListener{
 				}
 			}
 		}
-		//check right-down edge
+		//check right-down corner
 		if(x-1 >= 0 && y-1 >= 0) {
 			if(map[x-1][y] != BLUE && map[x][y-1] != BLUE) {
 				if(prev_direction.equals(RIGHT)) {
@@ -1035,7 +1273,7 @@ public class Board extends JPanel implements ActionListener{
 				}
 			}
 		}
-		//check right-up edge
+		//check right-up corner
 		if(x+1 <= map.length-1 && y-1 >= 0) {
 			if(map[x+1][y] != BLUE && map[x][y-1] != BLUE) {
 				if(prev_direction.equals(UP)) {
@@ -1045,6 +1283,22 @@ public class Board extends JPanel implements ActionListener{
 					direction = direction.concat(DOWN);
 				}
 			}
+		}
+		//edge on the left and wall on the right
+		if(y == 0 && map[x][y+1] == BLUE) {
+			direction = prev_direction;
+		}
+		//edge on the right and wall on the left
+		if(y == map.length-1 && map[x][y-1] == BLUE) {
+			direction = prev_direction;
+		}
+		//edge on top and wall on bottom
+		if(x == 0 && map[x+1][y] == BLUE) {
+			direction = prev_direction;
+		}
+		//edge on bottom and wall on top
+		if(x == map.length-1 && map[x-1][y] == BLUE) {
+			direction = prev_direction;
 		}
 		//check up
 		if(x-1 >= 0) {
@@ -1059,7 +1313,7 @@ public class Board extends JPanel implements ActionListener{
 			}
 		}
 		//check right
-		if(y+1 <= map.length-1) {
+		if(y+1 < map.length-1) {
 			if(map[x][y+1] != BLUE) {
 				direction = direction.concat(RIGHT);
 			}
@@ -1071,50 +1325,51 @@ public class Board extends JPanel implements ActionListener{
 			}
 		}
 
-
 		// check value
 		System.out.println(" x " + x + " y " + y + " directions " + direction);
 		//if (direction.length() > 0) {
 		//direction =String.valueOf(direction.charAt(0));
+		if(direction.length() < 2) {
+			direction =prev_direction;
+		}
+
 		if(direction.length() == 2) {
 			direction =prev_direction;
 		}
 		else if(direction.length() >= 3) {
-			if(String.valueOf(direction.charAt(0)).equals(UP) && prev_direction.equalsIgnoreCase(DOWN)) {
+			if(String.valueOf(direction.charAt(0)).equals(UP) && prev_direction.equals(DOWN)) {
 				direction =String.valueOf(direction.charAt(1));
 			}
-			else if(String.valueOf(direction.charAt(0)).equals(DOWN) && prev_direction.equalsIgnoreCase(UP)) {
+			else if(String.valueOf(direction.charAt(0)).equals(DOWN) && prev_direction.equals(UP)) {
 				direction =String.valueOf(direction.charAt(1));
 			}
-			else if(String.valueOf(direction.charAt(0)).equals(RIGHT) && prev_direction.equalsIgnoreCase(LEFT)) {
+			else if(String.valueOf(direction.charAt(0)).equals(RIGHT) && prev_direction.equals(LEFT)) {
 				direction =String.valueOf(direction.charAt(1));
 			}
-			else if(direction.equals(LEFT) && prev_direction.equalsIgnoreCase(RIGHT)) {
+			else if(String.valueOf(direction.charAt(0)).equals(LEFT) && prev_direction.equals(RIGHT)) {
 				direction =String.valueOf(direction.charAt(1));
 			}
 			else {
 				direction =String.valueOf(direction.charAt(0));
 			}
 		}
-		else {
-			direction =String.valueOf(direction.charAt(0));
-		}
+
 
 		/*if(direction == "UD" || direction == "DU" || direction == "RL" || direction == "LR") {
 				direction = prev_direction;
 
 			}*/
 
-		/*else {
+	/*else {
 				direction =String.valueOf(direction.charAt(0));
-			}*/
+			}
 
 
 		//}
 		System.out.println("New direction: " + direction);
-		System.out.println(direction.equalsIgnoreCase(RIGHT));
+		//System.out.println(direction.equalsIgnoreCase(RIGHT));
 		return direction;
-	}
+	}*/
 
 	private void changeGhostsLocation(Ghosts ghost, int location_x, int location_y, Image image) {
 		ghost.setLocation_x(location_x);

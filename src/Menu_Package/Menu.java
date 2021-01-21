@@ -45,6 +45,7 @@ public class Menu extends JPanel implements  ActionListener  {
 		newGame.setActionCommand("newGame");
 		loadGame.setActionCommand("loadGame");
 		leaderBoard.setActionCommand("leaderBoard");
+		//newGame.setSize((int)(getWidth()*0.1), (int)(getHeight()*0.11));
 		this.revalidate();
 		this.repaint();
 		// EB remove we control it from the main
