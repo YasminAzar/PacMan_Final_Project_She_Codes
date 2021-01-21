@@ -31,7 +31,7 @@ import Score_Package.GameScore;
 public class Board extends JPanel implements ActionListener{
 
 	public BufferedImage redGhostBI, blueGhostBI, pinkGhostBI, orangeGhostBI;
-	public int boardOffset = (int) (GameConstants.SCREEN_WIDTH*(0.13));
+	public int boardOffset;
 	public int blockWidth;
 	public int blockHeight;
 	public int locationBallX;
@@ -40,6 +40,7 @@ public class Board extends JPanel implements ActionListener{
 	public int firstIndexInEmptyRow;
 	public int firstPBlocationX, firstPBlocationY;
 	public int pbIndex1, pbIndex2, pbIndex3, pbIndex4, pbIndex5,pbIndex6;
+	public int boardWidth, boardHeight;
 	Ghosts redGhost, blueGhost, pinkGhost, orangeGhost;
 	Pacman pacman;
 	Power_Ball powerBall_1, powerBall_2, powerBall_3, powerBall_4;
@@ -58,7 +59,7 @@ public class Board extends JPanel implements ActionListener{
 	final String SMALL_BALL = "small_ball";
 	final String POWER_BALL = "power_ball";
 	int timerCounter;
-
+	int ghost_offset;
 	String direction;
 	ArrayList<Junction> junctionArrList = new ArrayList<Junction>();
 	Junction junc = new Junction();
@@ -79,12 +80,13 @@ public class Board extends JPanel implements ActionListener{
 	//TimerCountdown timer = new TimerCountdown();
 
 	public 	Board() {
-		blockWidth = calcBlockSize(map.length, Game_Constants_Package.GameConstants.BOARD_WIDTH,
-				Game_Constants_Package.GameConstants.BOARD_HEIGHT)[0];
+		boardWidth = (int)(GameConstants.SCREEN_WIDTH * GameConstants.BOARD_PERCENT);
+		boardHeight = (int)(GameConstants.SCREEN_HEIGHT * GameConstants.BOARD_PERCENT);
+		blockWidth = calcBlockSize(map.length, boardWidth,boardHeight)[0];
 		System.out.println("block width: " + blockWidth);
-		blockHeight = calcBlockSize(map.length, Game_Constants_Package.GameConstants.BOARD_WIDTH,
-				Game_Constants_Package.GameConstants.BOARD_HEIGHT)[1];
+		blockHeight = calcBlockSize(map.length, boardWidth,boardHeight)[1];
 		System.out.println("block height: " + blockHeight);
+		boardOffset = (GameConstants.SCREEN_WIDTH - boardWidth)/2;
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.anchor = GridBagConstraints.NORTH;
@@ -497,7 +499,7 @@ public class Board extends JPanel implements ActionListener{
 
 		// calculate ghost offset
 		Image image_for_size = new ImageIcon("src/Images/redGhostGIF.gif").getImage();
-		double ghost_offset = blockWidth/2 - image_for_size.getHeight(null)/2;
+		ghost_offset =(int)( blockWidth/2 - image_for_size.getHeight(null)/2);
 		redGhost = new Ghosts("src/Images/redGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow, 
 				randEmptyRow*blockHeight+(int)ghost_offset, 
 				(int)(firstIndexInEmptyRow*blockWidth+blockWidth-ghost_offset), LEFT, "rg");
@@ -643,13 +645,14 @@ public class Board extends JPanel implements ActionListener{
 	 */
 	public int[] locationXYinTheArray(int locationX, int locationY) {
 		int []loc_xy_in_map = {-1,-1};
+		boolean pass = sanityCheck(locationX, locationY);
 		//double location_y_offset = 1.16;
-		if(locationY < boardOffset || locationY > GameConstants.BOARD_WIDTH + boardOffset || 
+		/*if(locationY < boardOffset || locationY > GameConstants.BOARD_WIDTH + boardOffset || 
 				locationX <= 0 || locationX > GameConstants.BOARD_HEIGHT) {
 			System.out.println("Your not in the borad");
 		}
-		else if(locationY >= boardOffset && locationY <= (GameConstants.SCREEN_WIDTH - boardOffset) 
-				&& locationX > 0 && locationX <= GameConstants.BOARD_HEIGHT) {
+		else*/ if(locationY >= boardOffset && locationY <= (GameConstants.SCREEN_WIDTH - boardOffset) 
+				&& locationX > 0 && locationX <= boardHeight) {
 			//grid_x:
 			loc_xy_in_map[0] = locationX/blockHeight;
 			//grid_y:
@@ -657,6 +660,22 @@ public class Board extends JPanel implements ActionListener{
 		}
 		return loc_xy_in_map;
 	}
+	
+	// in bounds
+		// x > size/2 x < grid_size-space
+		// y > board_offset+space y < grid_size-space
+		private boolean sanityCheck(int x, int y) {
+			int image_size = redGhost.getGhostImage().getWidth(null);
+			double ghost_offset = (int)blockWidth/2 - image_size/2;
+			if ((y >= boardOffset+ghost_offset-1) && (y <= boardOffset+blockWidth*map.length-ghost_offset)) {
+				if  ((x >= ghost_offset) && (x <= blockWidth*map.length-ghost_offset)) {
+					System.out.println("OK " + " x " + x + " y " + y);
+					return true;
+				}
+			}
+			System.out.println("NOT OK " + " x " + x + " y " + y);
+			return false;
+		}
 
 	/**
 	 * This function listens to the buttons that are pressed on the keyboard 
@@ -889,12 +908,14 @@ public class Board extends JPanel implements ActionListener{
 	public void updateGhost() {
 		//boolean in_game = false;
 		Ghosts arr_ghost [] = {redGhost,blueGhost, pinkGhost, orangeGhost};
+		int number_of_steps = blockWidth /*- (blockWidth/2 - redGhost.getGhostImage().getHeight(null)/2)*/;
 		for(int i = 0; i < arr_ghost.length; i++) {
 			Ghosts current = arr_ghost[i];
+			boolean pass = sanityCheck(current.getLocation_x(), current.getLocation_y());
 			int prev_grid_x = current.getGrid_x();
 			int prev_grid_y = current.getGrid_y();
 			System.out.println("moveCounter of " + current.getNameOnMap() + ": " + current.getMoveCounter());
-			if(current.getMoveCounter() < 33) {
+			if(current.getMoveCounter() < number_of_steps) {
 				current.setMoveCounter(current.getMoveCounter()+1);
 				//per direction update location
 				if(current.getDirection() == UP) {
@@ -910,16 +931,37 @@ public class Board extends JPanel implements ActionListener{
 					current.setLocation_y(current.getLocation_y()-1);
 				}
 				//checking to changing map location and grid
-				if(current.getMoveCounter() == (int)(33/2)) {
+				if(current.getMoveCounter() == (int)(number_of_steps/2)) {
 					//save white balls and power balls if they was exist
-					current.setGrid_x(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[0]);
-					current.setGrid_y(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[1]);
+					if(current.getDirection() == UP && map[current.getGrid_x()-1][current.getGrid_y()] != BLUE) {
+						current.setGrid_x(current.getGrid_x()-1);
+					}
+					else if(current.getDirection() == DOWN && map[current.getGrid_x()+1][current.getGrid_y()] != BLUE) {
+						current.setGrid_x(current.getGrid_x()+1);
+					}
+					else if(current.getDirection() == RIGHT && map[current.getGrid_x()][current.getGrid_y()+1] != BLUE) {
+						current.setGrid_y(current.getGrid_y()+1);
+					}
+					else if(current.getDirection() == LEFT && map[current.getGrid_x()][current.getGrid_y()-1] != BLUE) {
+						current.setGrid_y(current.getGrid_y()-1);
+					}
+					//current.setGrid_x(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[0]);
+					//current.setGrid_y(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[1]);
 					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y(), current.getGhostImage());
 					map[prev_grid_x][prev_grid_y] = WHITE;
 					map[current.getGrid_x()][current.getGrid_y()] = current.getNameOnMap();
 				}
 			}
-			else if(current.getMoveCounter() == 33) {
+			else if(current.getMoveCounter() >= number_of_steps) {
+				
+				/*redGhost = new Ghosts("src/Images/redGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow, 
+						randEmptyRow*blockHeight+(int)ghost_offset, 
+						(int)(firstIndexInEmptyRow*blockWidth+blockWidth-ghost_offset), LEFT, "rg");*/
+				//make sure we are in the right position
+				int x = current.getGrid_x()*blockHeight+ghost_offset;
+				int y = current.getGrid_y()*blockWidth+blockWidth-ghost_offset;
+				current.setLocation_x(x);
+				current.setLocation_y(y);
 				current.setMoveCounter(0);
 				//lock for possible direction
 				current.setDirection(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()));
@@ -941,8 +983,9 @@ public class Board extends JPanel implements ActionListener{
 				}
 				current.setMoveCounter(current.getMoveCounter()+1);
 			}
+			pass = sanityCheck(current.getLocation_x(), current.getLocation_y());
 		}
-
+		
 		/*if(in_game == false) {
 			redGhost.setLocation_x(redGhost.getLocation_x());
 			redGhost.setLocation_y(redGhost.getLocation_y()-1);//At first it goes left
@@ -979,6 +1022,7 @@ public class Board extends JPanel implements ActionListener{
 	}
 	private String getGhostDirection(int x, int y, String prev_direction) {
 		String directions="";
+		direction = "";
 		if (map[x][y] != BLUE && x >= 0 && y >= 0 && x <= map.length && y <= map.length) {
 			//if there is 3 options
 			if(x>0 && y>0 && x<map.length-1 && y<map.length-1 && 
@@ -1189,8 +1233,9 @@ public class Board extends JPanel implements ActionListener{
 		}
 		// check value
 		System.out.println(" x " + x + " y " + y + " directions " + direction);
-		//if (direction.length() > 0) {
-		//direction =String.valueOf(direction.charAt(0));
+		if (direction.length() == 0) {
+			System.out.println(" no no!! ");
+		}
 		if(direction.length() < 2) {
 			direction =prev_direction;
 		}

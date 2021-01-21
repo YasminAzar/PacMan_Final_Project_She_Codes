@@ -34,10 +34,11 @@ public final class GameConstants implements Cloneable{
 	//public static final int BLOCK_SIZE = 20; //Block size = step size
 
 	public static final int SCREEN_WIDTH = 700;
-	public static final int SCREEN_HEIGHT = 600;
-
-	public static final int BOARD_WIDTH = 500;
-	public static final int BOARD_HEIGHT = 500;
+	public static final int SCREEN_HEIGHT = 700;
+	public static final double BOARD_PERCENT = 0.8;
+	
+	//public static final int BOARD_WIDTH = 500;
+	//public static final int BOARD_HEIGHT = 500;
 	//The amount of squares in the board grid is 15X15
 	public static final String BOARD_OPTION_1 [][] = {
 			{"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"},
