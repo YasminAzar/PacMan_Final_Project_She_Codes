@@ -278,7 +278,7 @@ public class Board extends JPanel implements ActionListener{
 		drawLives(g2, secondLife);
 		drawLives(g2, thirdLife);
 		//addCharacter();
-		
+
 		redGhostLoc = locationXYinTheArray(redGhost.getLocation_x(),redGhost.getLocation_y());
 		map[redGhostLoc[0]][redGhostLoc[1]] = "rg";
 		//System.out.println("map["+redGhostLoc[0]+ "][" + redGhostLoc[1]+ "]" + " = gh1");
@@ -572,7 +572,7 @@ public class Board extends JPanel implements ActionListener{
 		powerBall_4.setLocation_y((int)(powerBall_4.getGrid_y()*blockWidth+boardOffset+offsetPowerBall_w_h));
 		powerBall_4.setStatus(EXISTS);
 	}
-	
+
 	public void callLives() {
 		Image heart_image_for_size = new ImageIcon("src/Images/heart.png").getImage();
 		double heart_offset = blockWidth/2 - heart_image_for_size.getHeight(null)/2;
@@ -891,70 +891,79 @@ public class Board extends JPanel implements ActionListener{
 		Ghosts arr_ghost [] = {redGhost,blueGhost, pinkGhost, orangeGhost};
 		for(int i = 0; i < arr_ghost.length; i++) {
 			Ghosts current = arr_ghost[i];
+			System.out.println("moveCounter of " + current.getNameOnMap() + ": " + current.getMoveCounter());
 			if(current.getMoveCounter() < 33) {
 				current.setMoveCounter(current.getMoveCounter()+1);
 				//per direction update location
 				if(current.getDirection() == UP) {
-				//if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == UP) {
+					//if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == UP) {
 					//current.setGrid_x(current.getGrid_x()-1);
 					//current.setGrid_y(current.getGrid_y());
 					changeGhostsLocation(current, current.getLocation_x()-1, current.getLocation_y(), current.getGhostImage());
 				}
 				else if(current.getDirection() == DOWN) {
-				//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == DOWN) {
+					//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == DOWN) {
 					//current.setGrid_x(current.getGrid_x()+1);
 					//current.setGrid_y(current.getGrid_y());
 					changeGhostsLocation(current, current.getLocation_x()+1, current.getLocation_y(), current.getGhostImage());
 				}
 				else if(current.getDirection() == RIGHT) {
-				//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == RIGHT) {
+					//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == RIGHT) {
 					//current.setGrid_x(current.getGrid_x());
 					//current.setGrid_y(current.getGrid_y()+1);
 					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+1, current.getGhostImage());
 				}
 				else if(current.getDirection() == LEFT) {
-				//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == LEFT) {
+					//else if(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()) == LEFT) {
 					//current.setGrid_x(current.getGrid_x());
 					//current.setGrid_y(current.getGrid_y()-1);
 					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
 				}
 				//checking to changing map location and grid
 				if(current.getMoveCounter() == (int)(33/2)+1) {
-					//current.setGrid_x(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[0]);
-					//current.setGrid_x(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[1]);
-					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y(), current.getGhostImage());
+					current.setGrid_x(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[0]);
+					current.setGrid_y(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[1]);
+					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y(), current.getGhostImage());
 					map[current.getGrid_x()][current.getGrid_y()] = current.getNameOnMap();
 				}
-				
+
 			}
 			else if(current.getMoveCounter() == 33) {
 				current.setMoveCounter(0);
 				//lock for possible direction
 				current.setDirection(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()));
-				if(current.getDirection() == UP) {
-					changeGhostsLocation(current, current.getLocation_x()-33, current.getLocation_y(), current.getGhostImage());
+				if(current.getDirection().equalsIgnoreCase(UP)) {
+					//changeGhostsLocation(current, current.getLocation_x()-1, current.getLocation_y(), current.getGhostImage());
 					//current.setGrid_x(current.getGrid_x()-1);
 					//current.setGrid_y(current.getGrid_y());
+					current.setDirection(UP);
+					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
 				}
-				else if(current.getDirection() == DOWN) {
-					changeGhostsLocation(current, current.getLocation_x()+33, current.getLocation_y(), current.getGhostImage());
+				else if(current.getDirection().equalsIgnoreCase(DOWN) ) {
+					//changeGhostsLocation(current, current.getLocation_x()+1, current.getLocation_y(), current.getGhostImage());
 					//current.setGrid_x(current.getGrid_x()+1);
 					//current.setGrid_y(current.getGrid_y());
+					current.setDirection(DOWN);
+					changeGhostsLocation(current, current.getLocation_x()+1, current.getLocation_y(), current.getGhostImage());
 				}
-				else if(current.getDirection() == RIGHT) {
-					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+33, current.getGhostImage());
+				else if(current.getDirection().equalsIgnoreCase(RIGHT) ) {
+					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+1, current.getGhostImage());
 					//current.setGrid_x(current.getGrid_x());
 					//current.setGrid_y(current.getGrid_y()+1);
+					current.setDirection(RIGHT);
+					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+1, current.getGhostImage());
 				}
-				else if(current.getDirection() == LEFT) {
-					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-33, current.getGhostImage());
+				else if(current.getDirection().equalsIgnoreCase(LEFT) ) {
+					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
 					//current.setGrid_x(current.getGrid_x());
 					//current.setGrid_y(current.getGrid_y()-1);
+					current.setDirection(LEFT);
+					changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
 				}
 				current.setMoveCounter(current.getMoveCounter()+1);
 			}
 		}
-		
+
 		/*if(in_game == false) {
 			redGhost.setLocation_x(redGhost.getLocation_x());
 			redGhost.setLocation_y(redGhost.getLocation_y()-1);//At first it goes left
@@ -983,15 +992,60 @@ public class Board extends JPanel implements ActionListener{
 			int randDirection = (int) (Math.random()*junc.getnumOfOption());
 				//if(junc.getDirection().charAt(randDirection) ==  UP) {
 					//changeGhostsDirection
-					
+
 				//}
-	
+
 			}		
 		}*/
 	}
 
 	private String getGhostDirection(int x, int y, String prev_direction) {
 		String direction = "";
+		//check left-up edge
+		if(x+1 <= map.length-1 && y+1 <= map.length-1) {
+			if(map[x+1][y] != BLUE && map[x][y+1] != BLUE) {
+				if(prev_direction.equals(LEFT)) {
+					direction = direction.concat(DOWN);
+				}
+				else {
+					direction = direction.concat(RIGHT);
+				}
+			}
+		}
+
+		//check left-down edge
+		if(x-1 >= 0 && y+1 <= map.length-1) {
+			if(map[x-1][y] != BLUE && map[x][y+1] != BLUE) {
+				if(prev_direction.equals(LEFT)) {
+					direction = direction.concat(UP);
+				}
+				else {
+					direction = direction.concat(RIGHT);
+				}
+			}
+		}
+		//check right-down edge
+		if(x-1 >= 0 && y-1 >= 0) {
+			if(map[x-1][y] != BLUE && map[x][y-1] != BLUE) {
+				if(prev_direction.equals(RIGHT)) {
+					direction = direction.concat(UP);
+				}
+				else {
+					direction = direction.concat(LEFT);
+				}
+			}
+		}
+		//check right-up edge
+		if(x+1 <= map.length-1 && y-1 >= 0) {
+			if(map[x+1][y] != BLUE && map[x][y-1] != BLUE) {
+				if(prev_direction.equals(UP)) {
+					direction = direction.concat(LEFT);
+				}
+				else {
+					direction = direction.concat(DOWN);
+				}
+			}
+		}
 		//check up
 		if(x-1 >= 0) {
 			if(map[x-1][y] != BLUE) {
@@ -1012,28 +1066,56 @@ public class Board extends JPanel implements ActionListener{
 		}
 		//check left
 		if(y-1 >= 0) {
-			if(map[x][y+1] != BLUE) {
+			if(map[x][y-1] != BLUE) {
 				direction = direction.concat(LEFT);
 			}
 		}
-		
+
+
 		// check value
 		System.out.println(" x " + x + " y " + y + " directions " + direction);
-		if (direction.length() > 0) {
+		//if (direction.length() > 0) {
+		//direction =String.valueOf(direction.charAt(0));
+		if(direction.length() == 2) {
+			direction =prev_direction;
+		}
+		else if(direction.length() >= 3) {
+			if(String.valueOf(direction.charAt(0)).equals(UP) && prev_direction.equalsIgnoreCase(DOWN)) {
+				direction =String.valueOf(direction.charAt(1));
+			}
+			else if(String.valueOf(direction.charAt(0)).equals(DOWN) && prev_direction.equalsIgnoreCase(UP)) {
+				direction =String.valueOf(direction.charAt(1));
+			}
+			else if(String.valueOf(direction.charAt(0)).equals(RIGHT) && prev_direction.equalsIgnoreCase(LEFT)) {
+				direction =String.valueOf(direction.charAt(1));
+			}
+			else if(direction.equals(LEFT) && prev_direction.equalsIgnoreCase(RIGHT)) {
+				direction =String.valueOf(direction.charAt(1));
+			}
+			else {
+				direction =String.valueOf(direction.charAt(0));
+			}
+		}
+		else {
 			direction =String.valueOf(direction.charAt(0));
-			/*Junction j = new Junction();
-			j.setDirection(directions);
-			j.setnumOfOption(directions.length());
-			j.setX(x);
-			j.setY(y);
-			junctionsArrList.add(j);
-			j = null;
-		}*/
-	}
+		}
+
+		/*if(direction == "UD" || direction == "DU" || direction == "RL" || direction == "LR") {
+				direction = prev_direction;
+
+			}*/
+
+		/*else {
+				direction =String.valueOf(direction.charAt(0));
+			}*/
+
+
+		//}
 		System.out.println("New direction: " + direction);
+		System.out.println(direction.equalsIgnoreCase(RIGHT));
 		return direction;
 	}
-	
+
 	private void changeGhostsLocation(Ghosts ghost, int location_x, int location_y, Image image) {
 		ghost.setLocation_x(location_x);
 		ghost.setLocation_y(location_y);
