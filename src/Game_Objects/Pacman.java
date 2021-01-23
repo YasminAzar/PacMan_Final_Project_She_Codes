@@ -7,6 +7,15 @@ import javax.swing.ImageIcon;
 public class Pacman extends GameCharacter{
 
 	private Image pacmanImage;
+	private String nameOnMap;
+
+	public String getNameOnMap() {
+		return nameOnMap;
+	}
+
+	public void setNameOnMap(String nameOnMap) {
+		this.nameOnMap = nameOnMap;
+	}
 
 	public Pacman(String[] args) {
 		super(args);
