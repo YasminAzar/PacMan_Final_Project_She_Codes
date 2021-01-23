@@ -1117,7 +1117,8 @@ public class Board extends JPanel implements ActionListener{
 			System.out.println("no direction");
 		}
 		//TODO check if there is ghost at this direction near to it- if there is- go to another direction
-		if(String.valueOf(direction.charAt(0)).equals(' ')) {
+		//if(String.valueOf(direction.charAt(0)).equals(' ')) {
+			if(direction.charAt(0) == ' '){
 			direction =String.valueOf(direction.charAt(1));
 		}
 		else {
