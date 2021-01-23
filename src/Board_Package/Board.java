@@ -266,10 +266,15 @@ public class Board extends JPanel implements ActionListener{
 		Graphics2D g2 = (Graphics2D) g;
 		// this is the transform I was using when I found the bug.
 		createBoard(g2);
-		updateGhost();
+		//updateGhost();
+		updateGhost(redGhost);//and remove the for in the update ghost
 		drawGhost(g2, redGhost);
+		//drawGhost(g2, redGhost);
+		updateGhost(blueGhost);
 		drawGhost(g2, blueGhost);
+		updateGhost(pinkGhost);
 		drawGhost(g2, pinkGhost);
+		updateGhost(orangeGhost);
 		drawGhost(g2, orangeGhost);
 		drawPacman(g2, pacman);
 		drawPowerBall(g2, powerBall_1);
@@ -503,22 +508,24 @@ public class Board extends JPanel implements ActionListener{
 		System.out.println("image size: " + image_for_size.getHeight(null));
 		redGhost = new Ghosts("src/Images/redGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow, 
 				randEmptyRow*blockHeight+ghost_offset, 
-				(int)(firstIndexInEmptyRow*blockWidth+2*blockWidth+ghost_offset), LEFT, "rg");
+				(int)(firstIndexInEmptyRow*blockWidth+/*2*blockWidth+*/ghost_offset+boardOffset), LEFT, "rg");
+		map[redGhost.getGrid_x()][redGhost.getGrid_y()] = "rg";//לצייר אצל כולם
+
 		System.out.println("redGhost grid_x: " + redGhost.getGrid_x() + " y "+redGhost.getGrid_y());
 		System.out.println("redGhost location_x: " + redGhost.getLocation_x() + " y "+redGhost.getLocation_y());
 		blueGhost = new Ghosts("src/Images/blueGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow+1, 
 				randEmptyRow*blockHeight+ghost_offset, 
-				(int)((firstIndexInEmptyRow+1)*blockWidth+2*blockWidth+ghost_offset), LEFT, "bg");
+				(int)((firstIndexInEmptyRow+1)*blockWidth+/*2*blockWidth+*/ghost_offset+boardOffset), LEFT, "bg");
 		System.out.println("blueGhost grid_x: " + blueGhost.getGrid_x() + " y "+blueGhost.getGrid_y());
 		System.out.println("blueGhost location_x: " + blueGhost.getLocation_x() + " y "+blueGhost.getLocation_y());
 		pinkGhost = new Ghosts("src/Images/pinkGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow+5, 
 				randEmptyRow*blockHeight+ghost_offset, 
-				(int) ((firstIndexInEmptyRow+5)*blockWidth+2*blockWidth+ghost_offset), RIGHT, "pg");
+				(int) ((firstIndexInEmptyRow+5)*blockWidth+/*2*blockWidth+*/ghost_offset+boardOffset), RIGHT, "pg");
 		System.out.println("pinkGhost grid_x: " + pinkGhost.getGrid_x() + " y "+pinkGhost.getGrid_y());
 		System.out.println("pinkGhost location_x: " + pinkGhost.getLocation_x() + " y "+pinkGhost.getLocation_y());
 		orangeGhost = new Ghosts("src/Images/orangeGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow+6, 
 				randEmptyRow*blockHeight+ghost_offset, 
-				(int)((firstIndexInEmptyRow+6)*blockWidth+2*blockWidth+ghost_offset), RIGHT,"og");
+				(int)((firstIndexInEmptyRow+6)*blockWidth+/*2*blockWidth+*/ghost_offset+boardOffset), RIGHT,"og");
 		System.out.println("orangeGhost grid_x: " + orangeGhost.getGrid_x() + " y "+orangeGhost.getGrid_y());
 		System.out.println("orangeGhost location_x: " + orangeGhost.getLocation_x() + " y "+orangeGhost.getLocation_y());
 	}
@@ -531,7 +538,7 @@ public class Board extends JPanel implements ActionListener{
 		double pacman_offset = blockWidth/2 - pacman_image_for_size.getHeight(null)/2;
 		pacman = new Pacman("src/Images/pacman_rightGIF.gif", randEmptyRow, firstIndexInEmptyRow+3,
 				randEmptyRow*blockHeight + (int)pacman_offset,
-				(int)((firstIndexInEmptyRow+3)*blockWidth+2*blockWidth+pacman_offset),
+				(int)((firstIndexInEmptyRow+3)*blockWidth+/*2*blockWidth+*/pacman_offset+boardOffset),
 				RIGHT);
 		System.out.println("pacman grid_x: " + pacman.getGrid_x() + " y "+pacman.getGrid_y());
 		System.out.println("pacman location_x: " + pacman.getLocation_x() + " y "+pacman.getLocation_y());
@@ -756,7 +763,7 @@ public class Board extends JPanel implements ActionListener{
 						}
 						//gameScore.updateScore(pacman.getGrid_x(), pacman.getGrid_y());
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
-						
+
 					}
 					break;
 				case KeyEvent.VK_LEFT:
@@ -776,8 +783,8 @@ public class Board extends JPanel implements ActionListener{
 							updateScore(SMALL_BALL);
 						}
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
-						
-						
+
+
 					}
 					break;
 				case KeyEvent.VK_RIGHT:
@@ -797,7 +804,7 @@ public class Board extends JPanel implements ActionListener{
 							updateScore(SMALL_BALL);
 						}
 						map[pacman.getGrid_x()][pacman.getGrid_y()] = "pac";
-						
+
 					}
 					break;
 				default:
@@ -929,109 +936,98 @@ public class Board extends JPanel implements ActionListener{
 	}
 
 	//Fix and continue this function
-	public void updateGhost() {
+	public void updateGhost(Ghosts current) {
 		//boolean in_game = false;
-		Ghosts arr_ghost [] = {redGhost,blueGhost, pinkGhost, orangeGhost};
-		int number_of_steps = blockWidth /*- (blockWidth/2 - redGhost.getGhostImage().getHeight(null)/2)*/;
-		for(int i = 0; i < arr_ghost.length; i++) {
-			Ghosts current = arr_ghost[i];
-			boolean pass = sanityCheck(current.getLocation_x(), current.getLocation_y());
-			int prev_grid_x = current.getGrid_x();
-			int prev_grid_y = current.getGrid_y();
-			System.out.println("moveCounter of " + current.getNameOnMap() + ": " + current.getMoveCounter());
-			if(current.getMoveCounter() < number_of_steps) {
-				map[current.getGrid_x()][current.getGrid_y()] = current.getNameOnMap();
-				current.setMoveCounter(current.getMoveCounter()+1);
-				//per direction update location
-				if(current.getDirection().equals(UP) ) {
-					current.setLocation_x(current.getLocation_x()-1);
-				}
-				else if(current.getDirection().equals(DOWN)) {
-					current.setLocation_x(current.getLocation_x()+1);
-				}
-				else if(current.getDirection().equals(RIGHT)) {
-					current.setLocation_y(current.getLocation_y()+1);
-				}
-				else if(current.getDirection().equals(LEFT)) {
-					current.setLocation_y(current.getLocation_y()-1);
-				}
-				//checking to changing map location and grid
-				if(current.getMoveCounter() == (int)(number_of_steps/2)) {
-					//save white balls and power balls if they was exist
-					//pacman.setLocation_x(pacman.getGrid_x()*blockHeight+(int)pacman_offset);
-					//pacman.setLocation_y(boardOffset+(pacman.getGrid_y()*blockWidth)+(int)pacman_offset);
-					if(/*current.getDirection() == UP*/ current.getDirection().equals(UP) && !map[current.getGrid_x()-1][current.getGrid_y()].equals(BLUE) ) {
-						current.setGrid_x(current.getGrid_x()-1);
-						//current.setLocation_x(current.getGrid_x()*blockHeight+(int)ghost_offset);
-						//current.setGrid_x((current.getGrid_x()*blockHeight+ghost_offset)-1);
-						//current.setGrid_x(x-1);
-						//current.setLocation_x(x-1);
-					}
-					else if(/*current.getDirection() == DOWN*/ current.getDirection().equals(DOWN)  && !map[current.getGrid_x()+1][current.getGrid_y()].equals(BLUE)) {
-						current.setGrid_x(current.getGrid_x()+1);
-						//current.setLocation_x(current.getGrid_x()*blockHeight+(int)ghost_offset);
-						//current.setGrid_x((current.getGrid_x()*blockHeight+ghost_offset)+1);
-						//current.setGrid_x(x+1);
-						//current.setLocation_x(x+1);
-					}
-					else if(/*current.getDirection() == RIGHT*/ current.getDirection().equals(RIGHT) && !map[current.getGrid_x()][current.getGrid_y()+1].equals(BLUE)) {
-						current.setGrid_y(current.getGrid_y()+1);
-						//current.setGrid_y((current.getGrid_y()*blockWidth+blockWidth+ghost_offset)+1);
-						//current.setGrid_y(y+1);
-						//current.setLocation_y(y+1);
-					}
-					else if(/*current.getDirection() == LEFT*/ current.getDirection().equals(LEFT) && !map[current.getGrid_x()][current.getGrid_y()-1].equals(BLUE)) {
-						current.setGrid_y(current.getGrid_y()-1);
-						//current.setGrid_y((current.getGrid_y()*blockWidth+blockWidth+ghost_offset)-1);
-						//current.setGrid_y(y-1);
-						//current.setLocation_y(y-1);
-					}
-					//current.setGrid_x(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[0]);
-					//current.setGrid_y(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[1]);
-					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y(), current.getGhostImage());
-					map[prev_grid_x][prev_grid_y] = WHITE;
-					map[current.getGrid_x()][current.getGrid_y()] = current.getNameOnMap();
-				}
+		//Ghosts arr_ghost [] = {redGhost,blueGhost, pinkGhost, orangeGhost};
+		int number_of_steps = blockWidth;
+		//for(int i = 0; i < arr_ghost.length; i++) {
+		//Ghosts current = arr_ghost[i];
+		boolean pass = sanityCheck(current.getLocation_x(), current.getLocation_y());
+		int prev_grid_x = current.getGrid_x();
+		int prev_grid_y = current.getGrid_y();
+		System.out.println("moveCounter of " + current.getNameOnMap() + ": " + current.getMoveCounter());
+		if(current.getMoveCounter() < number_of_steps) {
+			map[current.getGrid_x()][current.getGrid_y()] = current.getNameOnMap();
+			current.setMoveCounter(current.getMoveCounter()+1);
+			//per direction update location
+			if(current.getDirection().equals(UP) ) {
+				current.setLocation_x(current.getLocation_x()-1);
 			}
-			else if(current.getMoveCounter() >= number_of_steps) {
-
-				/*redGhost = new Ghosts("src/Images/redGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow, 
-						randEmptyRow*blockHeight+(int)ghost_offset, 
-						(int)(firstIndexInEmptyRow*blockWidth+blockWidth-ghost_offset), LEFT, "rg");*/
-				//make sure we are in the right position
-				int x = current.getGrid_x()*blockHeight+ghost_offset;
-				int y = current.getGrid_y()*blockWidth+2*blockWidth+ghost_offset;
-				current.setLocation_x(x);
-				current.setLocation_y(y);
+			else if(current.getDirection().equals(DOWN)) {
+				current.setLocation_x(current.getLocation_x()+1);
+			}
+			else if(current.getDirection().equals(RIGHT)) {
+				current.setLocation_y(current.getLocation_y()+1);
+			}
+			else if(current.getDirection().equals(LEFT)) {
+				current.setLocation_y(current.getLocation_y()-1);
+			}
+			//checking to changing map location and grid
+			if(current.getMoveCounter() == (int)(number_of_steps/2)) {
+				//save white balls and power balls if they was exist
+				if(/*current.getDirection() == UP*/ current.getDirection().equals(UP) && !map[current.getGrid_x()-1][current.getGrid_y()].equals(BLUE) ) {
+					current.setGrid_x(current.getGrid_x()-1);
+					//current.setLocation_x(current.getGrid_x()*blockHeight+(int)ghost_offset);
+					//current.setGrid_x((current.getGrid_x()*blockHeight+ghost_offset)-1);
+				}
+				else if(/*current.getDirection() == DOWN*/ current.getDirection().equals(DOWN)  && !map[current.getGrid_x()+1][current.getGrid_y()].equals(BLUE)) {
+					current.setGrid_x(current.getGrid_x()+1);
+					//current.setLocation_x(current.getGrid_x()*blockHeight+(int)ghost_offset);
+					//current.setGrid_x((current.getGrid_x()*blockHeight+ghost_offset)+1);
+				}
+				else if(/*current.getDirection() == RIGHT*/ current.getDirection().equals(RIGHT) && !map[current.getGrid_x()][current.getGrid_y()+1].equals(BLUE)) {
+					current.setGrid_y(current.getGrid_y()+1);
+					//current.setGrid_y((current.getGrid_y()*blockWidth+blockWidth+ghost_offset)+1);
+				}
+				else if(/*current.getDirection() == LEFT*/ current.getDirection().equals(LEFT) && !map[current.getGrid_x()][current.getGrid_y()-1].equals(BLUE)) {
+					current.setGrid_y(current.getGrid_y()-1);
+					//current.setGrid_y((current.getGrid_y()*blockWidth+blockWidth+ghost_offset)-1);
+				}
 				//current.setGrid_x(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[0]);
 				//current.setGrid_y(locationXYinTheArray(current.getLocation_x(), current.getLocation_y())[1]);
-				//current.setLocation_x(current.getLocation_x()/**blockHeight*/+ghost_offset);
-				//current.setLocation_y(current.getLocation_y()/**blockWidth*/+blockWidth+ghost_offset);
-				current.setMoveCounter(0);
-				//lock for possible direction
-				current.setDirection(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()));
+				//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y(), current.getGhostImage());
+				//if there was small ball in this location- 
+				if(map[current.getGrid_x()][current.getGrid_y()].equals(WHITE)) {
+				map[prev_grid_x][prev_grid_y] = WHITE;
+				}
 				map[current.getGrid_x()][current.getGrid_y()] = current.getNameOnMap();
-				//current.setDirection(getGhostDirection(x,y, current.getDirection()));
-				if(current.getDirection().equals(UP)) {
-					current.setDirection(UP);
-					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
-				}
-				else if(current.getDirection().equals(DOWN) ) {
-					current.setDirection(DOWN);
-					//changeGhostsLocation(current, current.getLocation_x()+1, current.getLocation_y(), current.getGhostImage());
-				}
-				else if(current.getDirection().equals(RIGHT) ) {
-					current.setDirection(RIGHT);
-					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+1, current.getGhostImage());
-				}
-				else if(current.getDirection().equals(LEFT) ) {
-					current.setDirection(LEFT);
-					//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
-				}
-				current.setMoveCounter(current.getMoveCounter()+1);
 			}
-			pass = sanityCheck(current.getLocation_x(), current.getLocation_y());
 		}
+		else if(current.getMoveCounter() >= number_of_steps) {
+
+			/*redGhost = new Ghosts("src/Images/redGhostGIF.gif", randEmptyRow, firstIndexInEmptyRow, 
+						randEmptyRow*blockHeight+(int)ghost_offset, 
+						(int)(firstIndexInEmptyRow*blockWidth+blockWidth-ghost_offset), LEFT, "rg");*/
+			//make sure we are in the right position
+			int x = current.getGrid_x()*blockHeight+ghost_offset;
+			int y = current.getGrid_y()*blockWidth+/*2*blockWidth+*/ghost_offset+boardOffset;
+			current.setLocation_x(x);
+			current.setLocation_y(y);
+			current.setMoveCounter(0);
+			//lock for possible direction
+			current.setDirection(getGhostDirection(current.getGrid_x(),current.getGrid_y(), current.getDirection()));
+			map[current.getGrid_x()][current.getGrid_y()] = current.getNameOnMap();
+			//current.setDirection(getGhostDirection(x,y, current.getDirection()));
+			if(current.getDirection().equals(UP)) {
+				current.setDirection(UP);
+				//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
+			}
+			else if(current.getDirection().equals(DOWN) ) {
+				current.setDirection(DOWN);
+				//changeGhostsLocation(current, current.getLocation_x()+1, current.getLocation_y(), current.getGhostImage());
+			}
+			else if(current.getDirection().equals(RIGHT) ) {
+				current.setDirection(RIGHT);
+				//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()+1, current.getGhostImage());
+			}
+			else if(current.getDirection().equals(LEFT) ) {
+				current.setDirection(LEFT);
+				//changeGhostsLocation(current, current.getLocation_x(), current.getLocation_y()-1, current.getGhostImage());
+			}
+			current.setMoveCounter(current.getMoveCounter()+1);
+		}
+		pass = sanityCheck(current.getLocation_x(), current.getLocation_y());
+		//}
 
 		/*if(in_game == false) {
 			redGhost.setLocation_x(redGhost.getLocation_x());
@@ -1118,11 +1114,11 @@ public class Board extends JPanel implements ActionListener{
 		}
 		//TODO check if there is ghost at this direction near to it- if there is- go to another direction
 		//if(String.valueOf(direction.charAt(0)).equals(' ')) {
-			if(direction.charAt(0) == ' '){
+		if(direction.charAt(0) == ' '){
 			direction =String.valueOf(direction.charAt(1));
 		}
 		else {
-		direction =String.valueOf(direction.charAt(0));
+			direction =String.valueOf(direction.charAt(0));
 		}
 		return direction;
 	}
